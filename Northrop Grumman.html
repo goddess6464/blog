@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Northrop Grumman — M&A 브리핑 리포트</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=IBM+Plex+Sans+KR:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;600&display=swap');
+
+  :root {
+    --bg: #0a0c10;
+    --surface: #111318;
+    --surface2: #181c24;
+    --border: #23293a;
+    --accent: #4f9cf9;
+    --accent2: #f7c948;
+    --accent3: #e05f5f;
+    --accent4: #52d08a;
+    --text: #e8eaf0;
+    --muted: #7a8499;
+    --tag-bg: #1a2236;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'IBM Plex Sans KR', sans-serif;
+    font-size: 15px;
+    line-height: 1.75;
+    padding: 40px 20px 80px;
+  }
+
+  .report {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  /* ── COVER ── */
+  .cover {
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 52px 48px 44px;
+    margin-bottom: 48px;
+    background: linear-gradient(135deg, #0d1220 0%, #111827 60%, #0f1a2e 100%);
+    position: relative;
+    overflow: hidden;
+  }
+  .cover::before {
+    content: 'NOC';
+    position: absolute;
+    right: -20px; top: -10px;
+    font-size: 180px;
+    font-family: 'Playfair Display', serif;
+    font-weight: 900;
+    color: rgba(79,156,249,0.04);
+    line-height: 1;
+    pointer-events: none;
+    letter-spacing: -8px;
+  }
+  .cover-tag {
+    display: inline-block;
+    background: rgba(79,156,249,0.12);
+    color: var(--accent);
+    border: 1px solid rgba(79,156,249,0.3);
+    border-radius: 4px;
+    font-size: 11px;
+    font-family: 'IBM Plex Mono', monospace;
+    letter-spacing: 2px;
+    padding: 3px 10px;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+  }
+  .cover h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 48px;
+    font-weight: 900;
+    color: #fff;
+    line-height: 1.1;
+    margin-bottom: 8px;
+  }
+  .cover h1 span { color: var(--accent); }
+  .cover-sub {
+    color: var(--muted);
+    font-size: 14px;
+    margin-bottom: 32px;
+  }
+  .cover-meta {
+    display: flex;
+    gap: 32px;
+    flex-wrap: wrap;
+  }
+  .meta-item label {
+    display: block;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-family: 'IBM Plex Mono', monospace;
+    margin-bottom: 4px;
+  }
+  .meta-item .val {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--accent2);
+  }
+
+  /* ── SECTION ── */
+  .section {
+    margin-bottom: 48px;
+  }
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  .section-num {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    background: rgba(79,156,249,0.1);
+    border: 1px solid rgba(79,156,249,0.2);
+    border-radius: 4px;
+    padding: 2px 8px;
+  }
+  .section h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 26px;
+    font-weight: 700;
+    color: #fff;
+  }
+  .section h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--accent);
+    margin: 28px 0 12px;
+    padding-left: 12px;
+    border-left: 3px solid var(--accent);
+  }
+
+  /* ── CARD ── */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 24px 28px;
+    margin-bottom: 16px;
+  }
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+  }
+  .kpi-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px 24px;
+    text-align: center;
+  }
+  .kpi-card .kpi-label {
+    font-size: 11px;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-family: 'IBM Plex Mono', monospace;
+    margin-bottom: 8px;
+  }
+  .kpi-card .kpi-val {
+    font-size: 28px;
+    font-weight: 600;
+    color: var(--accent2);
+  }
+  .kpi-card .kpi-sub {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+
+  /* ── CONCLUSION BOX ── */
+  .conclusion-box {
+    background: linear-gradient(135deg, #0f1f38, #0d1a2a);
+    border: 1px solid rgba(79,156,249,0.3);
+    border-left: 4px solid var(--accent);
+    border-radius: 10px;
+    padding: 28px 32px;
+    margin-bottom: 20px;
+  }
+  .conclusion-box h3 {
+    color: var(--accent2) !important;
+    border-left: none !important;
+    padding-left: 0 !important;
+    margin-top: 0 !important;
+  }
+  .conclusion-box p { color: #c8d0e0; margin-bottom: 10px; }
+
+  /* ── VERDICT TAGS ── */
+  .verdict { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 16px; }
+  .tag {
+    font-size: 12px;
+    font-family: 'IBM Plex Mono', monospace;
+    border-radius: 4px;
+    padding: 4px 12px;
+  }
+  .tag-green { background: rgba(82,208,138,0.12); color: var(--accent4); border: 1px solid rgba(82,208,138,0.25); }
+  .tag-red { background: rgba(224,95,95,0.12); color: var(--accent3); border: 1px solid rgba(224,95,95,0.25); }
+  .tag-yellow { background: rgba(247,201,72,0.12); color: var(--accent2); border: 1px solid rgba(247,201,72,0.25); }
+  .tag-blue { background: rgba(79,156,249,0.12); color: var(--accent); border: 1px solid rgba(79,156,249,0.25); }
+
+  /* ── TIMELINE ── */
+  .timeline { position: relative; padding-left: 28px; }
+  .timeline::before {
+    content: '';
+    position: absolute; left: 7px; top: 6px; bottom: 6px;
+    width: 2px; background: var(--border);
+  }
+  .tl-item { position: relative; margin-bottom: 20px; }
+  .tl-item::before {
+    content: '';
+    position: absolute; left: -25px; top: 7px;
+    width: 10px; height: 10px; border-radius: 50%;
+    background: var(--accent); border: 2px solid var(--bg);
+  }
+  .tl-item .tl-year {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--accent);
+    font-weight: 600;
+  }
+  .tl-item .tl-desc { color: #b0b8cc; font-size: 14px; }
+
+  /* ── BAR CHART (SVG-based) ── */
+  .chart-wrap {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 24px;
+    margin-bottom: 16px;
+  }
+  .chart-title {
+    font-size: 13px;
+    color: var(--muted);
+    font-family: 'IBM Plex Mono', monospace;
+    margin-bottom: 16px;
+    letter-spacing: 0.5px;
+  }
+
+  /* ── RISK TABLE ── */
+  .risk-table { width: 100%; border-collapse: collapse; }
+  .risk-table th {
+    text-align: left;
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-family: 'IBM Plex Mono', monospace;
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  .risk-table td {
+    padding: 12px;
+    border-bottom: 1px solid rgba(35,41,58,0.6);
+    font-size: 13.5px;
+    vertical-align: top;
+  }
+  .risk-table tr:last-child td { border-bottom: none; }
+  .severity {
+    display: inline-block;
+    font-size: 11px;
+    font-family: 'IBM Plex Mono', monospace;
+    border-radius: 3px;
+    padding: 2px 8px;
+    white-space: nowrap;
+  }
+  .sev-high { background: rgba(224,95,95,0.15); color: #e05f5f; }
+  .sev-mid { background: rgba(247,201,72,0.15); color: #f7c948; }
+  .sev-low { background: rgba(82,208,138,0.15); color: #52d08a; }
+
+  /* ── BULL / BEAR ── */
+  .case-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 600px) { .case-grid { grid-template-columns: 1fr; } }
+  .bull-box, .bear-box {
+    border-radius: 10px;
+    padding: 24px;
+  }
+  .bull-box {
+    background: linear-gradient(135deg, #0d2318, #0f1e14);
+    border: 1px solid rgba(82,208,138,0.25);
+  }
+  .bear-box {
+    background: linear-gradient(135deg, #221010, #1e0e0e);
+    border: 1px solid rgba(224,95,95,0.25);
+  }
+  .bull-box h3 { color: var(--accent4) !important; border-left-color: var(--accent4) !important; margin-top: 0 !important; }
+  .bear-box h3 { color: var(--accent3) !important; border-left-color: var(--accent3) !important; margin-top: 0 !important; }
+  .case-item {
+    font-size: 13.5px;
+    color: #c0c8d8;
+    margin-bottom: 10px;
+    padding-left: 16px;
+    position: relative;
+  }
+  .case-item::before {
+    content: '▸';
+    position: absolute; left: 0;
+    font-size: 10px;
+    top: 4px;
+  }
+  .bull-box .case-item::before { color: var(--accent4); }
+  .bear-box .case-item::before { color: var(--accent3); }
+
+  /* ── COMPARISON TABLE ── */
+  .comp-table { width: 100%; border-collapse: collapse; }
+  .comp-table th {
+    background: var(--surface2);
+    padding: 10px 14px;
+    font-size: 12px;
+    font-family: 'IBM Plex Mono', monospace;
+    color: var(--muted);
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    text-align: center;
+    border: 1px solid var(--border);
+  }
+  .comp-table th:first-child { text-align: left; }
+  .comp-table td {
+    padding: 11px 14px;
+    border: 1px solid var(--border);
+    font-size: 13.5px;
+    text-align: center;
+    color: #c8d0e0;
+  }
+  .comp-table td:first-child { text-align: left; font-weight: 600; }
+  .comp-table tr.highlight td { background: rgba(79,156,249,0.06); }
+  .comp-table tr.highlight td:first-child { color: var(--accent); }
+
+  /* ── SEGMENT BARS ── */
+  .seg-bar-item { margin-bottom: 14px; }
+  .seg-bar-label {
+    display: flex; justify-content: space-between;
+    font-size: 13px; margin-bottom: 5px;
+    color: #c0c8d8;
+  }
+  .seg-bar-track {
+    height: 8px; background: var(--surface2); border-radius: 4px; overflow: hidden;
+  }
+  .seg-bar-fill {
+    height: 100%; border-radius: 4px;
+    transition: width 0.8s ease;
+  }
+
+  p { color: #b8c0d0; line-height: 1.8; margin-bottom: 12px; }
+  strong { color: var(--text); }
+  ul { padding-left: 20px; }
+  li { color: #b0b8cc; margin-bottom: 6px; font-size: 14px; }
+
+  .divider {
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--border), transparent);
+    margin: 40px 0;
+  }
+
+  .footnote {
+    font-size: 11.5px;
+    color: var(--muted);
+    font-family: 'IBM Plex Mono', monospace;
+    margin-top: 8px;
+  }
+
+  .highlight-number {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--accent2);
+    font-family: 'IBM Plex Mono', monospace;
+  }
+</style>
+</head>
+<body>
+<div class="report">
+
+  <!-- ══ COVER ══ -->
+  <div class="cover">
+    <div class="cover-tag">M&A 브리핑 리포트 · Confidential</div>
+    <h1>Northrop<br><span>Grumman</span></h1>
+    <div class="cover-sub">NYSE: NOC · 미국 방위산업 빅4 · 스텔스·우주·핵 삼각편대의 유일한 주인</div>
+    <div class="cover-meta">
+      <div class="meta-item"><label>시가총액</label><div class="val">$78B</div></div>
+      <div class="meta-item"><label>2025 매출</label><div class="val">$42B</div></div>
+      <div class="meta-item"><label>수주잔고</label><div class="val">$95.7B</div></div>
+      <div class="meta-item"><label>임직원</label><div class="val">~101K명</div></div>
+      <div class="meta-item"><label>작성일</label><div class="val">2026.05</div></div>
+    </div>
+  </div>
+
+  <!-- ══ 1. 결론 요약 ══ -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">01</span>
+      <h2>결론 요약 — 파트너에게 드리는 한 줄 판단</h2>
+    </div>
+
+    <div class="conclusion-box">
+      <h3>⚡ Executive Verdict</h3>
+      <p><strong>노스롭그루먼은 "미국이 반드시 보유해야 하는 기술"의 유일한 공급자</strong>입니다. B-21 스텔스 폭격기, 센티넬 ICBM, 제임스웹 우주망원경 — 이 세 프로그램의 공통점은 <strong>노스롭그루먼이 아니면 미국 정부가 대체할 수 없다</strong>는 사실입니다. 인수 대상으로서 이 기업의 핵심 매력은 <strong>$95.7B 수주잔고(연 매출의 2.3배)</strong>라는 가시성과, 사실상 진입불가능한 기술 해자입니다.</p>
+      <p>다만 <strong>리스크는 실재합니다.</strong> B-21 고정가 계약에서 이미 $2B 이상의 손실충당이 발생했고, 트럼프 행정부의 DOGE 예산 삭감과 관세 정책이 공급망을 흔들고 있습니다. 이 기업을 인수한다는 것은 <strong>미국의 국방 의지에 베팅하는 것</strong>이며, 그 의지가 꺾이지 않는 한 장기 수익은 구조적으로 확보됩니다.</p>
+      <p><strong>결론 :</strong> B-21 손실 프로비전이 이미 반영된 현재 주가($550 수준)는 역사적 밸류에이션 대비 할인 구간입니다. 피어 평균 P/E 39x 대비 NOC 22x — 기술 해자 기업치고 저평가. 단기 실적 변동성을 감내할 수 있다면, <strong>중장기 인수 논리는 매우 강합니다.</strong></p>
+      <div class="verdict">
+        <span class="tag tag-green">✓ 기술 해자 최강급</span>
+        <span class="tag tag-green">✓ 수주잔고 2.3년치</span>
+        <span class="tag tag-yellow">⚠ B-21 고정가 리스크</span>
+        <span class="tag tag-yellow">⚠ 예산 불확실성</span>
+        <span class="tag tag-blue">→ 중장기 매수 논리 성립</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ 2. 기업 개요 ══ -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">02</span>
+      <h2>기업 개요 및 현황</h2>
+    </div>
+
+    <h3>2.1 기본 정보 및 핵심 지표</h3>
+    <div class="card-grid">
+      <div class="kpi-card">
+        <div class="kpi-label">2025 매출</div>
+        <div class="kpi-val">$42.0B</div>
+        <div class="kpi-sub">YoY +2.2%</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">수주잔고 (2025말)</div>
+        <div class="kpi-val">$95.7B</div>
+        <div class="kpi-sub">사상 최고치</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">영업이익률</div>
+        <div class="kpi-val">10.8%</div>
+        <div class="kpi-sub">2024 대비 +20bp</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">잉여현금흐름</div>
+        <div class="kpi-val">$3.3B</div>
+        <div class="kpi-sub">YoY +26%</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">현재 주가 (NOC)</div>
+        <div class="kpi-val">$550</div>
+        <div class="kpi-sub">P/E 약 22x</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Book-to-Bill</div>
+        <div class="kpi-val">1.10x</div>
+        <div class="kpi-sub">5년 평균</div>
+      </div>
+    </div>
+
+    <div class="chart-wrap" style="margin-top:20px;">
+      <div class="chart-title">📊 연간 매출 추이 ($B) — 2020~2025</div>
+      <svg viewBox="0 0 800 220" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;">
+        <!-- grid -->
+        <line x1="60" y1="20" x2="60" y2="180" stroke="#23293a" stroke-width="1"/>
+        <line x1="60" y1="180" x2="780" y2="180" stroke="#23293a" stroke-width="1"/>
+        <line x1="60" y1="130" x2="780" y2="130" stroke="#23293a" stroke-width="0.5" stroke-dasharray="4,4"/>
+        <line x1="60" y1="80" x2="780" y2="80" stroke="#23293a" stroke-width="0.5" stroke-dasharray="4,4"/>
+        <text x="42" y="184" fill="#7a8499" font-size="10" text-anchor="end" font-family="monospace">30</text>
+        <text x="42" y="134" fill="#7a8499" font-size="10" text-anchor="end" font-family="monospace">35</text>
+        <text x="42" y="84" fill="#7a8499" font-size="10" text-anchor="end" font-family="monospace">40</text>
+        <!-- bars: 2020=36.8, 2021=35.7, 2022=36.6, 2023=39.3, 2024=41.0, 2025=42.0 -->
+        <!-- scale: 30B=180, 45B=30, so 1B = 10px. bar height = (val-30)*10 -->
+        <!-- 2020: 36.8 => 68px -->
+        <rect x="90" y="112" width="80" height="68" rx="4" fill="#1d3f72"/>
+        <text x="130" y="106" fill="#7a8499" font-size="11" text-anchor="middle" font-family="monospace">36.8</text>
+        <text x="130" y="197" fill="#7a8499" font-size="11" text-anchor="middle" font-family="monospace">2020</text>
+        <!-- 2021: 35.7 => 57px -->
+        <rect x="210" y="123" width="80" height="57" rx="4" fill="#1d3f72"/>
+        <text x="250" y="117" fill="#7a8499" font-size="11" text-anchor="middle" font-family="monospace">35.7</text>
+        <text x="250" y="197" fill="#7a8499" font-size="11" text-anchor="middle" font-family="monospace">2021</text>
+        <!-- 2022: 36.6 => 66px -->
+        <rect x="330" y="114" width="80" height="66" rx="4" fill="#1d3f72"/>
+        <text x="370" y="108" fill="#7a8499" font-size="11" text-anchor="middle" font-family="monospace">36.6</text>
+        <text x="370" y="197" fill="#7a8499" font-size="11" text-anchor="middle" font-family="monospace">2022</text>
+        <!-- 2023: 39.3 => 93px -->
+        <rect x="450" y="87" width="80" height="93" rx="4" fill="#2a5199"/>
+        <text x="490" y="81" fill="#a0b0c8" font-size="11" text-anchor="middle" font-family="monospace">39.3</text>
+        <text x="490" y="197" fill="#7a8499" font-size="11" text-anchor="middle" font-family="monospace">2023</text>
+        <!-- 2024: 41.0 => 110px -->
+        <rect x="570" y="70" width="80" height="110" rx="4" fill="#3a6bc0"/>
+        <text x="610" y="64" fill="#c0d0e8" font-size="11" text-anchor="middle" font-family="monospace">41.0</text>
+        <text x="610" y="197" fill="#7a8499" font-size="11" text-anchor="middle" font-family="monospace">2024</text>
+        <!-- 2025: 42.0 => 120px -->
+        <rect x="690" y="60" width="80" height="120" rx="4" fill="#4f9cf9"/>
+        <text x="730" y="54" fill="#e8eaf0" font-size="11" text-anchor="middle" font-family="monospace" font-weight="bold">42.0</text>
+        <text x="730" y="197" fill="#e8eaf0" font-size="11" text-anchor="middle" font-family="monospace" font-weight="bold">2025</text>
+        <!-- growth label -->
+        <text x="730" y="210" fill="#4f9cf9" font-size="10" text-anchor="middle" font-family="monospace">사상최고</text>
+      </svg>
+      <div class="footnote">* 단위: $Billion. 2021년은 IT서비스 부문 매각 영향으로 일시 감소.</div>
+    </div>
+
+    <div class="chart-wrap">
+      <div class="chart-title">📦 수주잔고(Backlog) 추이 ($B) — 사상 최고치 경신</div>
+      <svg viewBox="0 0 800 160" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;">
+        <line x1="60" y1="130" x2="780" y2="130" stroke="#23293a" stroke-width="1"/>
+        <!-- line chart points: 2021=76, 2022=78, 2023=84.2, 2024=91.4, 2025=95.7 -->
+        <!-- scale: 60B=130, 100B=20, so 1B=2.75px. y=130-(val-60)*2.75 -->
+        <!-- 2021=76: y=130-(76-60)*2.75=86 -->
+        <!-- 2022=78: y=74.5=75 -->
+        <!-- 2023=84.2: y=130-(84.2-60)*2.75=130-66.55=63 -->
+        <!-- 2024=91.4: y=130-(91.4-60)*2.75=130-86.35=44 -->
+        <!-- 2025=95.7: y=130-(95.7-60)*2.75=130-98.175=32 -->
+        <polyline points="130,86 250,75 420,63 590,44 730,32" fill="none" stroke="#4f9cf9" stroke-width="3" stroke-linejoin="round"/>
+        <polygon points="130,86 250,75 420,63 590,44 730,32 730,130 130,130" fill="rgba(79,156,249,0.08)"/>
+        <!-- dots -->
+        <circle cx="130" cy="86" r="5" fill="#4f9cf9"/>
+        <circle cx="250" cy="75" r="5" fill="#4f9cf9"/>
+        <circle cx="420" cy="63" r="5" fill="#4f9cf9"/>
+        <circle cx="590" cy="44" r="5" fill="#4f9cf9"/>
+        <circle cx="730" cy="32" r="7" fill="#f7c948"/>
+        <!-- labels -->
+        <text x="130" y="75" fill="#7a8499" font-size="10" text-anchor="middle" font-family="monospace">$76B</text>
+        <text x="130" y="143" fill="#7a8499" font-size="10" text-anchor="middle" font-family="monospace">2021</text>
+        <text x="250" y="64" fill="#7a8499" font-size="10" text-anchor="middle" font-family="monospace">$78B</text>
+        <text x="250" y="143" fill="#7a8499" font-size="10" text-anchor="middle" font-family="monospace">2022</text>
+        <text x="420" y="52" fill="#a0b0c8" font-size="10" text-anchor="middle" font-family="monospace">$84B</text>
+        <text x="420" y="143" fill="#7a8499" font-size="10" text-anchor="middle" font-family="monospace">2023</text>
+        <text x="590" y="33" fill="#c0d0e8" font-size="10" text-anchor="middle" font-family="monospace">$91B</text>
+        <text x="590" y="143" fill="#7a8499" font-size="10" text-anchor="middle" font-family="monospace">2024</text>
+        <text x="730" y="20" fill="#f7c948" font-size="11" text-anchor="middle" font-family="monospace" font-weight="bold">$95.7B 🏆</text>
+        <text x="730" y="143" fill="#e8eaf0" font-size="10" text-anchor="middle" font-family="monospace" font-weight="bold">2025</text>
+      </svg>
+    </div>
+
+    <h3>2.2 혁신에서 시작된 역사 — 두 개의 DNA가 만든 거인</h3>
+    <div class="card">
+      <div class="timeline">
+        <div class="tl-item">
+          <div class="tl-year">1929 · 1939</div>
+          <div class="tl-desc"><strong>두 원조의 탄생.</strong> 그루먼(Grumman) — 뉴욕 롱아일랜드에서 해군 항공기 전문사로 출발. 아폴로 달 착륙선 제작. 잭 노스롭(Jack Northrop) — 캘리포니아에서 날개 없는 비행기(Flying Wing) 개념 연구. 훗날 B-2의 아버지가 된 XB-35 설계.</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">1981</div>
+          <div class="tl-desc"><strong>B-2 스텔스 폭격기 계약 수주.</strong> 세계 최초 저피탐 폭격기의 주계약사. 노스롭의 Flying Wing 개념이 40년 만에 실전 무기가 됨.</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">1994</div>
+          <div class="tl-desc"><strong>노스롭 + 그루먼 합병 ($2.1B).</strong> 포스트 냉전 예산 삭감 환경에서 생존을 위한 빅딜. 두 기업의 공군·해군 네트워크가 하나로 통합.</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">1996~2002</div>
+          <div class="tl-desc"><strong>공격적 M&A 시대.</strong> 웨스팅하우스 전자방어 부문 ($2.9B), 리튼 인더스트리 ($5.1B, 조선 진입), TRW ($7.8B, 우주·위성 도약). 연간 매출 $20B대 도달.</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">2011</div>
+          <div class="tl-desc"><strong>조선 부문 분사 (Huntington Ingalls Industries).</strong> 핵심 고마진 사업에 집중하는 포트폴리오 재편. 전략 폭격기·우주·정보시스템으로 전환 가속.</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">2015</div>
+          <div class="tl-desc"><strong>B-21 레이더 계약 수주.</strong> 차세대 스텔스 폭격기 단독 주계약사. 경쟁사 보잉을 물리친 세기의 계약. 최소 100대, 총 가치 추정 $200B+ 프로그램.</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">2018</div>
+          <div class="tl-desc"><strong>오비탈 ATK 인수 ($9.2B).</strong> 고체 로켓 모터·탄약·위성 제조 역량 확보. 우주 방어 전 영역 통합 완성. 현재 Space 세그먼트의 핵심.</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">2021~2025</div>
+          <div class="tl-desc"><strong>현재: 차세대 플랫폼 생산 돌입.</strong> B-21 LRIP(저율초도생산), 센티넬 ICBM 개발, 우주개발청(SDA) 위성 150기 수주. 수주잔고 5년간 +$20B 성장.</div>
+        </div>
+      </div>
+    </div>
+
+    <h3>2.3 핵심 사업 포트폴리오</h3>
+    <div class="card">
+      <div class="chart-title" style="margin-bottom:20px;">🏗 4개 세그먼트 매출 비중 (2025 기준, 추정)</div>
+      <div class="seg-bar-item">
+        <div class="seg-bar-label"><span>✈ Aeronautics Systems (항공기·스텔스)</span><span style="color:#4f9cf9">~30%  ·  약 $12.6B</span></div>
+        <div class="seg-bar-track"><div class="seg-bar-fill" style="width:30%;background:#4f9cf9;"></div></div>
+        <div style="font-size:12px;color:#7a8499;margin-top:4px;">B-21 레이더, E-2 호크아이, 글로벌 호크(RQ-4 무인기), 자율비행시스템</div>
+      </div>
+      <div class="seg-bar-item" style="margin-top:14px;">
+        <div class="seg-bar-label"><span>🛡 Mission Systems (레이더·센서·전자전)</span><span style="color:#52d08a">~28%  ·  약 $11.8B</span></div>
+        <div class="seg-bar-track"><div class="seg-bar-fill" style="width:28%;background:#52d08a;"></div></div>
+        <div style="font-size:12px;color:#7a8499;margin-top:4px;">IBCS 미사일방어, AN/APG-83 AESA 레이더, 전자전 시스템, 해양 시스템</div>
+      </div>
+      <div class="seg-bar-item" style="margin-top:14px;">
+        <div class="seg-bar-label"><span>🚀 Space Systems (위성·우주·핵)</span><span style="color:#f7c948">~26%  ·  약 $10.9B</span></div>
+        <div class="seg-bar-track"><div class="seg-bar-fill" style="width:26%;background:#f7c948;"></div></div>
+        <div style="font-size:12px;color:#7a8499;margin-top:4px;">SDA 위성(150기), 사이그너스 우주선, 고체로켓, 제임스웹우주망원경</div>
+      </div>
+      <div class="seg-bar-item" style="margin-top:14px;">
+        <div class="seg-bar-label"><span>💣 Defense Systems (탄약·미사일방어·센티넬)</span><span style="color:#e05f5f">~16%  ·  약 $6.7B</span></div>
+        <div class="seg-bar-track"><div class="seg-bar-fill" style="width:16%;background:#e05f5f;"></div></div>
+        <div style="font-size:12px;color:#7a8499;margin-top:4px;">LGM-35 센티넬 ICBM, 고체로켓 모터, 탄약, 미사일 방어</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ 3. 핵심 투자 논리 ══ -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">03</span>
+      <h2>핵심 투자 논리 및 가치 제안</h2>
+    </div>
+
+    <div class="card" style="border-left:3px solid #4f9cf9;">
+      <h3 style="margin-top:0;color:#4f9cf9;border:none;padding:0;">🔒 투자 논리 1 · 대체 불가능한 독점적 기술 해자</h3>
+      <p>노스롭그루먼이 보유한 기술은 경쟁사가 5~10년 내 추격 불가능한 영역에 집중돼 있습니다.</p>
+      <ul>
+        <li><strong>B-21 레이더 :</strong> 미 공군이 2015년 전 세계 유일 주계약사로 지명. 록히드마틴·보잉 모두 탈락. 최소 100대 구매 예정, 단가 예상 $550M+. 2036년까지 매출 가시성.</li>
+        <li><strong>LGM-35A 센티넬 ICBM :</strong> 미국 핵억지력의 육상 기반 삼위일체. 전임 미니트맨III 교체 프로그램. 단독 수주. 총 프로그램 가치 $96B(2023 GAO 추정).</li>
+        <li><strong>우주개발청(SDA) 위성 :</strong> 저궤도 위성 콘스텔레이션 150기 수주. 미국 전략 자산의 우주화 트렌드 최전선.</li>
+        <li><strong>B-2 스피릿 지속 지원 :</strong> 20대 운용 유지·업그레이드 독점 계약. B-21 도입 후에도 수십 년간 지속.</li>
+      </ul>
+    </div>
+
+    <div class="card" style="border-left:3px solid #f7c948;">
+      <h3 style="margin-top:0;color:#f7c948;border:none;padding:0;">📈 투자 논리 2 · $95.7B 수주잔고 = 미래 매출의 잠금장치</h3>
+      <p>수주잔고는 <strong>현재 연간 매출의 약 2.3배</strong>에 달하며, 이는 경쟁사 대비 최상위 수준의 가시성입니다. 5년 평균 Book-to-Bill이 1.10배로, 매년 수주가 매출을 초과합니다. 2021년 대비 수주잔고는 +$20B 성장했으며, 2026년 1분기 현재도 $95.6B를 유지하고 있습니다.</p>
+    </div>
+
+    <div class="card" style="border-left:3px solid #52d08a;">
+      <h3 style="margin-top:0;color:#52d08a;border:none;padding:0;">🌍 투자 논리 3 · 지정학적 불안 = 구조적 수요 증가</h3>
+      <p>우크라이나 전쟁, 대만 해협 긴장, 북한 핵 고도화, NATO 국방비 2% 목표 — 이 모든 지정학 변수가 노스롭그루먼의 핵심 제품군(스텔스·ICBM·미사일방어·위성)의 구조적 수요를 높입니다. 트럼프 행정부는 2026년 회계연도 국방예산을 $1.5조 규모로 요청했으며, 이는 노스롭그루먼 주력 프로그램들과 정확히 정렬됩니다. 국제 매출도 2025년부터 미국 내 매출보다 빠른 성장이 기대됩니다.</p>
+    </div>
+
+    <div class="card" style="border-left:3px solid #9b59b6;">
+      <h3 style="margin-top:0;color:#b07fe0;border:none;padding:0;">💰 투자 논리 4 · 잉여현금흐름의 지속적 성장</h3>
+      <p>2025년 FCF $3.3B — 전년 대비 +26%, 3년 연속 25% 이상 성장. 2024~2026 FCF CAGR >15% 공식 가이던스. 분기 배당 $2.31(연 $9.24), 자사주 매입 병행 — 주주환원 정책 강력. 연금 펀딩 상태 106%로 우량, 추가 현금 부담 없음.</p>
+    </div>
+  </div>
+
+  <!-- ══ 4. 재무 ══ -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">04</span>
+      <h2>재무 성과 및 가치 평가</h2>
+    </div>
+
+    <h3>4.1 주요 재무 동향 분석</h3>
+    <div class="card">
+      <table style="width:100%;border-collapse:collapse;">
+        <thead>
+          <tr>
+            <th style="text-align:left;padding:8px 12px;font-size:11px;color:#7a8499;font-family:monospace;letter-spacing:1px;text-transform:uppercase;border-bottom:1px solid #23293a;">지표</th>
+            <th style="text-align:center;padding:8px 12px;font-size:11px;color:#7a8499;font-family:monospace;letter-spacing:1px;text-transform:uppercase;border-bottom:1px solid #23293a;">2023</th>
+            <th style="text-align:center;padding:8px 12px;font-size:11px;color:#7a8499;font-family:monospace;letter-spacing:1px;text-transform:uppercase;border-bottom:1px solid #23293a;">2024</th>
+            <th style="text-align:center;padding:8px 12px;font-size:11px;color:#4f9cf9;font-family:monospace;letter-spacing:1px;text-transform:uppercase;border-bottom:1px solid #23293a;">2025</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td style="padding:10px 12px;border-bottom:1px solid #1a2030;font-size:13.5px;">매출액</td><td style="text-align:center;padding:10px 12px;border-bottom:1px solid #1a2030;color:#b0b8cc;">$39.3B</td><td style="text-align:center;padding:10px 12px;border-bottom:1px solid #1a2030;color:#b0b8cc;">$41.0B</td><td style="text-align:center;padding:10px 12px;border-bottom:1px solid #1a2030;color:#f7c948;font-weight:600;">$42.0B</td></tr>
+          <tr><td style="padding:10px 12px;border-bottom:1px solid #1a2030;font-size:13.5px;">영업이익</td><td style="text-align:center;padding:10px 12px;border-bottom:1px solid #1a2030;color:#b0b8cc;">$2.5B</td><td style="text-align:center;padding:10px 12px;border-bottom:1px solid #1a2030;color:#b0b8cc;">$4.4B</td><td style="text-align:center;padding:10px 12px;border-bottom:1px solid #1a2030;color:#f7c948;font-weight:600;">$4.5B</td></tr>
+          <tr><td style="padding:10px 12px;border-bottom:1px solid #1a2030;font-size:13.5px;">영업이익률</td><td style="text-align:center;padding:10px 12px;border-bottom:1px solid #1a2030;color:#e05f5f;">6.5%</td><td style="text-align:center;padding:10px 12px;border-bottom:1px solid #1a2030;color:#b0b8cc;">10.6%</td><td style="text-align:center;padding:10px 12px;border-bottom:1px solid #1a2030;color:#52d08a;font-weight:600;">10.8%</td></tr>
+          <tr><td style="padding:10px 12px;border-bottom:1px solid #1a2030;font-size:13.5px;">순이익</td><td style="text-align:center;padding:10px 12px;border-bottom:1px solid #1a2030;color:#b0b8cc;">$2.1B</td><td style="text-align:center;padding:10px 12px;border-bottom:1px solid #1a2030;color:#b0b8cc;">$4.2B</td><td style="text-align:center;padding:10px 12px;border-bottom:1px solid #1a2030;color:#f7c948;font-weight:600;">$4.2B</td></tr>
+          <tr><td style="padding:10px 12px;border-bottom:1px solid #1a2030;font-size:13.5px;">잉여현금흐름(FCF)</td><td style="text-align:center;padding:10px 12px;border-bottom:1px solid #1a2030;color:#b0b8cc;">$2.1B</td><td style="text-align:center;padding:10px 12px;border-bottom:1px solid #1a2030;color:#b0b8cc;">$2.6B</td><td style="text-align:center;padding:10px 12px;border-bottom:1px solid #1a2030;color:#52d08a;font-weight:600;">$3.3B (+26%)</td></tr>
+          <tr><td style="padding:10px 12px;font-size:13.5px;">수주잔고</td><td style="text-align:center;padding:10px 12px;color:#b0b8cc;">$84.2B</td><td style="text-align:center;padding:10px 12px;color:#b0b8cc;">$91.4B</td><td style="text-align:center;padding:10px 12px;color:#f7c948;font-weight:600;">$95.7B 🏆</td></tr>
+        </tbody>
+      </table>
+      <div class="footnote" style="margin-top:12px;">* 2023 영업이익률 저하: B-21 LRIP 손실충당 $1.56B 반영. 2024 회복은 B-21 손실 소화 및 마진 개선 효과.</div>
+    </div>
+
+    <h3>4.2 경쟁사 비교분석</h3>
+    <div class="chart-wrap">
+      <div class="chart-title">⚔ 방위산업 빅4 핵심 지표 비교 (2025 기준)</div>
+      <table class="comp-table">
+        <thead>
+          <tr>
+            <th>기업</th>
+            <th>매출</th>
+            <th>P/E</th>
+            <th>EV/Sales</th>
+            <th>영업이익률</th>
+            <th>수주잔고</th>
+            <th>특징</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="highlight">
+            <td>🎯 NOC (노스롭)</td>
+            <td>$42B</td>
+            <td>22x</td>
+            <td>2.3x</td>
+            <td>10.8%</td>
+            <td>$95.7B</td>
+            <td>스텔스·핵·우주 독점</td>
+          </tr>
+          <tr>
+            <td>LMT (록히드)</td>
+            <td>$71B</td>
+            <td>24x</td>
+            <td>1.7x</td>
+            <td>~12%</td>
+            <td>$170B</td>
+            <td>F-35 의존도 高</td>
+          </tr>
+          <tr>
+            <td>RTX (레이시온)</td>
+            <td>$80B</td>
+            <td>35x</td>
+            <td>3.0x</td>
+            <td>~12%</td>
+            <td>$217B</td>
+            <td>상업항공+방산 혼합</td>
+          </tr>
+          <tr>
+            <td>GD (제너럴다이나믹스)</td>
+            <td>$48B</td>
+            <td>18x</td>
+            <td>1.4x</td>
+            <td>10.5%</td>
+            <td>$90B</td>
+            <td>육군 차량·조선</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="footnote" style="margin-top:10px;">* P/E: NOC 22x는 피어 평균(39x) 대비 현저히 할인. 기술 해자 감안 시 저평가 구간 논리 성립.</div>
+    </div>
+
+    <div class="chart-wrap">
+      <div class="chart-title">📊 P/E 비교 시각화</div>
+      <svg viewBox="0 0 700 160" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;">
+        <!-- NOC: 22 -->
+        <rect x="60" y="50" width="44" height="80" rx="4" fill="#4f9cf9"/>
+        <text x="82" y="45" fill="#e8eaf0" font-size="13" text-anchor="middle" font-family="monospace" font-weight="bold">22x</text>
+        <text x="82" y="148" fill="#4f9cf9" font-size="12" text-anchor="middle" font-family="monospace" font-weight="bold">NOC</text>
+        <!-- LMT: 24 -->
+        <rect x="170" y="44" width="44" height="86" rx="4" fill="#2a5199"/>
+        <text x="192" y="39" fill="#a0b8d8" font-size="13" text-anchor="middle" font-family="monospace">24x</text>
+        <text x="192" y="148" fill="#7a8499" font-size="12" text-anchor="middle" font-family="monospace">LMT</text>
+        <!-- RTX: 35 -->
+        <rect x="280" y="20" width="44" height="110" rx="4" fill="#1d3055"/>
+        <text x="302" y="15" fill="#7a8499" font-size="13" text-anchor="middle" font-family="monospace">35x</text>
+        <text x="302" y="148" fill="#7a8499" font-size="12" text-anchor="middle" font-family="monospace">RTX</text>
+        <!-- GD: 18 -->
+        <rect x="390" y="56" width="44" height="74" rx="4" fill="#1a3048"/>
+        <text x="412" y="51" fill="#7a8499" font-size="13" text-anchor="middle" font-family="monospace">18x</text>
+        <text x="412" y="148" fill="#7a8499" font-size="12" text-anchor="middle" font-family="monospace">GD</text>
+        <!-- 피어 평균 선 -->
+        <line x1="50" y1="20" x2="560" y2="20" stroke="#f7c948" stroke-width="1" stroke-dasharray="6,3"/>
+        <text x="565" y="24" fill="#f7c948" font-size="11" font-family="monospace">피어평균 ~39x</text>
+        <!-- 설명 -->
+        <text x="60" y="168" fill="#52d08a" font-size="11" font-family="monospace">▲ NOC: 피어 대비 할인 = 기회</text>
+      </svg>
+    </div>
+
+    <h3>4.3 가치 평가 요약</h3>
+    <div class="card">
+      <p>현재 주가 약 <span class="highlight-number">$550</span> 기준, 시가총액 약 $78B. 애널리스트 15인 평균 목표주가 <span class="highlight-number">$708</span> (+29% 업사이드). 모건스탠리는 Overweight 유지, 목표가 $745.</p>
+      <p>밸류에이션 관점에서 NOC는 <strong>피어 평균 P/E 39x 대비 22x로 44% 할인</strong>되어 있습니다. Simply Wall St는 적정 P/E를 27.6x로 추산하며 여전히 저평가 구간으로 분류합니다. EV/Sales 2.3x는 RTX(3.0x) 대비 낮고 LMT(1.7x) 대비 높아, 기술 포지션을 감안하면 합리적입니다.</p>
+      <div class="verdict" style="margin-top:16px;">
+        <span class="tag tag-green">목표가 컨센서스: $709</span>
+        <span class="tag tag-blue">P/E 할인율: 피어 대비 -44%</span>
+        <span class="tag tag-yellow">52주 고점: $774 / 저점: $453</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ 5. 리스크 ══ -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">05</span>
+      <h2>주요 리스크 및 기회 — 쉽게 넘어가지 않겠습니다</h2>
+    </div>
+
+    <div style="background:rgba(224,95,95,0.06);border:1px solid rgba(224,95,95,0.2);border-radius:8px;padding:16px 20px;margin-bottom:20px;">
+      <p style="color:#e05f5f;font-size:13px;margin:0;font-family:monospace;">⚠ 이 섹션은 인수를 고민하는 당신이 반드시 직시해야 하는 리스크입니다. 미화 없이 서술합니다.</p>
+    </div>
+
+    <div class="chart-wrap">
+      <table class="risk-table">
+        <thead>
+          <tr>
+            <th style="width:22%;">리스크 항목</th>
+            <th style="width:10%;">심각도</th>
+            <th style="width:40%;">상세 내용</th>
+            <th style="width:28%;">완화 요인</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>B-21 고정가 계약 손실</strong></td>
+            <td><span class="severity sev-high">🔴 HIGH</span></td>
+            <td>LRIP 5개 옵션에서 이미 <strong>$2B 이상 손실충당</strong>(2023 $1.56B + 2025 $477M). 고정가 계약 특성상 인플레이션·재료비 급등 위험을 회사가 전담. 향후 추가 손실 가능성 존재. NTE(최대가격) 계약 조건 미확정.</td>
+            <td>공군과 공동으로 생산 프로세스 변경 합의. CEO "재발 없을 것" 공언. 2026년부터 생산 경제성 회복 기대.</td>
+          </tr>
+          <tr>
+            <td><strong>DOGE·예산 삭감 리스크</strong></td>
+            <td><span class="severity sev-high">🔴 HIGH</span></td>
+            <td>트럼프 행정부 DOGE(정부효율부)가 국방 예산 재편 추진. B-21 조달 예산이 2025~2026년 최대 $2B 삭감된 바 있음. 행정명령 법원 도전, 예산 불확실성 지속.</td>
+            <td>핵 현대화·스텔스는 초당적 지지. 트럼프 자신이 "힘을 통한 평화" 강조. 전략자산 삭감 정치적 부담.</td>
+          </tr>
+          <tr>
+            <td><strong>매출 성장률 둔화</strong></td>
+            <td><span class="severity sev-mid">🟡 MID</span></td>
+            <td>2025 매출 성장률 +2.2%는 광범위 시장 평균(9.2%)을 크게 하회. Space 세그먼트가 특정 제한 프로그램 종료로 -6% 역성장. 단기 수주 확대가 매출로 전환되기까지 1~2년 시차.</td>
+            <td>수주잔고 $95.7B → 향후 성장 예약됨. 2026 가이던스 매출 성장 재가속 예고.</td>
+          </tr>
+          <tr>
+            <td><strong>고객 집중 리스크</strong></td>
+            <td><span class="severity sev-mid">🟡 MID</span></td>
+            <td>매출의 <strong>약 87%가 미국 정부 의존</strong>. 예산 시퀘스터(강제 삭감), 임시예산(CR) 운영, 정부 셧다운 시 현금흐름 직격. RTX의 상업 항공 다각화와 대조.</td>
+            <td>국제 매출 확대 전략(유럽·인도태평양). 2025年부터 국제 성장이 미국 내 초과. NATO 국방비 증가 수혜.</td>
+          </tr>
+          <tr>
+            <td><strong>내부자 매도</strong></td>
+            <td><span class="severity sev-mid">🟡 MID</span></td>
+            <td>최근 6개월간 임원진의 약 $10M 규모 주식 매도. 내부 우려 신호로 해석 가능.</td>
+            <td>통상적인 RSU 만기·세금 목적 매도와 구분 필요. 경영진 전략 발표는 긍정적 방향 유지.</td>
+          </tr>
+          <tr>
+            <td><strong>센티넬 ICBM 비용 초과</strong></td>
+            <td><span class="severity sev-mid">🟡 MID</span></td>
+            <td>GAO 2023 보고서에서 센티넬 비용이 당초 추정 대비 <strong>37% 초과</strong>. Nunn-McCurdy 임계값 돌파로 의회 승인 재필요. 프로그램 구조 재협상 진행 중.</td>
+            <td>핵 현대화 대안 없음. 공군이 재승인. 비용 증가분은 계약 재협상을 통해 일부 회수 가능.</td>
+          </tr>
+          <tr>
+            <td><strong>공급망·희토류 의존</strong></td>
+            <td><span class="severity sev-mid">🟡 MID</span></td>
+            <td>특수 소재·반도체의 중국 공급망 의존. 관세 정책 불확실성으로 재료비 급등 위험. 보잉 사례처럼 공급망 문제가 전 산업 전이 가능.</td>
+            <td>미 정부 국내 공급망 육성 정책 지원. 노스롭 자체 고체로켓 모터 생산 능력 보유.</td>
+          </tr>
+          <tr>
+            <td><strong>연금 부채 변동성</strong></td>
+            <td><span class="severity sev-low">🟢 LOW</span></td>
+            <td>대규모 확정급여형 연금 운용. MTM(시가평가) 조정이 분기 실적에 큰 변동성 유발. 금리 하락 시 부채 증가.</td>
+            <td>2025 연금 펀딩 상태 106%로 우량. 필수 현금 기여 최소화. 고금리 환경 유지 시 유리.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card" style="border-left:3px solid #52d08a;margin-top:20px;">
+      <h3 style="margin-top:0;color:#52d08a;border:none;padding:0;">🌱 주요 기회 요인</h3>
+      <ul>
+        <li><strong>B-21 생산 가속 :</strong> 2026년 1분기 공군과 생산 확대·속도 증가 합의. $2.5B 다년간 시설 투자 계획. LRIP 6~7호 계약 예정.</li>
+        <li><strong>AI·자율시스템 수요 :</strong> Flexcompute와 AI-물리 인프라 공동 개발(NVIDIA 기반). 자율 전투 드론·사이버 방어 역량 확장.</li>
+        <li><strong>호주 고체로켓 생산 :</strong> 2026년 5월 호주 정부 선정 — 자국 내 고체로켓 생산 시설 구축 계약. 인도태평양 공급망 구축 교두보.</li>
+        <li><strong>F-16 레이더 지원 :</strong> $488M 단독 수주(2026.4). 레이더·전자전 장기 지원 포트폴리오 확장.</li>
+        <li><strong>SDA 위성 콘스텔레이션 :</strong> Tranche 3 추적 위성 18기 수주(Q4 2025). 총 150기 잔고 — 저궤도 방위 네트워크 핵심 공급자.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ══ 6. Bull / Bear ══ -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">06</span>
+      <h2>Bull Case vs. Bear Case</h2>
+    </div>
+
+    <div class="case-grid">
+      <div class="bull-box">
+        <h3>🟢 Bull Case<br><small style="font-size:12px;font-weight:400;opacity:0.7;">목표가 $800~900 (3년)</small></h3>
+        <div class="case-item">B-21 생산 정상화 → 2026년부터 흑자 전환, Aeronautics 마진 9%+ 회복</div>
+        <div class="case-item">수주잔고 $100B 돌파 → 2027 매출 $47B 이상</div>
+        <div class="case-item">NATO 국방비 급증 → 유럽 수출 계약 다수 체결</div>
+        <div class="case-item">SDA 위성 생산 정점 → Space 세그먼트 V자 반등</div>
+        <div class="case-item">FCF $4B+ 달성 → P/E 리레이팅 25x+</div>
+        <div class="case-item">AI·자율시스템 신사업 → 성장률 재가속</div>
+        <div class="case-item">트럼프 '힘을 통한 평화' → 핵·스텔스 예산 보호</div>
+      </div>
+      <div class="bear-box">
+        <h3>🔴 Bear Case<br><small style="font-size:12px;font-weight:400;opacity:0.7;">목표가 $400~480 (3년)</small></h3>
+        <div class="case-item">B-21 추가 손실충당 → 연간 EPS $10 이하로 급락</div>
+        <div class="case-item">DOGE 주도 국방 예산 20%+ 삭감 → 핵심 프로그램 취소</div>
+        <div class="case-item">센티넬 ICBM 취소 또는 대규모 축소 → $96B 프로그램 소멸</div>
+        <div class="case-item">정부 셧다운 장기화 → 현금흐름 타격</div>
+        <div class="case-item">관세 + 공급망 붕괴 → 고정가 계약 원가 폭등</div>
+        <div class="case-item">금리 급등 → 연금 부채 증가 + 이자비용 상승</div>
+        <div class="case-item">경쟁사(LMT) B-21 후속 프로그램 참여 → 독점 해자 균열</div>
+      </div>
+    </div>
+
+    <div class="chart-wrap" style="margin-top:20px;">
+      <div class="chart-title">🎯 시나리오별 주가 전망 (3년 기준, 현재 $550)</div>
+      <svg viewBox="0 0 700 120" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;">
+        <!-- base line -->
+        <line x1="100" y1="60" x2="640" y2="60" stroke="#23293a" stroke-width="1" stroke-dasharray="4,3"/>
+        <text x="50" y="64" fill="#7a8499" font-size="11" text-anchor="end" font-family="monospace">현재 $550</text>
+        <!-- Bull bar -->
+        <rect x="120" y="10" width="120" height="50" rx="6" fill="rgba(82,208,138,0.2)" stroke="#52d08a" stroke-width="1.5"/>
+        <text x="180" y="32" fill="#52d08a" font-size="13" text-anchor="middle" font-family="monospace" font-weight="bold">$800~900</text>
+        <text x="180" y="50" fill="#52d08a" font-size="11" text-anchor="middle" font-family="monospace">+45~63%</text>
+        <text x="180" y="90" fill="#52d08a" font-size="12" text-anchor="middle" font-family="monospace">Bull Case</text>
+        <!-- Base bar -->
+        <rect x="290" y="35" width="120" height="25" rx="6" fill="rgba(79,156,249,0.2)" stroke="#4f9cf9" stroke-width="1.5"/>
+        <text x="350" y="52" fill="#4f9cf9" font-size="13" text-anchor="middle" font-family="monospace" font-weight="bold">$700~750</text>
+        <text x="350" y="90" fill="#4f9cf9" font-size="12" text-anchor="middle" font-family="monospace">Base Case</text>
+        <!-- Bear bar -->
+        <rect x="460" y="60" width="120" height="40" rx="6" fill="rgba(224,95,95,0.2)" stroke="#e05f5f" stroke-width="1.5"/>
+        <text x="520" y="78" fill="#e05f5f" font-size="13" text-anchor="middle" font-family="monospace" font-weight="bold">$400~480</text>
+        <text x="520" y="95" fill="#e05f5f" font-size="11" text-anchor="middle" font-family="monospace">-13~27%</text>
+        <text x="520" y="112" fill="#e05f5f" font-size="12" text-anchor="middle" font-family="monospace">Bear Case</text>
+      </svg>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- FINAL NOTE -->
+  <div class="card" style="text-align:center;background:linear-gradient(135deg,#0d1525,#111827);border-color:rgba(79,156,249,0.2);">
+    <div style="font-family:'Playfair Display',serif;font-size:22px;color:#fff;margin-bottom:12px;">최종 인수 판단을 위한 한 줄</div>
+    <p style="color:#8090b0;max-width:600px;margin:0 auto 16px;font-size:14px;">노스롭그루먼을 인수한다는 것은 미국의 핵억지력과 스텔스 기술 패권에 베팅하는 것입니다. B-21 손실은 이미 주가에 반영됐고, $95.7B 수주잔고는 흔들리지 않습니다. 당신이 리스크를 감내할 이유는 단 하나 — <strong style="color:#f7c948;">미국이 이 무기를 포기할 수 없다는 사실</strong>입니다.</p>
+    <div class="verdict" style="justify-content:center;">
+      <span class="tag tag-blue">전략적 독점</span>
+      <span class="tag tag-green">FCF 성장 3년연속 25%+</span>
+      <span class="tag tag-yellow">밸류에이션 할인 기회</span>
+      <span class="tag tag-red">B-21 고정가 리스크 지속 모니터링 필수</span>
+    </div>
+    <div class="footnote" style="margin-top:20px;text-align:center;">본 보고서는 공개 정보(SEC 공시, 어닝콜, 언론 보도) 기반으로 작성되었으며 투자 조언이 아닙니다. | 작성: AI M&A 파트너 브리핑 · 2026.05</div>
+  </div>
+
+</div>
+</body>
+</html>
