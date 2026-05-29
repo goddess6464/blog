@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>코카콜라 M&A 인수 브리핑 보고서</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;900&family=Playfair+Display:wght@700;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --red: #E63329; --red-dark: #B01F16; --red-light: #FF5A52;
+  --bg: #0A0A0A; --bg2: #141414; --bg3: #1C1C1C;
+  --card: #141414; --border: #252525;
+  --text: #F0F0F0; --text2: #A0A0A0; --text3: #555;
+  --gold: #D4AF37; --green: #22C55E; --yellow: #F59E0B; --blue: #3B82F6;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body { font-family:'Noto Sans KR',sans-serif; background:var(--bg); color:var(--text); line-height:1.7; font-size:15px; }
+
+.hero {
+  background: linear-gradient(160deg, #180000 0%, #0A0A0A 45%, #050510 100%);
+  border-bottom:1px solid var(--border);
+  padding:90px 0 70px;
+  position:relative; overflow:hidden;
+}
+.hero::before {
+  content:''; position:absolute; top:-150px; right:-150px;
+  width:600px; height:600px;
+  background:radial-gradient(circle, rgba(230,51,41,0.13) 0%, transparent 65%);
+  pointer-events:none;
+}
+.wrap { max-width:1060px; margin:0 auto; padding:0 40px; }
+.hero-badge {
+  display:inline-flex; align-items:center; gap:8px;
+  background:rgba(230,51,41,0.12); border:1px solid rgba(230,51,41,0.3);
+  border-radius:4px; padding:6px 14px;
+  font-size:11px; font-weight:700; color:var(--red-light);
+  text-transform:uppercase; letter-spacing:2.5px; margin-bottom:24px;
+}
+.hero-badge span { width:6px; height:6px; border-radius:50%; background:var(--red); animation:pulse 2s infinite; display:inline-block; }
+@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.4;transform:scale(.8)} }
+.hero h1 { font-family:'Playfair Display',serif; font-size:clamp(38px,5.5vw,68px); font-weight:900; line-height:1.08; margin-bottom:18px; letter-spacing:-1.5px; }
+.hero h1 em { color:var(--red); font-style:normal; }
+.hero-sub { font-size:17px; color:var(--text2); margin-bottom:44px; font-weight:300; max-width:560px; }
+.hero-stats { display:flex; gap:36px; flex-wrap:wrap; }
+.stat { display:flex; flex-direction:column; gap:4px; }
+.stat-l { font-size:10px; color:var(--text3); text-transform:uppercase; letter-spacing:2px; }
+.stat-v { font-size:16px; font-weight:700; font-family:'JetBrains Mono',monospace; }
+
+.verdict-bar {
+  background:linear-gradient(90deg,rgba(230,51,41,0.1),rgba(230,51,41,0.03));
+  border-left:4px solid var(--red);
+  border-top:1px solid rgba(230,51,41,0.15);
+  border-bottom:1px solid rgba(230,51,41,0.15);
+  padding:26px 40px;
+}
+.verdict-lbl { font-size:10px; text-transform:uppercase; letter-spacing:2.5px; color:var(--red); margin-bottom:8px; font-weight:700; }
+.verdict-txt { font-size:16px; font-weight:500; line-height:1.65; }
+.verdict-txt strong { color:var(--red-light); }
+
+.toc-box {
+  background:var(--card); border:1px solid var(--border); border-radius:10px;
+  padding:24px 28px; margin:36px 0;
+  display:grid; grid-template-columns:1fr 1fr; gap:6px 40px;
+}
+.toc-link {
+  font-size:13px; color:var(--text2); text-decoration:none;
+  display:flex; align-items:center; gap:10px; padding:5px 0;
+  border-bottom:1px solid transparent; transition:all .2s;
+}
+.toc-link:hover { color:var(--red-light); }
+.toc-n { font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--text3); width:22px; flex-shrink:0; }
+
+section { padding:64px 0 52px; border-bottom:1px solid var(--border); }
+section:last-of-type { border-bottom:none; }
+.sec-n { font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--red); text-transform:uppercase; letter-spacing:3px; margin-bottom:6px; }
+.sec-h { font-family:'Playfair Display',serif; font-size:clamp(26px,3.5vw,40px); font-weight:700; margin-bottom:8px; line-height:1.15; }
+.sec-d { font-size:14px; color:var(--text2); margin-bottom:40px; max-width:680px; }
+
+.kpi-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:14px; margin-bottom:28px; }
+.kpi {
+  background:var(--card); border:1px solid var(--border); border-radius:8px;
+  padding:22px 18px; transition:border-color .2s, transform .2s;
+}
+.kpi:hover { border-color:rgba(230,51,41,0.4); transform:translateY(-2px); }
+.kpi-l { font-size:10px; color:var(--text3); text-transform:uppercase; letter-spacing:2px; margin-bottom:8px; }
+.kpi-v { font-size:26px; font-weight:700; font-family:'JetBrains Mono',monospace; margin-bottom:3px; }
+.kpi-s { font-size:11px; color:var(--text3); }
+.red { color:var(--red-light); } .green { color:var(--green); } .gold { color:var(--gold); } .blue { color:var(--blue); }
+
+.card { background:var(--card); border:1px solid var(--border); border-radius:8px; padding:26px; margin-bottom:20px; }
+.card-h { font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:1.5px; color:var(--text2); margin-bottom:18px; display:flex; align-items:center; gap:8px; }
+.card-h::before { content:''; width:3px; height:13px; background:var(--red); border-radius:2px; }
+
+.two-col { display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+.three-col { display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px; }
+@media(max-width:720px){ .two-col,.three-col{ grid-template-columns:1fr; } .toc-box{ grid-template-columns:1fr; } }
+
+.tbl-wrap { overflow-x:auto; margin-bottom:20px; }
+table { width:100%; border-collapse:collapse; }
+th { background:var(--bg3); color:var(--text2); font-size:11px; text-transform:uppercase; letter-spacing:1.5px; padding:12px 16px; text-align:left; font-weight:600; border-bottom:2px solid var(--border); }
+td { padding:12px 16px; border-bottom:1px solid var(--border); font-size:13px; }
+tr:hover td { background:rgba(255,255,255,0.02); }
+
+.timeline { position:relative; padding-left:28px; }
+.timeline::before { content:''; position:absolute; left:6px; top:0; bottom:0; width:2px; background:var(--border); }
+.tl { position:relative; margin-bottom:26px; }
+.tl-dot { position:absolute; left:-25px; top:5px; width:11px; height:11px; border-radius:50%; background:var(--red); border:2px solid var(--bg); }
+.tl-dot.g { background:var(--gold); } .tl-dot.gn { background:var(--green); }
+.tl-y { font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--red); font-weight:700; margin-bottom:3px; }
+.tl-t { font-size:14px; font-weight:600; margin-bottom:3px; }
+.tl-d { font-size:12px; color:var(--text3); line-height:1.5; }
+
+.risk-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+@media(max-width:720px){ .risk-grid{ grid-template-columns:1fr; } }
+.risk-card { background:var(--card); border:1px solid var(--border); border-radius:8px; padding:22px; }
+.risk-card.hi { border-left:4px solid var(--red); }
+.risk-card.md { border-left:4px solid var(--yellow); }
+.risk-card.lo { border-left:4px solid var(--green); }
+.risk-tag { display:inline-block; font-size:9px; font-weight:800; letter-spacing:2px; text-transform:uppercase; padding:3px 10px; border-radius:3px; margin-bottom:10px; }
+.risk-tag.hi { background:rgba(230,51,41,0.15); color:var(--red-light); }
+.risk-tag.md { background:rgba(245,158,11,0.15); color:var(--yellow); }
+.risk-tag.lo { background:rgba(34,197,94,0.15); color:var(--green); }
+.risk-card h3 { font-size:15px; font-weight:700; margin-bottom:8px; }
+.risk-card p { font-size:12px; color:var(--text2); line-height:1.65; }
+
+.bb-grid { display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+@media(max-width:720px){ .bb-grid{ grid-template-columns:1fr; } }
+.bull-c, .bear-c { border-radius:10px; padding:28px; }
+.bull-c { background:linear-gradient(135deg,rgba(34,197,94,.08),rgba(34,197,94,.02)); border:1px solid rgba(34,197,94,.25); }
+.bear-c { background:linear-gradient(135deg,rgba(230,51,41,.08),rgba(230,51,41,.02)); border:1px solid rgba(230,51,41,.25); }
+.c-ico { font-size:30px; margin-bottom:10px; }
+.c-ttl { font-size:19px; font-weight:700; margin-bottom:4px; }
+.bull-c .c-ttl { color:var(--green); } .bear-c .c-ttl { color:var(--red-light); }
+.c-sub { font-size:11px; color:var(--text3); font-family:'JetBrains Mono',monospace; margin-bottom:14px; }
+.c-item { display:flex; align-items:flex-start; gap:9px; margin-bottom:10px; font-size:12px; color:var(--text2); }
+.bull-c .c-item::before { content:'→'; color:var(--green); flex-shrink:0; }
+.bear-c .c-item::before { content:'→'; color:var(--red-light); flex-shrink:0; }
+.c-target { margin-top:18px; padding-top:14px; border-top:1px solid rgba(255,255,255,.07); font-family:'JetBrains Mono',monospace; font-size:12px; line-height:2; }
+.bull-c .c-target { color:var(--green); } .bear-c .c-target { color:var(--red-light); }
+
+.opt-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(170px,1fr)); gap:12px; }
+.opt-card { background:var(--card); border:1px solid var(--border); border-radius:8px; padding:18px; text-align:center; }
+.opt-card.rec { border-color:var(--green); background:rgba(34,197,94,.06); }
+.opt-card.no { border-color:rgba(230,51,41,.3); background:rgba(230,51,41,.04); }
+.opt-lbl { font-size:13px; font-weight:600; margin-bottom:6px; }
+.opt-amt { font-family:'JetBrains Mono',monospace; font-size:18px; font-weight:700; margin:8px 0 4px; }
+.opt-risk { font-size:11px; margin-top:6px; }
+
+.fw-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; max-width:560px; margin:0 auto; }
+.fw { background:var(--card); border:1px solid var(--border); border-radius:8px; padding:18px; text-align:center; }
+.fw:nth-child(1){ border-top:3px solid var(--red); }
+.fw:nth-child(2){ border-top:3px solid var(--blue); }
+.fw:nth-child(3){ border-top:3px solid var(--gold); }
+.fw:nth-child(4){ border-top:3px solid var(--green); }
+.fw-ico { font-size:26px; margin-bottom:8px; }
+.fw-n { font-size:13px; font-weight:700; margin-bottom:3px; }
+.fw-d { font-size:11px; color:var(--text3); line-height:1.6; }
+
+.final {
+  background:linear-gradient(135deg,rgba(212,175,55,.07),rgba(212,175,55,.02));
+  border:1px solid rgba(212,175,55,.3); border-radius:10px;
+  padding:36px; margin-top:36px;
+}
+.final-h { font-family:'Playfair Display',serif; font-size:20px; font-weight:700; color:var(--gold); margin-bottom:14px; display:flex; align-items:center; gap:10px; }
+.final-t { font-size:14px; color:var(--text2); line-height:1.85; }
+.final-t strong { color:var(--text); }
+
+.hl { background:rgba(230,51,41,.07); border:1px solid rgba(230,51,41,.18); border-radius:6px; padding:14px 18px; margin:14px 0; font-size:13px; color:var(--text2); line-height:1.7; }
+.hl strong { color:var(--text); }
+
+.pb-wrap { margin-bottom:13px; }
+.pb-row { display:flex; justify-content:space-between; font-size:12px; margin-bottom:5px; }
+.pb-row span:last-child { font-weight:600; font-family:'JetBrains Mono',monospace; }
+.pb { height:5px; background:var(--bg3); border-radius:3px; overflow:hidden; }
+.pb-f { height:100%; border-radius:3px; transition:width 1.2s ease; }
+.pb-f.r { background:var(--red); } .pb-f.b { background:var(--blue); }
+.pb-f.g { background:var(--green); } .pb-f.go { background:var(--gold); }
+
+.checklist { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+@media(max-width:600px){ .checklist{ grid-template-columns:1fr; } }
+.chk { display:flex; gap:10px; align-items:center; padding:10px 14px; background:rgba(230,51,41,.04); border-radius:6px; font-size:13px; color:var(--text2); }
+.chk-ico { color:var(--red); font-size:15px; flex-shrink:0; }
+
+.tax-box { background:var(--card); border:1px solid var(--border); border-radius:8px; padding:22px; margin-bottom:18px; }
+.tax-nums { display:grid; grid-template-columns:repeat(auto-fit,minmax(130px,1fr)); gap:10px; margin:14px 0; }
+.tax-n { background:rgba(230,51,41,.08); border:1px solid rgba(230,51,41,.2); border-radius:6px; padding:12px; text-align:center; }
+.tax-nl { font-size:10px; color:var(--text3); margin-bottom:5px; }
+.tax-nv { font-size:18px; font-weight:700; font-family:'JetBrains Mono',monospace; color:var(--red-light); }
+.tax-ns { font-size:10px; color:var(--text3); margin-top:3px; }
+.tax-note { font-size:12px; color:var(--text3); background:var(--bg3); border-radius:6px; padding:10px 14px; line-height:1.65; }
+
+.port-card { background:var(--card); border:1px solid var(--border); border-radius:8px; padding:18px; }
+.port-ico { font-size:26px; margin-bottom:10px; }
+.port-n { font-size:14px; font-weight:700; margin-bottom:5px; }
+.port-b { font-size:11px; color:var(--text3); line-height:1.8; }
+.port-s { margin-top:10px; padding-top:10px; border-top:1px solid var(--border); font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--text2); }
+
+.franchise-row { display:grid; grid-template-columns:1fr 1fr 1fr; gap:0; }
+.fr-c { padding:18px; text-align:center; }
+.fr-c:first-child { background:rgba(230,51,41,.1); border:1px solid rgba(230,51,41,.2); border-radius:8px 0 0 8px; }
+.fr-c:nth-child(2) { background:var(--card); border-top:1px solid var(--border); border-bottom:1px solid var(--border); }
+.fr-c:last-child { background:rgba(34,197,94,.06); border:1px solid rgba(34,197,94,.2); border-radius:0 8px 8px 0; }
+.fr-ico { font-size:26px; margin-bottom:8px; }
+.fr-t { font-size:12px; font-weight:700; margin-bottom:5px; }
+.fr-d { font-size:11px; color:var(--text3); line-height:1.6; }
+
+.footer { text-align:center; padding:44px 0; font-size:11px; color:var(--text3); border-top:1px solid var(--border); }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="wrap">
+    <div class="hero-badge"><span></span>M&A Intelligence Report</div>
+    <h1>The Coca-Cola<br><em>Company</em></h1>
+    <p class="hero-sub">140년 역사의 세계 최대 음료 기업 — 인수 타당성 심층 분석</p>
+    <div class="hero-stats">
+      <div class="stat"><span class="stat-l">티커</span><span class="stat-v">NYSE: KO</span></div>
+      <div class="stat"><span class="stat-l">시가총액</span><span class="stat-v" style="color:var(--red-light)">~$348B</span></div>
+      <div class="stat"><span class="stat-l">연간 매출 (2025)</span><span class="stat-v">$47.94B</span></div>
+      <div class="stat"><span class="stat-l">잉여현금흐름</span><span class="stat-v" style="color:var(--green)">~$9.5B</span></div>
+      <div class="stat"><span class="stat-l">연속 배당 성장</span><span class="stat-v" style="color:var(--gold)">62년</span></div>
+      <div class="stat"><span class="stat-l">작성일</span><span class="stat-v">2026.05</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- VERDICT -->
+<div class="verdict-bar">
+  <div class="wrap">
+    <div class="verdict-lbl">💡 Executive Summary</div>
+    <div class="verdict-txt">코카콜라는 <strong>"세계에서 가장 강력한 분배망과 브랜드를 가진 현금 창출 기계"</strong>이나, 현재 시총 기준 전체 인수는 천문학적 프리미엄이 요구된다. IRS 세금소송 최대 <strong>$16~18B 잠재 손실</strong>, 설탕세 확산, Z세대 이탈이라는 3중 구조적 리스크가 존재한다. 권고: <strong>IRS 결과 확정 후 전략적 지분 10~15% 대주주 진입이 최적 타이밍.</strong></div>
+  </div>
+</div>
+
+<!-- TOC -->
+<div class="wrap">
+  <div class="toc-box">
+    <a class="toc-link" href="#s1"><span class="toc-n">01</span>기업 개요 및 핵심 지표</a>
+    <a class="toc-link" href="#s2"><span class="toc-n">02</span>혁신에서 시작된 역사</a>
+    <a class="toc-link" href="#s3"><span class="toc-n">03</span>핵심 사업 포트폴리오</a>
+    <a class="toc-link" href="#s4"><span class="toc-n">04</span>핵심 투자 논리</a>
+    <a class="toc-link" href="#s5"><span class="toc-n">05</span>재무 성과 분석</a>
+    <a class="toc-link" href="#s6"><span class="toc-n">06</span>경쟁사 비교분석</a>
+    <a class="toc-link" href="#s7"><span class="toc-n">07</span>주요 리스크 심층 분석</a>
+    <a class="toc-link" href="#s8"><span class="toc-n">08</span>Bull / Bear Case</a>
+    <a class="toc-link" href="#s9"><span class="toc-n">09</span>성장 스토리 &amp; 비전</a>
+    <a class="toc-link" href="#s10"><span class="toc-n">10</span>M&amp;A 최종 판단</a>
+  </div>
+</div>
+
+<!-- S1: OVERVIEW -->
+<section id="s1">
+  <div class="wrap">
+    <div class="sec-n">01 — 기업 개요</div>
+    <h2 class="sec-h">기본 정보 및 핵심 지표</h2>
+    <p class="sec-d">하루 21억 잔 소비, 200개국 유통, 62년 연속 배당 성장 — 이것은 기업이 아니라 인프라다.</p>
+
+    <div class="kpi-grid">
+      <div class="kpi"><div class="kpi-l">시가총액</div><div class="kpi-v red">$348B</div><div class="kpi-s">역대 최대 M&A 규모권</div></div>
+      <div class="kpi"><div class="kpi-l">연간 매출 (2025)</div><div class="kpi-v">$47.94B</div><div class="kpi-s">YoY +1.87%</div></div>
+      <div class="kpi"><div class="kpi-l">영업이익률</div><div class="kpi-v green">~34%</div><div class="kpi-s">업계 평균 대비 2~3배</div></div>
+      <div class="kpi"><div class="kpi-l">잉여현금흐름</div><div class="kpi-v">$9.5B</div><div class="kpi-s">2025년 가이던스</div></div>
+      <div class="kpi"><div class="kpi-l">연속 배당 성장</div><div class="kpi-v gold">62년</div><div class="kpi-s">Dividend King</div></div>
+      <div class="kpi"><div class="kpi-l">미국 시장점유율</div><div class="kpi-v">44.9%</div><div class="kpi-s">탄산음료 기준 (2024)</div></div>
+      <div class="kpi"><div class="kpi-l">사업 국가</div><div class="kpi-v">200+</div><div class="kpi-s">세계 거의 모든 국가</div></div>
+      <div class="kpi"><div class="kpi-l">일일 소비량</div><div class="kpi-v red">21억 잔</div><div class="kpi-s">전 세계 매일</div></div>
+    </div>
+
+    <div class="card">
+      <div class="card-h">인수 옵션별 투자 규모 및 권고</div>
+      <div class="opt-grid">
+        <div class="opt-card no"><div class="opt-lbl">전체 인수 (100%)</div><div class="opt-amt red">~$450B</div><div class="opt-risk">🔴 극단적 리스크</div><div style="color:var(--red-light);font-weight:700;font-size:12px;margin-top:6px;">❌ 비권고</div></div>
+        <div class="opt-card no"><div class="opt-lbl">지배주주 (51%)</div><div class="opt-amt red">~$215B</div><div class="opt-risk">🔴 높은 리스크</div><div style="color:var(--red-light);font-weight:700;font-size:12px;margin-top:6px;">❌ 비권고</div></div>
+        <div class="opt-card"><div class="opt-lbl">전략적 대주주 (15%)</div><div class="opt-amt gold">~$52B</div><div class="opt-risk">🟡 중간 리스크</div><div style="color:var(--yellow);font-weight:700;font-size:12px;margin-top:6px;">⚠️ 조건부</div></div>
+        <div class="opt-card rec"><div class="opt-lbl">재무적 지분 (5%)</div><div class="opt-amt green">~$17B</div><div class="opt-risk">🟢 낮은 리스크</div><div style="color:var(--green);font-weight:700;font-size:12px;margin-top:6px;">✅ 권고</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- S2: HISTORY -->
+<section id="s2">
+  <div class="wrap">
+    <div class="sec-n">02 — 역사</div>
+    <h2 class="sec-h">혁신에서 시작된 140년</h2>
+    <p class="sec-d">대공황·전쟁·금융위기·팬데믹 — 모든 위기를 통과한 유일한 소비재 기업.</p>
+
+    <div class="card">
+      <div class="card-h">코카콜라 성장 타임라인</div>
+      <div class="timeline">
+        <div class="tl"><div class="tl-dot"></div><div class="tl-y">1886</div><div class="tl-t">🧪 탄생 — 약사 존 펨버턴, 잔당 5센트로 첫 판매</div><div class="tl-d">첫날 9잔 판매 → 오늘날 하루 21억 잔의 시작.</div></div>
+        <div class="tl"><div class="tl-dot"></div><div class="tl-y">1892</div><div class="tl-t">아사 캔들러, $2,300에 인수 → The Coca-Cola Company 설립</div><div class="tl-d">역사상 최고의 M&A 수익률. $2,300 → $348B (×150,000,000배)</div></div>
+        <div class="tl"><div class="tl-dot g"></div><div class="tl-y">1919</div><div class="tl-t">NYSE 상장 — 어니스트 우드러프, $25M에 인수 후 IPO</div><div class="tl-d">주주 자본주의의 시작. 이후 100년간 배당 성장 지속.</div></div>
+        <div class="tl"><div class="tl-dot"></div><div class="tl-y">1929</div><div class="tl-t">대공황 속 "5센트 가격 유지" — 브랜드 신뢰의 근원</div><div class="tl-d">경쟁사들이 가격을 올릴 때 코카콜라는 동결. 소비자 충성도의 기원.</div></div>
+        <div class="tl"><div class="tl-dot"></div><div class="tl-y">1941–45</div><div class="tl-t">🪖 2차 세계대전 — 군인 위문으로 64개국 글로벌 네트워크 구축</div><div class="tl-d">"전쟁이 코카콜라를 글로벌 기업으로 만들었다."</div></div>
+        <div class="tl"><div class="tl-dot"></div><div class="tl-y">1982</div><div class="tl-t">다이어트 코크 출시 — 역대 최고의 신제품 성공 사례</div><div class="tl-d">출시 첫해 미국 2위 탄산음료 등극. 포트폴리오 다각화 시작.</div></div>
+        <div class="tl"><div class="tl-dot red"></div><div class="tl-y">1985</div><div class="tl-t">🚨 "뉴코크" 대실패 → 코카콜라 클래식 부활</div><div class="tl-d">역사상 가장 유명한 마케팅 실패. 역설적으로 브랜드 충성도를 전 세계에 각인.</div></div>
+        <div class="tl"><div class="tl-dot g"></div><div class="tl-y">1988–94</div><div class="tl-t">💰 워런 버핏 대량 매수 — $1.3B 투자 → 현재 연 $848M 배당 수령</div><div class="tl-d">원금 대비 배당수익률 65%. "코카콜라는 내가 이해할 수 있는 가장 훌륭한 기업"</div></div>
+        <div class="tl"><div class="tl-dot gn"></div><div class="tl-y">2014</div><div class="tl-t">Monster Beverage 지분 17% 취득 ($2.15B) — 에너지음료 진출</div><div class="tl-d">직접 진출 대신 지분 투자. 현명한 포트폴리오 전략.</div></div>
+        <div class="tl"><div class="tl-dot gn"></div><div class="tl-y">2019</div><div class="tl-t">☕ Costa Coffee 인수 ($5.1B) — 커피 카테고리 공략</div><div class="tl-d">RTD 커피 시장 + 오프라인 커피숍 채널 동시 확보.</div></div>
+        <div class="tl"><div class="tl-dot red"></div><div class="tl-y">2024</div><div class="tl-t">⚖️ IRS 소송 Tax Court 패소 — $6B 납부 결정 (항소 진행 중)</div><div class="tl-d">최대 $16~18B 잠재 손실. 현재 11th Circuit 항소심 진행 중.</div></div>
+        <div class="tl"><div class="tl-dot gn"></div><div class="tl-y">2026</div><div class="tl-t">🚀 Henrique Braun 신임 CEO 취임 — AI·디지털 혁신 본격화</div><div class="tl-d">Chief Digital Officer 신설. "우리의 런웨이는 길다" — Braun COO.</div></div>
+      </div>
+    </div>
+
+    <div class="hl"><strong>핵심 인사이트:</strong> 코카콜라는 140년 역사에서 모든 경기 사이클을 통과했다. 이는 단순한 음료 회사가 아니라 <strong>"인류의 생활습관에 내재된 인프라 기업"</strong>임을 증명한다.</div>
+  </div>
+</section>
+
+<!-- S3: PORTFOLIO -->
+<section id="s3">
+  <div class="wrap">
+    <div class="sec-n">03 — 포트폴리오</div>
+    <h2 class="sec-h">핵심 사업 포트폴리오</h2>
+    <p class="sec-d">500개 브랜드, 3,500가지 음료 — 탄산음료를 넘어 전 카테고리 지배자로.</p>
+
+    <div class="three-col" style="margin-bottom:22px;">
+      <div class="port-card"><div class="port-ico">🥤</div><div class="port-n">탄산음료 (Core)</div><div class="port-b">Coca-Cola · Diet Coke · Coke Zero<br>Sprite · Fanta · Schweppes</div><div class="port-s">매출 비중 ~55%</div></div>
+      <div class="port-card"><div class="port-ico">🏃</div><div class="port-n">스포츠 / 에너지</div><div class="port-b">Powerade · BodyArmor<br>Monster Beverage (지분 17%)<br>Coca-Cola Energy</div><div class="port-s">매출 비중 ~25%</div></div>
+      <div class="port-card"><div class="port-ico">☕</div><div class="port-n">커피 / 차 / 기능성</div><div class="port-b">Costa Coffee · Georgia Coffee<br>Gold Peak Tea · Fairlife<br>SmartWater · Dasani</div><div class="port-s">매출 비중 ~20%</div></div>
+    </div>
+
+    <div class="two-col">
+      <div class="card"><div class="card-h">지역별 매출 구조 (2024)</div><canvas id="regionChart" height="160"></canvas></div>
+      <div class="card"><div class="card-h">포트폴리오 카테고리 구성</div><canvas id="portChart" height="160"></canvas></div>
+    </div>
+  </div>
+</section>
+
+<!-- S4: INVESTMENT -->
+<section id="s4">
+  <div class="wrap">
+    <div class="sec-n">04 — 투자 논리</div>
+    <h2 class="sec-h">핵심 투자 논리 및 가치 제안</h2>
+    <p class="sec-d">왜 워런 버핏은 32년간 단 한 주도 팔지 않았는가.</p>
+
+    <div class="card">
+      <div class="card-h">프랜차이즈 모델 — "자산 없는 자산 기업"</div>
+      <div class="franchise-row">
+        <div class="fr-c"><div class="fr-ico">🏢</div><div class="fr-t" style="color:var(--red-light);">코카콜라 본사</div><div class="fr-d">농축액 제조<br>브랜드 라이선스<br>마케팅 전략 통제</div></div>
+        <div class="fr-c"><div class="fr-ico">🔄</div><div class="fr-t">900+ 보틀링 파트너</div><div class="fr-d">완제품 생산<br>지역 유통<br>시장 리스크 흡수</div></div>
+        <div class="fr-c"><div class="fr-ico">🌍</div><div class="fr-t" style="color:var(--green);">2,800만+ 소매 접점</div><div class="fr-d">편의점·마트·음식점<br>자판기·온라인<br>200개국 전 채널</div></div>
+      </div>
+      <div class="hl" style="margin-top:16px;"><strong>왜 강력한가?</strong> 설비 투자 없이 글로벌 유통망 활용 → 자본 효율성 극대화. 보틀러가 시장 리스크 흡수 → 본사 마진 안정. 결과: <strong>영업이익률 34%+ (일반 제조업 대비 3~4배)</strong></div>
+    </div>
+
+    <div class="card"><div class="card-h">62년 연속 배당 성장 추이 (주당 달러)</div><canvas id="divChart" height="90"></canvas></div>
+
+    <div class="card">
+      <div class="card-h">신흥시장 성장 여백 — "아직 70%가 소비하지 않는다"</div>
+      <div class="two-col" style="align-items:center;">
+        <div>
+          <div class="pb-wrap"><div class="pb-row"><span>선진국 (인구 20%)</span><span>성숙 시장</span></div><div class="pb"><div class="pb-f r" style="width:85%"></div></div></div>
+          <div class="pb-wrap"><div class="pb-row"><span>신흥국 (인구 80%)</span><span>30% 침투율</span></div><div class="pb"><div class="pb-f b" style="width:30%"></div></div></div>
+          <div style="margin-top:12px;padding:12px;background:rgba(59,130,246,.08);border:1px solid rgba(59,130,246,.2);border-radius:6px;font-size:12px;color:var(--text2);">신흥국 70%가 아직 비소비자 = <strong style="color:var(--blue);">수십억 명의 미래 고객</strong></div>
+        </div>
+        <div style="font-size:13px;color:var(--text2);line-height:2;">
+          <div>🇮🇳 <strong>인도</strong> 14억 인구, 중산층 급성장</div>
+          <div>🌍 <strong>아프리카</strong> 도시화 + 소득 증가</div>
+          <div>🇮🇩 <strong>인도네시아</strong> 2.8억, 소비 폭발</div>
+          <div>🇳🇬 <strong>나이지리아</strong> 2.3억, 최대 아프리카 시장</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- S5: FINANCIALS -->
+<section id="s5">
+  <div class="wrap">
+    <div class="sec-n">05 — 재무</div>
+    <h2 class="sec-h">재무 성과 및 가치 평가</h2>
+    <p class="sec-d">매출·이익·현금흐름 모두 우상향 — 단, 환율과 소송 변수 주시 필요.</p>
+
+    <div class="two-col">
+      <div class="card"><div class="card-h">연간 매출 추이 ($B)</div><canvas id="revChart" height="160"></canvas></div>
+      <div class="card"><div class="card-h">유기적 성장 vs 보고 성장 (%)</div><canvas id="growthChart" height="160"></canvas></div>
+    </div>
+
+    <div class="card" style="margin-bottom:20px;">
+      <div class="card-h">핵심 재무 지표 요약</div>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>지표</th><th>2022</th><th>2023</th><th>2024</th><th>2025</th><th>2026E</th></tr></thead>
+          <tbody>
+            <tr><td>매출 ($B)</td><td>$43.0</td><td>$45.75</td><td>$47.06</td><td class="green">$47.94</td><td>~$48.3</td></tr>
+            <tr><td>유기적 성장</td><td>+16%</td><td>+12%</td><td>+12%</td><td class="green">+5%</td><td>+5~6%</td></tr>
+            <tr><td>영업이익률</td><td>~26%</td><td>~29%</td><td>~29%</td><td class="green">~34%</td><td>~34%</td></tr>
+            <tr><td>비교가능 EPS</td><td>$2.48</td><td>$2.69</td><td>$2.88</td><td class="green">$2.98E</td><td>~$3.10</td></tr>
+            <tr><td>배당 (주당)</td><td>$1.76</td><td>$1.84</td><td>$1.94</td><td class="gold">$2.12</td><td>~$2.20</td></tr>
+            <tr><td>FCF ($B)</td><td>~$8B</td><td>~$9B</td><td>~$9B</td><td class="green">~$9.5B</td><td>~$10B</td></tr>
+            <tr><td>환율 역풍</td><td>—</td><td>—</td><td>-3~4%</td><td class="red">-1~2%</td><td>-1~2%</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="card"><div class="card-h">DCF 내재가치 시나리오 분석 (주당 $)</div><canvas id="dcfChart" height="90"></canvas></div>
+  </div>
+</section>
+
+<!-- S6: COMPETITORS -->
+<section id="s6">
+  <div class="wrap">
+    <div class="sec-n">06 — 경쟁사</div>
+    <h2 class="sec-h">경쟁사 비교분석</h2>
+    <p class="sec-d">코카콜라가 왜 프리미엄 밸류에이션을 받는지 숫자로 확인한다.</p>
+
+    <div class="two-col">
+      <div class="card"><div class="card-h">시가총액 비교 ($B)</div><canvas id="mktChart" height="160"></canvas></div>
+      <div class="card"><div class="card-h">KO vs PEP 종합 지표 비교</div><canvas id="radarChart" height="160"></canvas></div>
+    </div>
+
+    <div class="card">
+      <div class="card-h">주요 경쟁사 비교 테이블</div>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>항목</th><th>🥤 코카콜라 (KO)</th><th>🔵 펩시코 (PEP)</th><th>🟢 몬스터 (MNST)</th><th>🟡 Keurig Dr P.</th></tr></thead>
+          <tbody>
+            <tr><td>시가총액</td><td class="red">$348B</td><td>$204B</td><td>$60B</td><td>$47B</td></tr>
+            <tr><td>PER</td><td>25.4x</td><td>23.4x</td><td>42.4x</td><td>19.4x</td></tr>
+            <tr><td>영업이익률</td><td class="green">~34%</td><td>~16%</td><td>~28%</td><td>~22%</td></tr>
+            <tr><td>배당수익률</td><td>2.6%</td><td class="gold">3.6%</td><td>없음</td><td>2.8%</td></tr>
+            <tr><td>5년 주가 수익</td><td class="green">+60%</td><td>+25%</td><td>유사</td><td>—</td></tr>
+            <tr><td>음식 사업</td><td>❌</td><td class="green">✅ Frito-Lay</td><td>❌</td><td>❌</td></tr>
+            <tr><td>배당 연속</td><td class="gold">62년</td><td>52년</td><td>—</td><td>—</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- S7: RISKS -->
+<section id="s7">
+  <div class="wrap">
+    <div class="sec-n">07 — 리스크</div>
+    <h2 class="sec-h">주요 리스크 심층 분석</h2>
+    <p class="sec-d">리스크를 쉽게 넘기지 않는다. 인수 여부는 이 섹션에서 결정된다.</p>
+
+    <div class="tax-box">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+        <span style="font-size:22px;">⚖️</span>
+        <div>
+          <div style="font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--red);font-weight:800;margin-bottom:2px;">CRITICAL RISK #1 — IRS 세금소송</div>
+          <div style="font-size:16px;font-weight:700;">최대 $16~18B 잠재 손실 — FCF 2년치 증발 리스크</div>
+        </div>
+      </div>
+      <div class="tax-nums">
+        <div class="tax-n"><div class="tax-nl">2024 납부 확정액</div><div class="tax-nv">$6.0B</div><div class="tax-ns">원금 $2.7B + 이자</div></div>
+        <div class="tax-n" style="background:rgba(230,51,41,.15);border-color:rgba(230,51,41,.35);"><div class="tax-nl">최대 잠재 손실</div><div class="tax-nv" style="color:var(--red);">$16~18B</div><div class="tax-ns">2010년 이후분 소급 시</div></div>
+        <div class="tax-n" style="background:rgba(245,158,11,.08);border-color:rgba(245,158,11,.25);"><div class="tax-nl">현재 상태</div><div class="tax-nv" style="color:var(--yellow);font-size:15px;">항소심 진행</div><div class="tax-ns">11th Circuit</div></div>
+        <div class="tax-n" style="background:rgba(34,197,94,.06);border-color:rgba(34,197,94,.2);"><div class="tax-nl">항소 승소 시</div><div class="tax-nv" style="color:var(--green);font-size:15px;">$6B 환급</div><div class="tax-ns">비대칭 기회</div></div>
+      </div>
+      <div class="tax-note"><strong style="color:var(--text2);">소송 경과:</strong> 2015 IRS 제기 → 2020 Tax Court 1차 패소 → 2023 2차 패소 → 2024.8 $6B 납부 결정 → 2024.10 11th Circuit 항소 → <strong style="color:var(--yellow);">2025.8 항소 브리프 제출 완료 (결과 대기 중)</strong></div>
+    </div>
+
+    <div class="risk-grid">
+      <div class="risk-card hi"><span class="risk-tag hi">🔴 HIGH</span><h3>설탕세 전면 확산</h3><p>전 세계 50+ 국가, 미국 8개 도시 시행. 가격 33% 인상 시 판매량 33% 감소(JAMA 연구). 멕시코는 경고 라벨 + 어린이 마케팅 금지. WHO의 비설탕 감미료 반대 권고로 제로슈가도 안전지대 아님.</p></div>
+      <div class="risk-card hi"><span class="risk-tag hi">🔴 HIGH</span><h3>Z세대 건강 트렌드 이탈</h3><p>기능성음료 +15%/년, 식물성 단백질 +20%/년 성장. 핵심 탄산음료는 선진국 -1~2%/년 위축. MZ세대는 "건강·기능성" 중심으로 이동. Monster·Red Bull 등이 점유율 잠식 중.</p></div>
+      <div class="risk-card md"><span class="risk-tag md">🟡 MEDIUM</span><h3>환율 역풍 (신흥국)</h3><p>매출의 63%가 해외, 상당수가 신흥국 통화. 2025 가이던스에서 -1~2% 공식 인정. 달러 강세 지속 시 달러 환산 실적 압박. 아르헨티나·터키 등 통화위기 국가 노출.</p></div>
+      <div class="risk-card md"><span class="risk-tag md">🟡 MEDIUM</span><h3>높은 밸류에이션 리스크</h3><p>PER 25.4x는 4년 평균 22x 대비 약 15% 프리미엄. 인수 시 20~30% 추가 프리미엄 더하면 실질 PER 30~33x. 현재 주가가 기본~낙관 시나리오 사이에 위치해 안전마진 부족.</p></div>
+      <div class="risk-card md"><span class="risk-tag md">🟡 MEDIUM</span><h3>부채 수준 및 재무 부담</h3><p>장기부채 ~$35B. Fairlife, Costa Coffee 인수 이후 부채 증가. 인수 시 추가 레버리지는 Moody's Aa3 / S&P A+ 신용등급 강등 위험. 금리 상승기 이자비용 급증 우려.</p></div>
+      <div class="risk-card lo"><span class="risk-tag lo">🟢 WATCH</span><h3>CEO 교체 전략 연속성</h3><p>James Quincey → Henrique Braun 2026년 교체. 신임 CEO 전략 방향이 현재 궤도와 다를 경우 단기 불확실성. 다만 Braun은 오랜 코카콜라 내부 인사로 연속성은 높음.</p></div>
+    </div>
+
+    <div class="card" style="margin-top:20px;"><div class="card-h">리스크 레벨 시각화</div><canvas id="riskChart" height="90"></canvas></div>
+  </div>
+</section>
+
+<!-- S8: BULL BEAR -->
+<section id="s8">
+  <div class="wrap">
+    <div class="sec-n">08 — 시나리오</div>
+    <h2 class="sec-h">Bull Case / Bear Case</h2>
+    <p class="sec-d">두 극단 시나리오로 인수의 상방과 하방을 정량화한다.</p>
+
+    <div class="bb-grid">
+      <div class="bull-c">
+        <div class="c-ico">🐂</div>
+        <div class="c-ttl">Bull Case</div>
+        <div class="c-sub">IRS 승소 + 신흥국 가속 + AI 효율화</div>
+        <div class="c-item">IRS 항소 승리 → $6~16B 환급, 재무 구조 급격 개선</div>
+        <div class="c-item">신흥국 침투율 상승 → 10억+ 신규 소비자 확보</div>
+        <div class="c-item">제로슈가 전환 성공 → 건강 트렌드 방어</div>
+        <div class="c-item">AI 활용 마진 확대 → FCF $14B+ 달성</div>
+        <div class="c-item">경기침체 시 방어주 + 성장주 동시 재평가</div>
+        <div class="c-target"><div>5년 매출: $47.9B → $62B (+5.5% CAGR)</div><div>영업이익률: 34% → 38%</div><div style="font-size:15px;font-weight:700;">주가 목표: $100~120 (+25~50%↑)</div></div>
+      </div>
+      <div class="bear-c">
+        <div class="c-ico">🐻</div>
+        <div class="c-ttl">Bear Case</div>
+        <div class="c-sub">설탕세 확산 + IRS 패소 + Z세대 이탈</div>
+        <div class="c-item">IRS 최종 패소 → 총 $16~18B 손실, FCF 2년 증발</div>
+        <div class="c-item">설탕세 80+ 국가 확산 → 핵심 카테고리 구조 감소</div>
+        <div class="c-item">Z세대 탄산음료 외면 → 기능성으로 대이동</div>
+        <div class="c-item">달러 강세 지속 → 해외 실적 달러 환산 악화</div>
+        <div class="c-item">신흥 에너지음료 브랜드 점유율 잠식 가속</div>
+        <div class="c-target"><div>5년 매출: $47.9B → $44B (-1.7% CAGR)</div><div>영업이익률: 34% → 28%</div><div style="font-size:15px;font-weight:700;">주가 리스크: $55~65 (-20~30%↓)</div></div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:20px;"><div class="card-h">Bull/Bear 주가 시나리오 범위</div><canvas id="scenarioChart" height="90"></canvas></div>
+  </div>
+</section>
+
+<!-- S9: VISION -->
+<section id="s9">
+  <div class="wrap">
+    <div class="sec-n">09 — 비전</div>
+    <h2 class="sec-h">성장 스토리와 비전</h2>
+    <p class="sec-d">"탄산음료 회사"에서 "모든 음료 카테고리 지배자"로 — Total Beverage Company.</p>
+
+    <div class="card" style="margin-bottom:20px;">
+      <div class="card-h">Topline Flywheel — 4가지 성장 엔진</div>
+      <div class="fw-grid">
+        <div class="fw"><div class="fw-ico">📢</div><div class="fw-n">마케팅</div><div class="fw-d">문화적 연결·디지털 참여<br>Gen Z 플랫폼 구축</div></div>
+        <div class="fw"><div class="fw-ico">🔬</div><div class="fw-n">혁신</div><div class="fw-d">AI 기반 신제품 개발<br>개발 사이클 30% 단축</div></div>
+        <div class="fw"><div class="fw-ico">💰</div><div class="fw-n">Revenue Growth Mgmt</div><div class="fw-d">가격·채널·믹스 최적화<br>프라이싱 파워 유지</div></div>
+        <div class="fw"><div class="fw-ico">🌍</div><div class="fw-n">실행 (RGM)</div><div class="fw-d">보틀링 파트너 최적화<br>유통 효율 극대화</div></div>
+      </div>
+    </div>
+
+    <div class="two-col">
+      <div class="card">
+        <div class="card-h">2026 핵심 전략 방향</div>
+        <div style="display:flex;flex-direction:column;gap:14px;">
+          <div style="display:flex;gap:12px;align-items:flex-start;"><div style="width:34px;height:34px;background:rgba(230,51,41,.15);border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:16px;">🤖</div><div><div style="font-size:13px;font-weight:700;margin-bottom:2px;">AI·디지털 트랜스포메이션</div><div style="font-size:11px;color:var(--text3);">CDO 신설. AI 기반 소비자 인사이트로 신제품 개발 30% 단축. IoT 물류 최적화.</div></div></div>
+          <div style="display:flex;gap:12px;align-items:flex-start;"><div style="width:34px;height:34px;background:rgba(59,130,246,.15);border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:16px;">☕</div><div><div style="font-size:13px;font-weight:700;margin-bottom:2px;">Costa Coffee 10~15개국 확장</div><div style="font-size:11px;color:var(--text3);">2026년까지 신규 시장 진출. RTD + 오프라인 커피숍 동시 공략.</div></div></div>
+          <div style="display:flex;gap:12px;align-items:flex-start;"><div style="width:34px;height:34px;background:rgba(34,197,94,.15);border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:16px;">🍺</div><div><div style="font-size:13px;font-weight:700;margin-bottom:2px;">알코올 RTD 신규 진출</div><div style="font-size:11px;color:var(--text3);">Topo Chico Hard Seltzer, Jack & Coke RTD. 글로벌 RTD 알코올 연 15%+ 성장 시장.</div></div></div>
+          <div style="display:flex;gap:12px;align-items:flex-start;"><div style="width:34px;height:34px;background:rgba(212,175,55,.15);border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:16px;">🌱</div><div><div style="font-size:13px;font-weight:700;margin-bottom:2px;">ESG & 지속가능성</div><div style="font-size:11px;color:var(--text3);">물 사용 20% 감소 목표. 40개+ 시장 재활용 PET 100% 전환.</div></div></div>
+        </div>
+      </div>
+      <div class="card"><div class="card-h">카테고리별 성장 트렌드 (%/년)</div><canvas id="categoryChart" height="200"></canvas></div>
+    </div>
+  </div>
+</section>
+
+<!-- S10: VERDICT -->
+<section id="s10">
+  <div class="wrap">
+    <div class="sec-n">10 — 최종 판단</div>
+    <h2 class="sec-h">M&A 인수 최종 판단</h2>
+    <p class="sec-d">파트너에게 드리는 솔직한 조언 — 숫자와 전략이 말하는 것.</p>
+
+    <div class="card" style="margin-bottom:20px;">
+      <div class="card-h">Due Diligence 필수 체크리스트</div>
+      <div class="checklist">
+        <div class="chk"><span class="chk-ico">☐</span>IRS 소송 결과 또는 합의 가능성 파악</div>
+        <div class="chk"><span class="chk-ico">☐</span>설탕세 예정 시장 매출 비중 계산</div>
+        <div class="chk"><span class="chk-ico">☐</span>보틀링 파트너 계약 구조 점검</div>
+        <div class="chk"><span class="chk-ico">☐</span>신흥국 통화 헷징 전략 검증</div>
+        <div class="chk"><span class="chk-ico">☐</span>Braun CEO 취임 후 전략 연속성</div>
+        <div class="chk"><span class="chk-ico">☐</span>알코올 RTD 국가별 규제 리스크</div>
+        <div class="chk"><span class="chk-ico">☐</span>디지털 혁신 ROI 검증</div>
+        <div class="chk"><span class="chk-ico">☐</span>ESG 규제 대응 비용 추정</div>
+      </div>
+    </div>
+
+    <div class="final">
+      <div class="final-h">⚡ 파트너에게 드리는 솔직한 최종 조언</div>
+      <div class="final-t">
+        코카콜라는 <strong>"인수"보다 "투자"의 대상</strong>이다. 140년 역사가 증명한 브랜드 내구성, 21억 잔/일의 소비 규모, 62년 연속 배당 성장은 세상에 유일한 자산이다. 그러나 현재 시총 $348B에 인수 프리미엄을 더한 규모는 그 어떤 전략적 시너지로도 정당화하기 어렵다.
+        <br><br>
+        <strong>권장 접근법:</strong> IRS 소송 결과가 나오는 <strong>2026~2027년을 기다려라.</strong> 패소로 $16~18B 손실이 확정되면 주가가 20~30% 조정될 수 있고, 그때가 <strong style="color:var(--gold);">지분 10~15%의 전략적 대주주 진입 최적의 타이밍</strong>이다.
+        <br><br>
+        <strong>워런 버핏의 논리를 빌리자면:</strong> <em style="color:var(--text3);">"내가 $100B를 주고 코카콜라 경쟁자를 만들라고 해도 불가능하다. 이 브랜드는 돈으로 살 수 없다."</em> — 그러나 그 버핏도 1994년 이후 단 한 주도 추가 매수하지 않았다. <strong>비싸도 사야 하는 기업이 아니라, 적절한 가격이 올 때까지 기다려야 하는 기업이다.</strong>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="footer">
+  <div class="wrap">
+    본 보고서는 공개된 기업 공시, SEC 파일링, 언론 보도를 기반으로 작성되었으며 투자 권유가 아닙니다.<br>
+    데이터 출처: Coca-Cola Company SEC Filings, Tickeron, Wall Street Zen, Motley Fool, KBKG | 작성: 2026년 5월
+  </div>
+</div>
+
+<script>
+Chart.defaults.color='#666';
+Chart.defaults.borderColor='#252525';
+Chart.defaults.font.family="'Noto Sans KR',sans-serif";
+Chart.defaults.font.size=12;
+
+// Region
+new Chart(document.getElementById('regionChart'),{type:'bar',data:{labels:['북미','유럽·중동·아프리카','아시아태평양','라틴아메리카','보틀링 투자'],datasets:[{data:[37,25,17,14,7],backgroundColor:['#E63329','#C5281F','#A01F18','#801810','#601008'],borderRadius:4}]},options:{indexAxis:'y',plugins:{legend:{display:false}},scales:{x:{grid:{color:'#1C1C1C'},ticks:{callback:v=>v+'%'}},y:{grid:{display:false}}}}});
+
+// Portfolio donut
+new Chart(document.getElementById('portChart'),{type:'doughnut',data:{labels:['탄산음료','스포츠/에너지','커피·차·기능성'],datasets:[{data:[55,25,20],backgroundColor:['#E63329','#3B82F6','#D4AF37'],borderColor:'#141414',borderWidth:3}]},options:{plugins:{legend:{position:'bottom',labels:{padding:16}}},cutout:'62%'}});
+
+// Dividend
+new Chart(document.getElementById('divChart'),{type:'line',data:{labels:['2010','2012','2014','2016','2018','2020','2022','2024','2025'],datasets:[{label:'주당 배당 ($)',data:[0.88,1.02,1.22,1.40,1.56,1.64,1.76,1.94,2.12],borderColor:'#D4AF37',backgroundColor:'rgba(212,175,55,0.08)',pointBackgroundColor:'#D4AF37',pointRadius:5,fill:true,tension:0.4}]},options:{plugins:{legend:{display:false}},scales:{y:{grid:{color:'#1C1C1C'},ticks:{callback:v=>'$'+v}},x:{grid:{display:false}}}}});
+
+// Revenue
+new Chart(document.getElementById('revChart'),{type:'bar',data:{labels:['2018','2019','2020','2021','2022','2023','2024','2025'],datasets:[{label:'매출 ($B)',data:[31.86,37.27,33.01,38.66,43.00,45.75,47.06,47.94],backgroundColor:(ctx)=>ctx.dataIndex===7?'#E63329':'rgba(230,51,41,0.45)',borderRadius:4}]},options:{plugins:{legend:{display:false}},scales:{y:{grid:{color:'#1C1C1C'},ticks:{callback:v=>'$'+v+'B'},min:25},x:{grid:{display:false}}}}});
+
+// Growth
+new Chart(document.getElementById('growthChart'),{type:'bar',data:{labels:['2021','2022','2023','2024','2025','2026E'],datasets:[{label:'유기적 성장',data:[14,16,12,12,5,5.5],backgroundColor:'rgba(230,51,41,0.8)',borderRadius:4},{label:'보고 성장',data:[17,11,6,3,2,2.7],backgroundColor:'rgba(59,130,246,0.5)',borderRadius:4}]},options:{plugins:{legend:{position:'bottom',labels:{padding:14}}},scales:{y:{grid:{color:'#1C1C1C'},ticks:{callback:v=>v+'%'}},x:{grid:{display:false}}}}});
+
+// DCF
+new Chart(document.getElementById('dcfChart'),{type:'bar',data:{labels:['보수적 (FCF+3%)','기본 (FCF+5%)','낙관적 (FCF+7%)','현재 주가'],datasets:[{data:[58,75,95,80],backgroundColor:['rgba(59,130,246,0.7)','rgba(212,175,55,0.7)','rgba(34,197,94,0.7)','rgba(230,51,41,0.9)'],borderRadius:4}]},options:{plugins:{legend:{display:false}},scales:{y:{grid:{color:'#1C1C1C'},ticks:{callback:v=>'$'+v},min:40},x:{grid:{display:false}}}}});
+
+// Market Cap
+new Chart(document.getElementById('mktChart'),{type:'bar',data:{labels:['코카콜라 (KO)','펩시코 (PEP)','몬스터 (MNST)','Keurig Dr P.'],datasets:[{data:[348,204,60,47],backgroundColor:['#E63329','rgba(59,130,246,0.7)','rgba(34,197,94,0.7)','rgba(212,175,55,0.7)'],borderRadius:4}]},options:{indexAxis:'y',plugins:{legend:{display:false}},scales:{x:{grid:{color:'#1C1C1C'},ticks:{callback:v=>'$'+v+'B'}},y:{grid:{display:false}}}}});
+
+// Radar
+new Chart(document.getElementById('radarChart'),{type:'radar',data:{labels:['영업이익률','배당안정성','브랜드파워','글로벌커버리지','5년수익률'],datasets:[{label:'코카콜라',data:[90,88,98,97,75],borderColor:'#E63329',backgroundColor:'rgba(230,51,41,0.1)',pointBackgroundColor:'#E63329'},{label:'펩시코',data:[55,85,82,84,55],borderColor:'#3B82F6',backgroundColor:'rgba(59,130,246,0.07)',pointBackgroundColor:'#3B82F6'}]},options:{plugins:{legend:{position:'bottom',labels:{padding:14}}},scales:{r:{grid:{color:'#2A2A2A'},ticks:{display:false},pointLabels:{color:'#666',font:{size:11}},suggestedMin:0,suggestedMax:100}}}});
+
+// Risk Chart
+new Chart(document.getElementById('riskChart'),{type:'bar',data:{labels:['IRS 세금소송','설탕세 확산','Z세대 이탈','환율 역풍','밸류에이션','부채 수준','CEO 교체'],datasets:[{label:'리스크 레벨',data:[95,80,75,65,60,55,30],backgroundColor:['#E63329','#CC2A20','#C5281F','#F59E0B','#F59E0B','#F59E0B','#22C55E'],borderRadius:4}]},options:{indexAxis:'y',plugins:{legend:{display:false}},scales:{x:{grid:{color:'#1C1C1C'},max:100,ticks:{callback:v=>v}},y:{grid:{display:false}}}}});
+
+// Scenario
+new Chart(document.getElementById('scenarioChart'),{type:'bar',data:{labels:['Bear 하단','Bear 상단','현재 주가','Bull 하단','Bull 상단'],datasets:[{data:[55,65,80,100,120],backgroundColor:['#7F1510','#B01F16','#E63329','rgba(34,197,94,0.7)','rgba(34,197,94,0.9)'],borderRadius:4}]},options:{plugins:{legend:{display:false}},scales:{y:{grid:{color:'#1C1C1C'},ticks:{callback:v=>'$'+v},min:40},x:{grid:{display:false}}}}});
+
+// Category
+new Chart(document.getElementById('categoryChart'),{type:'bar',data:{labels:['식물성 단백질','기능성 음료','RTD 알코올','RTD 커피','에너지음료','스포츠음료','탄산(선진국)'],datasets:[{data:[20,15,15,12,10,5,-1.5],backgroundColor:(ctx)=>{const v=ctx.dataset.data[ctx.dataIndex];return v<0?'rgba(230,51,41,0.7)':v>=15?'rgba(34,197,94,0.8)':'rgba(59,130,246,0.6)'},borderRadius:4}]},options:{indexAxis:'y',plugins:{legend:{display:false}},scales:{x:{grid:{color:'#1C1C1C'},ticks:{callback:v=>v+'%'}},y:{grid:{display:false},ticks:{font:{size:11}}}}}});
+</script>
+</body>
+</html>
