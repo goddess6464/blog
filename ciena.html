@@ -1,0 +1,1177 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ciena Corporation — M&A 인수 브리핑</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
+
+  :root {
+    --bg: #0a0c10;
+    --bg2: #0f1218;
+    --bg3: #141822;
+    --border: #1e2535;
+    --border2: #252e45;
+    --accent: #00d4ff;
+    --accent2: #7b5ea7;
+    --green: #00e5a0;
+    --red: #ff4d6a;
+    --yellow: #f5c518;
+    --text: #e8ecf4;
+    --text2: #8b96b0;
+    --text3: #5a6480;
+    --card: #0d1119;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 15px;
+    line-height: 1.75;
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 0 24px 80px;
+  }
+
+  /* ─── HEADER ─── */
+  .report-header {
+    border-bottom: 1px solid var(--border);
+    padding: 56px 0 40px;
+    position: relative;
+  }
+  .header-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 3px;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .report-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(52px, 8vw, 88px);
+    letter-spacing: 2px;
+    line-height: 0.95;
+    color: var(--text);
+  }
+  .report-title span { color: var(--accent); }
+  .report-meta {
+    display: flex;
+    gap: 32px;
+    margin-top: 24px;
+    flex-wrap: wrap;
+  }
+  .meta-item {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--text3);
+    letter-spacing: 1px;
+  }
+  .meta-item strong { color: var(--text2); }
+
+  /* ─── TOC ─── */
+  .toc {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent);
+    padding: 28px 32px;
+    margin: 40px 0;
+  }
+  .toc-title {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  .toc ol { list-style: none; counter-reset: toc; }
+  .toc > ol > li { counter-increment: toc; margin-bottom: 6px; }
+  .toc > ol > li::before {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    content: "0" counter(toc) ". ";
+    margin-right: 6px;
+  }
+  .toc a { color: var(--text2); text-decoration: none; font-size: 14px; }
+  .toc a:hover { color: var(--accent); }
+  .toc .sub { padding-left: 28px; margin-top: 4px; list-style: none; }
+  .toc .sub li { font-size: 13px; color: var(--text3); line-height: 1.8; }
+  .toc .sub li::before { content: "— "; color: var(--border2); }
+
+  /* ─── SECTION ─── */
+  section { margin-top: 64px; }
+  .section-num {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 4px;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 36px;
+    letter-spacing: 1px;
+    color: var(--text);
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 12px;
+    margin-bottom: 28px;
+  }
+  h3 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text);
+    margin: 32px 0 12px;
+    padding-left: 12px;
+    border-left: 2px solid var(--accent2);
+  }
+
+  /* ─── VERDICT BOX ─── */
+  .verdict-box {
+    background: linear-gradient(135deg, #0d1a2e 0%, #0a1220 100%);
+    border: 1px solid var(--accent);
+    border-radius: 2px;
+    padding: 32px 36px;
+    margin-bottom: 28px;
+    position: relative;
+    overflow: hidden;
+  }
+  .verdict-box::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+  }
+  .verdict-tag {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .verdict-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    color: var(--green);
+    margin-bottom: 16px;
+  }
+  .verdict-body { color: var(--text2); font-size: 14px; line-height: 1.8; }
+
+  /* ─── KPI GRID ─── */
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin: 24px 0;
+  }
+  @media (max-width: 600px) { .kpi-grid { grid-template-columns: 1fr 1fr; } }
+  .kpi-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 20px 20px 18px;
+  }
+  .kpi-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: var(--text3);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .kpi-value {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    color: var(--accent);
+    line-height: 1;
+  }
+  .kpi-sub { font-size: 12px; color: var(--text3); margin-top: 4px; }
+  .kpi-card.green .kpi-value { color: var(--green); }
+  .kpi-card.yellow .kpi-value { color: var(--yellow); }
+  .kpi-card.red .kpi-value { color: var(--red); }
+  .kpi-card.purple .kpi-value { color: var(--accent2); }
+
+  /* ─── TABLE ─── */
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    margin: 20px 0;
+  }
+  .data-table th {
+    background: var(--bg3);
+    color: var(--text3);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border2);
+    text-align: left;
+  }
+  .data-table td {
+    padding: 11px 14px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text2);
+  }
+  .data-table tr:hover td { background: var(--bg3); }
+  .data-table .num { font-family: 'IBM Plex Mono', monospace; color: var(--accent); }
+  .data-table .pos { color: var(--green); font-family: 'IBM Plex Mono', monospace; }
+  .data-table .neg { color: var(--red); font-family: 'IBM Plex Mono', monospace; }
+  .data-table .warn { color: var(--yellow); font-family: 'IBM Plex Mono', monospace; }
+
+  /* ─── CHART CONTAINER ─── */
+  .chart-wrap {
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 24px;
+    margin: 24px 0;
+  }
+  .chart-title {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: var(--text3);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+  canvas { max-height: 280px; }
+
+  /* ─── RISK / OPPORTUNITY CARD ─── */
+  .risk-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 20px 0; }
+  @media (max-width: 600px) { .risk-grid { grid-template-columns: 1fr; } }
+  .risk-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 20px;
+    border-top: 2px solid var(--red);
+  }
+  .risk-card.opp { border-top-color: var(--green); }
+  .risk-tag {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 8px;
+  }
+  .risk-card.opp .risk-tag { color: var(--green); }
+  .risk-title { font-weight: 700; font-size: 14px; margin-bottom: 8px; }
+  .risk-body { font-size: 13px; color: var(--text2); line-height: 1.7; }
+  .risk-badge {
+    display: inline-block;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 1px;
+    padding: 2px 8px;
+    border: 1px solid var(--red);
+    color: var(--red);
+    margin-top: 8px;
+    text-transform: uppercase;
+  }
+  .risk-card.opp .risk-badge { border-color: var(--green); color: var(--green); }
+
+  /* ─── BULL/BEAR ─── */
+  .bb-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 20px 0; }
+  @media (max-width: 600px) { .bb-grid { grid-template-columns: 1fr; } }
+  .bull-card, .bear-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 24px;
+  }
+  .bull-card { border-left: 3px solid var(--green); }
+  .bear-card { border-left: 3px solid var(--red); }
+  .bb-tag {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    margin-bottom: 16px;
+  }
+  .bull-card .bb-tag { color: var(--green); }
+  .bear-card .bb-tag { color: var(--red); }
+  .bb-price {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 28px;
+    margin-bottom: 12px;
+  }
+  .bull-card .bb-price { color: var(--green); }
+  .bear-card .bb-price { color: var(--red); }
+  .bb-item {
+    font-size: 13px;
+    color: var(--text2);
+    padding: 7px 0;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    line-height: 1.6;
+  }
+  .bb-item:last-child { border-bottom: none; }
+  .bull-card .bb-item::before { content: "▲"; color: var(--green); font-size: 10px; margin-top: 5px; flex-shrink: 0; }
+  .bear-card .bb-item::before { content: "▼"; color: var(--red); font-size: 10px; margin-top: 5px; flex-shrink: 0; }
+
+  /* ─── TIMELINE ─── */
+  .timeline { margin: 20px 0; }
+  .tl-item {
+    display: flex;
+    gap: 20px;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--border);
+    align-items: flex-start;
+  }
+  .tl-year {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    color: var(--accent);
+    min-width: 64px;
+    line-height: 1.2;
+  }
+  .tl-body { font-size: 13px; color: var(--text2); line-height: 1.7; }
+  .tl-body strong { color: var(--text); font-size: 14px; display: block; margin-bottom: 2px; }
+
+  /* ─── SEGMENT BADGE ─── */
+  .seg-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin: 20px 0; }
+  .seg-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 20px;
+  }
+  .seg-pct {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 36px;
+    color: var(--accent2);
+  }
+  .seg-name { font-weight: 700; margin-bottom: 6px; }
+  .seg-desc { font-size: 13px; color: var(--text2); line-height: 1.6; }
+
+  /* ─── TEXT UTILS ─── */
+  p { color: var(--text2); margin-bottom: 14px; }
+  .highlight { color: var(--accent); font-weight: 600; }
+  .warn-text { color: var(--yellow); font-weight: 600; }
+  .green-text { color: var(--green); font-weight: 600; }
+  .red-text { color: var(--red); font-weight: 600; }
+
+  /* ─── DIVIDER ─── */
+  .divider { border: none; border-top: 1px solid var(--border); margin: 40px 0; }
+
+  /* ─── FOOTER ─── */
+  footer {
+    margin-top: 80px;
+    padding: 24px 0;
+    border-top: 1px solid var(--border);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--text3);
+    letter-spacing: 1px;
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════ HEADER ═══════════════ -->
+<div class="report-header">
+  <div class="header-label">M&A Acquisition Briefing · Confidential</div>
+  <div class="report-title">CIENA<br><span>CORPORATION</span></div>
+  <div class="report-meta">
+    <div class="meta-item"><strong>NYSE</strong> CIEN</div>
+    <div class="meta-item"><strong>섹터</strong> 광통신 네트워킹</div>
+    <div class="meta-item"><strong>보고서 기준일</strong> 2026년 6월 5일</div>
+    <div class="meta-item"><strong>현재주가</strong> ~$505–534</div>
+    <div class="meta-item"><strong>시가총액</strong> ~$71–76B</div>
+  </div>
+</div>
+
+<!-- ═══════════════ TOC ═══════════════ -->
+<nav class="toc">
+  <div class="toc-title">목차 / Table of Contents</div>
+  <ol>
+    <li><a href="#s1">결론 요약</a></li>
+    <li><a href="#s2">기업 개요 및 현황</a>
+      <ul class="sub">
+        <li>기본 정보 및 핵심 지표</li>
+        <li>혁신에서 시작된 역사</li>
+        <li>핵심 사업 포트폴리오</li>
+      </ul>
+    </li>
+    <li><a href="#s3">핵심 투자 논리 및 가치 제안</a></li>
+    <li><a href="#s4">재무 성과 및 가치 평가</a>
+      <ul class="sub">
+        <li>주요 재무 동향 분석</li>
+        <li>경쟁사 비교분석</li>
+        <li>가치 평가 요약</li>
+      </ul>
+    </li>
+    <li><a href="#s5">주요 리스크 및 기회</a></li>
+    <li><a href="#s6">Bull Case / Bear Case</a></li>
+  </ol>
+</nav>
+
+<!-- ═══════════════ S1: 결론 요약 ═══════════════ -->
+<section id="s1">
+  <div class="section-num">Section 01</div>
+  <h2>결론 요약</h2>
+
+  <div class="verdict-box">
+    <div class="verdict-tag">최종 M&A 평가 의견</div>
+    <div class="verdict-title">⚡ 전략적 인수 가치: "AI 시대의 핵심 인프라 독점자"</div>
+    <div class="verdict-body">
+      Ciena는 단순한 네트워크 장비 회사가 아니다. AI·클라우드 인프라 폭증의 <strong style="color:#00d4ff">물리적 기반</strong>을 공급하는 전 세계 유일의 고속 광통신 플랫폼 기업이다. FY2025 매출 $47.7억(+19% YoY), FY2026 가이던스 $63억(+32% YoY)으로 성장이 가속 중이며, WaveLogic 6 Extreme 1.6T 기술은 경쟁사 대비 3년 이상 앞선 선행 기술이다.<br><br>
+      다만 <strong style="color:#f5c518">현재 주가($505~$534, 시총 ~$73B)는 역사적 고점권</strong>이며, GAAP P/E 300배 이상, Forward P/E 76배의 밸류에이션은 인수 비용 부담이 매우 크다. 인수 검토는 기술 독점성·AI 수요 지속성·공급망 리스크를 면밀히 검증한 뒤, <strong style="color:#ff4d6a">단계적 전략 파트너십 → 소수 지분 인수 → 전면 인수</strong> 경로로 접근하는 것이 합리적이다.
+    </div>
+  </div>
+
+  <div class="kpi-grid">
+    <div class="kpi-card green">
+      <div class="kpi-label">FY2026E 매출 가이던스</div>
+      <div class="kpi-value">$6.3B</div>
+      <div class="kpi-sub">+32% YoY (상향 조정)</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">시가총액 (6월 5일 기준)</div>
+      <div class="kpi-value">~$73B</div>
+      <div class="kpi-sub">52주 저점 $70.77 → 고점 $637.51</div>
+    </div>
+    <div class="kpi-card yellow">
+      <div class="kpi-label">Forward P/E</div>
+      <div class="kpi-value">76~81x</div>
+      <div class="kpi-sub">업종 평균 대비 +216%</div>
+    </div>
+    <div class="kpi-card green">
+      <div class="kpi-label">Q2 FY2026 매출</div>
+      <div class="kpi-value">$1.57B</div>
+      <div class="kpi-sub">+40% YoY, 어닝 서프라이즈</div>
+    </div>
+    <div class="kpi-card purple">
+      <div class="kpi-label">WaveLogic 6 속도</div>
+      <div class="kpi-value">1.6T</div>
+      <div class="kpi-sub">업계 최초 Tbps 단일 파장</div>
+    </div>
+    <div class="kpi-card red">
+      <div class="kpi-label">6/4 하루 주가 급락</div>
+      <div class="kpi-value">−18.7%</div>
+      <div class="kpi-sub">실적 호조에도 차익실현 매물</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ S2: 기업 개요 ═══════════════ -->
+<section id="s2">
+  <div class="section-num">Section 02</div>
+  <h2>기업 개요 및 현황</h2>
+
+  <h3>2.1 기본 정보 및 핵심 지표</h3>
+  <table class="data-table">
+    <thead>
+      <tr><th>항목</th><th>내용</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>정식 명칭</td><td>Ciena Corporation</td></tr>
+      <tr><td>티커 / 거래소</td><td class="num">CIEN / NYSE</td></tr>
+      <tr><td>본사 위치</td><td>Hanover, Maryland, USA</td></tr>
+      <tr><td>설립</td><td>1992년 (HydraLite로 창립, David R. Huber)</td></tr>
+      <tr><td>CEO</td><td>Gary Smith (장기 재임, 강력한 리더십)</td></tr>
+      <tr><td>CFO</td><td>Marc Graff</td></tr>
+      <tr><td>임직원 수</td><td>~8,500명</td></tr>
+      <tr><td>주요 사업</td><td>고속 광통신 시스템, 네트워크 소프트웨어, 글로벌 서비스</td></tr>
+      <tr><td>핵심 고객</td><td>클라우드 하이퍼스케일러(AWS·Microsoft 추정), 통신사(Verizon·AT&T 등), 해저케이블 사업자</td></tr>
+      <tr><td>FY2025 매출</td><td class="pos">$4.77B (+19% YoY)</td></tr>
+      <tr><td>FY2026 가이던스</td><td class="pos">$6.3B ±$100M (+32% YoY)</td></tr>
+      <tr><td>FCF (TTM)</td><td class="pos">$742M</td></tr>
+      <tr><td>현금 / 부채</td><td>$1.30B 현금 / $1.59B 부채 (순부채 ~$220M)</td></tr>
+      <tr><td>배당</td><td class="neg">없음 (자사주 매입으로 환원)</td></tr>
+      <tr><td>자사주 매입 프로그램</td><td>$1.0B (FY2025~FY2027, 3개년)</td></tr>
+    </tbody>
+  </table>
+
+  <h3>2.2 혁신에서 시작된 역사</h3>
+  <p>Ciena의 역사는 단순히 "30년 된 네트워크 회사"가 아니다. 인터넷 폭발 → 닷컴 붕괴 → 회생 → 광통신 글로벌 리더로 부활한 전형적인 <span class="highlight">미국 기술 기업 생존 서사</span>의 정수다.</p>
+
+  <div class="timeline">
+    <div class="tl-item">
+      <div class="tl-year">1992</div>
+      <div class="tl-body"><strong>창업 — "더 많은 데이터를 광섬유에"</strong>전기공학자 David R. Huber가 HydraLite로 창업. 핵심 미션: 광섬유 위로 흐르는 데이터 용량을 최대로 늘리는 것. 케이블 TV 시장을 첫 타겟으로 설정.</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-year">1997</div>
+      <div class="tl-body"><strong>IPO — 닷컴 버블의 수혜자</strong>NASDAQ 상장, 인터넷 폭발과 함께 급성장. WDM(파장분할다중화) 기술로 광섬유 단일 케이블에 여러 파장을 동시 전송하는 혁신 구현.</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-year">2001</div>
+      <div class="tl-body"><strong>CoreDirector — 세계 최초 지능형 광코어 스위치</strong>닷컴 버블 붕괴로 업계 전체가 침몰할 때 Ciena는 혁신을 멈추지 않았다. CoreDirector는 광 네트워크 관리의 패러다임을 바꿨다. 이 시기 주가는 고점 대비 -90% 이상 폭락, 회사 존폐 기로.</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-year">2009</div>
+      <div class="tl-body"><strong>WaveLogic 탄생 — 게임체인저의 시작</strong>Verizon과 함께 파리~프랑크푸르트 구간에서 세계 최초 100G(100Gbps) 배포 성공. WaveLogic 브랜드 출범. 이 기술 DNA가 오늘의 WaveLogic 6 Extreme 1.6T로 이어진다.</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-year">2010</div>
+      <div class="tl-body"><strong>Nortel MEN 인수 — $773M의 신의 한 수</strong>노텔이 파산하자 $773M에 Metro Ethernet Networks 사업부 인수. 여기서 얻은 WaveLogic 코히런트 광학 기술은 현재까지 경쟁 우위의 핵심. 역사상 가장 탁월한 M&A 중 하나로 평가.</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-year">2014</div>
+      <div class="tl-body"><strong>NYSE 이전 상장</strong>NASDAQ → NYSE 이전. 주류 기관투자자 접근성 확대.</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-year">2015</div>
+      <div class="tl-body"><strong>소프트웨어로의 확장 — Cyan 인수, Blue Planet 출범</strong>순수 하드웨어 기업에서 소프트웨어 정의 네트워킹(SDN)으로 확장. Blue Planet 브랜드로 네트워크 자동화 소프트웨어 시장 진입.</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-year">2017</div>
+      <div class="tl-body"><strong>400G 세계 최초 배포</strong>Vodafone과 함께 단일 파장 400G 세계 최초 라이브 배포(WaveLogic Ai). 오타와에 42만 5천 평방피트 R&D 캠퍼스 완공.</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-year">2024</div>
+      <div class="tl-body"><strong>WaveLogic 6 출시 — 1.6Tbps 업계 최초</strong>업계 최초 1.6테라비트/초 단일 파장 코히런트 솔루션 출시. 출시 2분기 만에 고객 49개사 확보. AI 데이터센터 인터커넥트 수요 폭발과 맞물려 성장 재점화.</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-year">2025</div>
+      <div class="tl-body"><strong>Nubis Communications 인수 — 데이터센터 내부로</strong>"Inside the Data Center" 전략 선언. AI GPU 칩 간 초고속 광인터커넥트 전문업체 Nubis 인수. 네트워크 외부에서 데이터센터 내부까지 TAM 확장. 창사 이래 최대 매출 달성.</div>
+    </div>
+  </div>
+
+  <h3>2.3 핵심 사업 포트폴리오</h3>
+
+  <div class="seg-grid">
+    <div class="seg-card">
+      <div class="seg-pct">~70%</div>
+      <div class="seg-name">📡 Networking Platforms</div>
+      <div class="seg-desc">6500 패킷-광학 플랫폼, Waveserver 시리즈가 핵심. WaveLogic 모뎀을 탑재한 하드웨어가 수익의 대부분. 광학 네트워킹(Q1 FY26: $1.02B)과 라우팅·스위칭(Q1 FY26: $174M)으로 구성.</div>
+    </div>
+    <div class="seg-card">
+      <div class="seg-pct">~13%</div>
+      <div class="seg-name">🔧 Global Services</div>
+      <div class="seg-desc">설치, 유지보수, 컨설팅, 수명주기 관리. 고마진 반복 수익원. 고객 고착화(Lock-in) 효과 강화 역할. Q4 FY25: $177M.</div>
+    </div>
+    <div class="seg-card">
+      <div class="seg-pct">~10%</div>
+      <div class="seg-name">💻 Platform Software & Services</div>
+      <div class="seg-desc">네트워크 관리 소프트웨어. 하드웨어 판매와 연계된 소프트웨어 라이선스 및 지원 수익. 마진율이 높아 믹스 개선의 핵심.</div>
+    </div>
+    <div class="seg-card">
+      <div class="seg-pct">~7%</div>
+      <div class="seg-name">🤖 Blue Planet Automation</div>
+      <div class="seg-desc">AI 기반 네트워크 자동화·오케스트레이션 소프트웨어. 독립 SaaS형 수익. 아직 소규모지만 장기적으로 가장 고마진 세그먼트. 2026년 AI 예측 분석 업데이트.</div>
+    </div>
+  </div>
+
+  <div class="chart-wrap">
+    <div class="chart-title">세그먼트별 매출 구성 (FY2025 기준 추정)</div>
+    <canvas id="segChart"></canvas>
+  </div>
+</section>
+
+<!-- ═══════════════ S3: 투자 논리 ═══════════════ -->
+<section id="s3">
+  <div class="section-num">Section 03</div>
+  <h2>핵심 투자 논리 및 가치 제안</h2>
+
+  <h3>📌 Thesis 1 — AI 인프라의 숨겨진 필수재</h3>
+  <p>AI 모델을 학습·추론하려면 GPU 클러스터 간 초고속 데이터 이동이 필수다. GPU 서버는 삼성·엔비디아가 주목을 받지만, <span class="highlight">그 서버들을 연결하는 광섬유 파이프를 만드는 회사가 Ciena</span>다. ChatGPT 하나를 서비스하기 위해 수십만 대의 GPU가 광통신으로 연결돼야 한다. AI 투자가 늘어날수록 Ciena의 수요는 구조적으로 증가한다.</p>
+  <p>Q3 FY2025에 클라우드 프로바이더 매출이 전년 대비 <span class="green-text">+85% 급증</span>했으며, Q1 FY2026에서 "Cloud Provider A"(추정: Microsoft 또는 AWS) 단독으로 분기 매출 $331M, "Cloud Provider B"는 $160M를 기록했다.</p>
+
+  <h3>📌 Thesis 2 — WaveLogic 기술 해자: 3년 이상의 선행</h3>
+  <p>WaveLogic은 단순한 브랜드가 아니다. Ciena가 2010년 Nortel로부터 인수한 뒤 15년간 독자적으로 발전시킨 <span class="highlight">코히런트 광학 DSP 칩셋 기술</span>이다. WaveLogic 6 Extreme은 단일 파장에서 1.6Tbps를 구현하면서도 전력 소비를 비트당 50% 절감했다.</p>
+  <p>출시 2분기 만에 고객 49개사가 도입했고, 양자암호(QKD)와 NIST 인증 후양자암호(PQC)를 기본 탑재한 최초의 상용 솔루션이다. 경쟁사 Nokia, Infinera는 아직 800G 수준에 머물러 있다.</p>
+
+  <h3>📌 Thesis 3 — TAM $50B 확장 궤도</h3>
+  <p>Ciena는 FY2026 실적 발표에서 <span class="highlight">2029년까지 TAM(총 유효시장)이 약 $50B에 달할 것</span>으로 전망했다. 이는 단순 외부망 광통신만이 아닌 데이터센터 내부(Inside the Data Center) 인터커넥트 시장을 포함한 수치다. Nubis 인수로 GPU-to-GPU 칩 레벨 광학 인터커넥트 시장까지 진출, TAM이 대폭 확대됐다.</p>
+
+  <h3>📌 Thesis 4 — 운영 레버리지의 가속화</h3>
+  <p>FY2026 가이던스에 따르면 비용(OpEx)은 FY2025 대비 거의 플랫하게 유지되는 반면, 매출은 +32% 성장이 예상된다. 즉 <span class="highlight">모든 증분 매출의 상당 부분이 수익으로 직결되는 레버리지 구조</span>가 형성 중이다. Q1 FY2026 조정 EPS $1.35는 전년 동기 대비 +111%.</p>
+
+  <h3>📌 Thesis 5 — 자사주 매입을 통한 주주 환원</h3>
+  <p>3개년 $10억 자사주 매입 프로그램 진행 중. FY2025 한 해에만 $330M 매입 완료. 배당 없이 모든 잉여 현금을 R&D와 자사주 매입에 집중하는 구조로, <span class="highlight">EPS 성장을 가속화</span>하는 효과.</p>
+</section>
+
+<!-- ═══════════════ S4: 재무 분석 ═══════════════ -->
+<section id="s4">
+  <div class="section-num">Section 04</div>
+  <h2>재무 성과 및 가치 평가</h2>
+
+  <h3>4.1 주요 재무 동향 분석</h3>
+
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>회계연도</th>
+        <th>매출</th>
+        <th>YoY 성장</th>
+        <th>조정 Gross Margin</th>
+        <th>조정 EPS</th>
+        <th>비고</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>FY2023</td>
+        <td class="num">$4.26B</td>
+        <td class="neg">−7%</td>
+        <td class="num">~43%</td>
+        <td class="num">$2.78</td>
+        <td>공급망 과잉 재고 사이클 하강</td>
+      </tr>
+      <tr>
+        <td>FY2024</td>
+        <td class="num">$4.01B</td>
+        <td class="neg">−6%</td>
+        <td class="num">~42%</td>
+        <td class="num">$1.82</td>
+        <td>수요 조정·재고 소화 국면</td>
+      </tr>
+      <tr>
+        <td>FY2025</td>
+        <td class="num">$4.77B</td>
+        <td class="pos">+19%</td>
+        <td class="num">~43%</td>
+        <td class="num">$2.64</td>
+        <td>AI 수요 급반등·클라우드 발주 급증</td>
+      </tr>
+      <tr>
+        <td>FY2026E</td>
+        <td class="num">$6.3B</td>
+        <td class="pos">+32%</td>
+        <td class="num">~43%</td>
+        <td class="num">~$6.5–7.0E</td>
+        <td>회사 가이던스 상향 (6/4 발표)</td>
+      </tr>
+      <tr>
+        <td>Q1 FY2026</td>
+        <td class="num">$1.43B</td>
+        <td class="pos">+33%</td>
+        <td class="num">43–44%</td>
+        <td class="num">$1.35</td>
+        <td>EPS +111% YoY</td>
+      </tr>
+      <tr>
+        <td>Q2 FY2026</td>
+        <td class="num">$1.57B</td>
+        <td class="pos">+40%</td>
+        <td class="num">~43%</td>
+        <td class="num">$1.64</td>
+        <td>EPS +290% YoY — 어닝 서프라이즈</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="chart-wrap">
+    <div class="chart-title">연간 매출 추이 및 전망 (단위: $B)</div>
+    <canvas id="revenueChart"></canvas>
+  </div>
+
+  <div class="chart-wrap">
+    <div class="chart-title">분기별 매출 성장 추이 (FY2025 Q1 ~ FY2026 Q2, $B)</div>
+    <canvas id="quarterChart"></canvas>
+  </div>
+
+  <h3>4.2 경쟁사 비교분석</h3>
+
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>기업</th>
+        <th>주요 제품</th>
+        <th>광통신 기술 수준</th>
+        <th>AI 데이터센터 포지셔닝</th>
+        <th>위협 수준</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Nokia (광학부문)</strong></td>
+        <td>PSE-6s 플랫폼</td>
+        <td class="warn">~800G</td>
+        <td>중간 (Ciena 대비 지연)</td>
+        <td class="warn">중간</td>
+      </tr>
+      <tr>
+        <td><strong>Infinera (현 Nokia 인수)</strong></td>
+        <td>ICE6 칩셋</td>
+        <td class="warn">~800G</td>
+        <td>제한적 (Nokia와 통합 진행)</td>
+        <td class="warn">중간</td>
+      </tr>
+      <tr>
+        <td><strong>Huawei</strong></td>
+        <td>OSN 시리즈</td>
+        <td class="neg">400G–800G</td>
+        <td>서방 시장 접근 제한 (제재)</td>
+        <td class="pos">낮음 (서방 시장)</td>
+      </tr>
+      <tr>
+        <td><strong>Lumentum / II-VI</strong></td>
+        <td>광부품·레이저</td>
+        <td>부품 단위</td>
+        <td>Ciena의 부품 공급사 역할도</td>
+        <td class="pos">낮음 (다른 레이어)</td>
+      </tr>
+      <tr>
+        <td><strong>Cisco (광학)</strong></td>
+        <td>NCS 플랫폼</td>
+        <td class="warn">400G–800G</td>
+        <td>IP 라우팅 강점, 광학은 후발</td>
+        <td class="warn">중간</td>
+      </tr>
+      <tr>
+        <td><strong style="color:#00d4ff">Ciena</strong></td>
+        <td>WaveLogic 6 Extreme</td>
+        <td class="pos">1.6T (업계 최초)</td>
+        <td><strong class="pos">최강 (AI 데이터센터 채택 가속)</strong></td>
+        <td>—</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p><span class="highlight">핵심 인사이트:</span> Huawei는 제재로 서방 시장에서 배제됐고, Nokia는 Infinera 인수 통합에 집중하느라 혁신 속도가 저하됐다. 결국 서방 시장에서 1.6T 급 고속 광통신을 공급할 수 있는 기업은 사실상 Ciena 단 한 곳이다. 이 독점적 공급 구조가 급격한 매출 가속의 핵심 이유다.</p>
+
+  <div class="chart-wrap">
+    <div class="chart-title">경쟁사 기술 수준 비교 (단일 파장 최대 전송 속도 Gbps)</div>
+    <canvas id="compChart"></canvas>
+  </div>
+
+  <h3>4.3 가치 평가 요약</h3>
+
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>밸류에이션 지표</th>
+        <th>현재 값 (6/5 기준)</th>
+        <th>업종 평균</th>
+        <th>평가</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>GAAP P/E (TTM)</td>
+        <td class="neg">~300–400x</td>
+        <td class="num">25x</td>
+        <td class="neg">극도로 고평가</td>
+      </tr>
+      <tr>
+        <td>Forward P/E</td>
+        <td class="warn">76–81x</td>
+        <td class="num">25x</td>
+        <td class="warn">성장 프리미엄 반영</td>
+      </tr>
+      <tr>
+        <td>PEG Ratio</td>
+        <td class="pos">~1.25</td>
+        <td class="num">1.5–2.0</td>
+        <td class="pos">성장 대비 합리적</td>
+      </tr>
+      <tr>
+        <td>EV/EBITDA</td>
+        <td class="warn">~125x</td>
+        <td class="num">15–20x</td>
+        <td class="neg">부담</td>
+      </tr>
+      <tr>
+        <td>EV/FCF</td>
+        <td class="warn">~97x</td>
+        <td class="num">20–30x</td>
+        <td class="neg">부담</td>
+      </tr>
+      <tr>
+        <td>Price/Sales</td>
+        <td class="warn">~14x</td>
+        <td class="num">2–4x</td>
+        <td class="neg">매우 높음</td>
+      </tr>
+      <tr>
+        <td>Gross Margin</td>
+        <td class="num">42–43%</td>
+        <td class="num">40–45%</td>
+        <td class="pos">업종 내 경쟁력</td>
+      </tr>
+      <tr>
+        <td>ROE</td>
+        <td class="num">8.2%</td>
+        <td>—</td>
+        <td class="warn">개선 여지</td>
+      </tr>
+      <tr>
+        <td>52주 주가 변동</td>
+        <td class="pos">$70.77 → $637.51 (+800%)</td>
+        <td>—</td>
+        <td class="neg">극단적 모멘텀</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p><span class="warn-text">밸류에이션 인사이트:</span> PEG 1.25는 "성장 속도 대비 주가가 완전히 과도하지는 않다"는 시그널이다. 그러나 GAAP 기준 이익이 아직 낮아(GAAP EPS FY2025 $0.85) 외형적인 P/E는 극단적으로 높다. 인수 전제를 FY2026–2027 조정 EPS 기준으로 잡으면 Forward Multiple은 훨씬 합리적으로 보인다. <span class="red-text">단, 인수 프리미엄까지 얹으면 총 인수 비용은 $80~100B+ 레벨</span>이므로 전략적 타당성과 자금 조달 가능성을 가장 먼저 검토해야 한다.</p>
+
+  <div class="chart-wrap">
+    <div class="chart-title">조정 EPS 추이 및 추정 (Non-GAAP)</div>
+    <canvas id="epsChart"></canvas>
+  </div>
+</section>
+
+<!-- ═══════════════ S5: 리스크 & 기회 ═══════════════ -->
+<section id="s5">
+  <div class="section-num">Section 05</div>
+  <h2>주요 리스크 및 기회</h2>
+
+  <h3>⚠️ 핵심 리스크 — 절대 가볍게 보지 말 것</h3>
+  <div class="risk-grid">
+    <div class="risk-card">
+      <div class="risk-tag">Risk 01 · 밸류에이션</div>
+      <div class="risk-title">극단적 고평가의 함정</div>
+      <div class="risk-body">현재 주가는 52주 저점 대비 약 8배(+700%) 상승해 있다. 6월 4일 실적이 컨센서스를 크게 상회했음에도 하루에 -18.7% 폭락했다. <strong>이미 미래 성장이 상당 부분 가격에 반영됐다는 시장의 신호다.</strong> 인수 전 밸류에이션 조정기가 올 경우 인수 비용이 급감할 수 있으나, 지금 인수하면 과도한 프리미엄 위험 존재.</div>
+      <div class="risk-badge">밸류에이션 위험: 매우 높음</div>
+    </div>
+    <div class="risk-card">
+      <div class="risk-tag">Risk 02 · 고객 집중도</div>
+      <div class="risk-title">초대형 고객 2~3개社 의존</div>
+      <div class="risk-body">Q1 FY2026에서 "Cloud Provider A" 단독으로 전체 매출의 약 23%, "Cloud Provider B"가 11%를 차지. 단 2개 고객이 매출의 1/3 이상. <strong>이들 중 하나가 내재화(in-house 광학)를 추진하거나 발주를 감축하면 매출 충격이 즉각적으로 크다.</strong> 아마존, 구글 등이 자체 실리콘을 개발하듯 자체 광학 개발 가능성 존재.</div>
+      <div class="risk-badge">집중도 위험: 높음</div>
+    </div>
+    <div class="risk-card">
+      <div class="risk-tag">Risk 03 · 경쟁</div>
+      <div class="risk-title">신흥 경쟁자의 도전</div>
+      <div class="risk-body">Nvidia는 Spectrum-X 이더넷 플랫폼으로 AI 데이터센터 내부 네트워킹 진입 중. Broadcom·Marvell은 코히런트 DSP 칩 개발 중. <strong>기존 통신사 시장은 Ciena 독점이지만, 고성장 데이터센터 내부 인터커넥트 시장에서는 반도체 강자들과 정면 충돌 가능성이 있다.</strong></div>
+      <div class="risk-badge">경쟁 위험: 중-높음</div>
+    </div>
+    <div class="risk-card">
+      <div class="risk-tag">Risk 04 · 공급망</div>
+      <div class="risk-title">반도체·광부품 공급 불안정</div>
+      <div class="risk-body">WaveLogic 칩셋 제조에는 특수 InP(인듐인화물) 광반도체가 필요하다. 이 소재는 생산 업체가 매우 제한적. 2022~2024년처럼 수요·공급 불균형이 재발하면 <strong>납기 지연 → 고객 발주 취소 → 매출 급락</strong> 시나리오가 반복될 수 있다. 회사 스스로 이를 2026 가이던스 가정 조건으로 명시.</div>
+      <div class="risk-badge">공급망 위험: 중간</div>
+    </div>
+    <div class="risk-card">
+      <div class="risk-tag">Risk 05 · 관세·지정학</div>
+      <div class="risk-title">미·중 무역 갈등 및 관세 영향</div>
+      <div class="risk-body">하드웨어 기업으로서 부품 조달과 생산 일부가 아시아에 집중. 미국의 추가 관세 또는 중국의 희토류·광소재 수출 제한 시 원가 상승 압박. 회사는 2026 가이던스에서 "관세의 중대한 영향 없음"을 가정했으나, <strong>가정이 틀릴 경우 마진 압착 리스크 존재.</strong></div>
+      <div class="risk-badge">지정학 위험: 중간</div>
+    </div>
+    <div class="risk-card">
+      <div class="risk-tag">Risk 06 · 사이클성</div>
+      <div class="risk-title">통신사 CapEx 사이클 하강 리스크</div>
+      <div class="risk-body">2022~2024년 재고 과잉·발주 감소 국면처럼, 통신사들의 CapEx는 경기 사이클을 탄다. <strong>현재는 AI 수요로 상승 중이지만, AI 투자 버블 논란이 현실화되거나 클라우드 하이퍼스케일러의 투자가 둔화되면 다음 사이클 하강이 온다.</strong> 역사적으로 이런 국면에서 Ciena 주가는 -70~90%까지 조정받았다.</div>
+      <div class="risk-badge">사이클 위험: 중간</div>
+    </div>
+    <div class="risk-card">
+      <div class="risk-tag">Risk 07 · 마진</div>
+      <div class="risk-title">GAAP 수익성의 취약성</div>
+      <div class="risk-body">FY2025 GAAP EPS $0.85 vs. 조정 EPS $2.64. <strong>조정치와 GAAP의 격차($1.79/주)는 주식기반보상(SBC), 구조조정, 인수관련 비용 등이 상당하다는 의미다.</strong> 고성장 국면에선 묻히지만, 성장이 둔화되면 진짜 수익성 취약성이 드러난다. 인수 후 통합 비용까지 더해지면 단기 GAAP 손실 가능성.</div>
+      <div class="risk-badge">이익질 위험: 중간</div>
+    </div>
+    <div class="risk-card">
+      <div class="risk-tag">Risk 08 · 내부자 매도</div>
+      <div class="risk-title">임원진 주식 대량 매도 신호</div>
+      <div class="risk-body">최근 3개월간 내부자 매도 $27.2M 기록. 주가 급등 시 임원들이 대규모로 스톡옵션 및 RSU를 현금화 중. <strong>회사 내부를 가장 잘 아는 사람들이 팔고 있다는 신호는 반드시 체크해야 할 경고등이다.</strong></div>
+      <div class="risk-badge">내부자 신호: 주의</div>
+    </div>
+  </div>
+
+  <h3>🚀 핵심 기회 — 인수를 정당화하는 이유</h3>
+  <div class="risk-grid">
+    <div class="risk-card opp">
+      <div class="risk-tag">Opportunity 01</div>
+      <div class="risk-title">AI 인프라 투자 슈퍼 사이클</div>
+      <div class="risk-body">Microsoft, Amazon, Google, Meta 등이 2025~2027년 AI 인프라에 수천억 달러를 투자 중. 이 모든 투자는 서버 간, 데이터센터 간, 대륙 간 광통신 증설을 필수로 수반한다. Ciena의 성장은 단일 기업의 이야기가 아니라 시대적 흐름이다.</div>
+      <div class="risk-badge opp">기회 크기: 매우 큼</div>
+    </div>
+    <div class="risk-card opp">
+      <div class="risk-tag">Opportunity 02</div>
+      <div class="risk-title">Nubis 인수로 TAM $50B 개방</div>
+      <div class="risk-body">기존 외부망 광통신 TAM에 더해, AI GPU 간 초고속 광인터커넥트(Inside DC)라는 신규 TAM 진입. 데이터센터 내부 시장은 외부망보다 훨씬 빠르게 성장 중이며, 고마진 특성을 가진다. 2029년 TAM $50B은 현재 매출의 약 8배 규모다.</div>
+      <div class="risk-badge opp">기회 크기: 매우 큼</div>
+    </div>
+    <div class="risk-card opp">
+      <div class="risk-tag">Opportunity 03</div>
+      <div class="risk-title">양자 내성 암호화 — 차세대 규제 수혜</div>
+      <div class="risk-body">WaveLogic 6 Extreme은 양자컴퓨터 공격에도 안전한 NIST 인증 후양자암호(PQC)를 기본 탑재한 최초의 상용 광통신 솔루션. 정부·국방·금융기관의 보안 업그레이드 수요가 규제로 강제되는 시점이 다가오면 새로운 대규모 교체 수요가 발생한다.</div>
+      <div class="risk-badge opp">기회 크기: 중-큼</div>
+    </div>
+    <div class="risk-card opp">
+      <div class="risk-tag">Opportunity 04</div>
+      <div class="risk-title">해저케이블 붐 — 대륙 간 연결</div>
+      <div class="risk-body">구글, Meta, Amazon이 자체 해저케이블 구축에 수십억 달러 투자 중. Ciena의 WaveLogic 플랫폼은 해저케이블 최적화 솔루션으로 포지셔닝되어 있으며, 이 시장에서의 승점은 10~20년 유지보수 서비스까지 포함한 장기 수익원이다.</div>
+      <div class="risk-badge opp">기회 크기: 큼</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ S6: Bull / Bear ═══════════════ -->
+<section id="s6">
+  <div class="section-num">Section 06</div>
+  <h2>Bull Case &amp; Bear Case</h2>
+
+  <div class="bb-grid">
+    <div class="bull-card">
+      <div class="bb-tag">🐂 BULL CASE</div>
+      <div class="bb-price">$900–1,200+</div>
+      <p style="font-size:13px;color:var(--text3);margin-bottom:16px;">시나리오: AI 수요 지속·기술 독점 유지</p>
+      <div class="bb-item">AI 데이터센터 투자가 2030년까지 현재 속도로 지속, Ciena가 생산 가능한 모든 물량이 즉시 소화</div>
+      <div class="bb-item">WaveLogic 7 (3.2T?) 로드맵 실현으로 경쟁 우위 5년 이상 연장</div>
+      <div class="bb-item">FY2027 매출 $8B+ 달성, 조정 EPS $12–15 구간, 50x Forward P/E 적용 시 주가 $600–750</div>
+      <div class="bb-item">Nubis의 데이터센터 내부 인터커넥트 기술이 메인스트림화, 추가 TAM $20B+ 현실화</div>
+      <div class="bb-item">Blue Planet 소프트웨어가 독립 SaaS 비즈니스로 성장, 전체 마진 구조 개선</div>
+      <div class="bb-item">양자암호 규제 시행으로 전 세계 통신 인프라 교체 수요 발생, 미정부 계약 수십억 달러</div>
+    </div>
+    <div class="bear-card">
+      <div class="bb-tag">🐻 BEAR CASE</div>
+      <div class="bb-price">$150–250</div>
+      <p style="font-size:13px;color:var(--text3);margin-bottom:16px;">시나리오: AI 거품·수요 급감 시나리오</p>
+      <div class="bb-item">AI 투자 과잉 논란 현실화, 하이퍼스케일러들이 CapEx 급감 → 통신 발주 절벽 재연</div>
+      <div class="bb-item">Cloud Provider A/B가 자체 광학 칩 개발 공개, 내재화(in-house) 전환 리스크 현실화</div>
+      <div class="bb-item">Nvidia, Broadcom 등이 AI 인터커넥트 시장에 고성능 솔루션 출시, 가격 경쟁 심화</div>
+      <div class="bb-item">공급망 충격(InP 소재 부족, 관세 확대)으로 마진 압착 + 납기 지연 + 고객 이탈</div>
+      <div class="bb-item">2022~2024 재고 과잉 사이클 반복, 2~3년간 성장 정체 국면 진입</div>
+      <div class="bb-item">현재 GAAP 기준 수익성 취약 노출, 주가 -70% 이상 조정 시 인수 기회 역설적으로 발생</div>
+    </div>
+  </div>
+
+  <div class="chart-wrap">
+    <div class="chart-title">Bull / Base / Bear 시나리오별 매출 전망 ($B)</div>
+    <canvas id="scenarioChart"></canvas>
+  </div>
+
+  <h3>🎯 M&A 최종 의견: "리스크 관리형 단계적 접근을 권고"</h3>
+
+  <div class="verdict-box" style="border-color: var(--yellow);">
+    <div class="verdict-tag">전략적 인수 로드맵</div>
+    <div class="verdict-title" style="color: var(--yellow);">3단계 접근: 관찰 → 파트너십 → 인수</div>
+    <div class="verdict-body">
+      <strong style="color:var(--text)">Phase 1 (지금~12개월):</strong> 소수 지분(5~10%) 확보. 현재 밸류에이션이 극도로 높으므로 전면 인수는 과도한 프리미엄 위험. 소수 지분으로 보드 참관권 확보, 내부 실사 진행. 다음 사이클 하강 또는 주가 조정 시 추가 매입 포지셔닝.<br><br>
+      <strong style="color:var(--text)">Phase 2 (12~36개월):</strong> 전략적 파트너십 체결. 공동 R&D, OEM 공급 계약, 특정 지역/고객 우선 공급권 협상. 관계 심화 및 시너지 검증.<br><br>
+      <strong style="color:var(--text)">Phase 3 (36개월+):</strong> 조건부 전면 인수. FY2027 실적 확인 후 EPS $15 이상 달성, Forward P/E 40x 이하로 조정 시 전면 인수 검토. <span style="color:var(--red)">현재 주가 기준 전면 인수는 $80~100B+ 소요로 재무적 타당성 검토 필수.</span>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+<footer>
+  Ciena Corporation (NYSE: CIEN) — M&A Acquisition Briefing &nbsp;|&nbsp; 기준일: 2026년 6월 5일 &nbsp;|&nbsp; 본 보고서는 투자 권유가 아닌 M&A 전략 검토 목적으로 작성됨.
+  모든 수치는 공개된 SEC 공시, 실적 발표 자료 기반이며, 추정치는 명기함.
+</footer>
+
+<script>
+const mono = "'IBM Plex Mono', monospace";
+Chart.defaults.color = '#8b96b0';
+Chart.defaults.font.family = "'Noto Sans KR', sans-serif";
+Chart.defaults.font.size = 12;
+
+// ── Revenue Chart ──
+new Chart(document.getElementById('revenueChart'), {
+  type: 'bar',
+  data: {
+    labels: ['FY2022', 'FY2023', 'FY2024', 'FY2025', 'FY2026E'],
+    datasets: [{
+      label: '매출 ($B)',
+      data: [3.54, 4.26, 4.01, 4.77, 6.3],
+      backgroundColor: ['#1e2d45','#1e2d45','#1e2d45','#00d4ff','#00e5a0'],
+      borderColor: ['#2a3d5e','#2a3d5e','#2a3d5e','#00d4ff','#00e5a0'],
+      borderWidth: 1,
+      borderRadius: 2,
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        callbacks: {
+          label: ctx => ` $${ctx.raw}B`
+        }
+      }
+    },
+    scales: {
+      x: { grid: { color: '#1e2535' } },
+      y: {
+        grid: { color: '#1e2535' },
+        ticks: { callback: v => `$${v}B` },
+        min: 0, max: 8
+      }
+    }
+  }
+});
+
+// ── Quarterly Chart ──
+new Chart(document.getElementById('quarterChart'), {
+  type: 'line',
+  data: {
+    labels: ['Q1 FY25','Q2 FY25','Q3 FY25','Q4 FY25','Q1 FY26','Q2 FY26'],
+    datasets: [{
+      label: '분기 매출 ($B)',
+      data: [1.07, 1.13, 1.22, 1.35, 1.43, 1.57],
+      borderColor: '#00d4ff',
+      backgroundColor: 'rgba(0,212,255,0.08)',
+      pointBackgroundColor: '#00d4ff',
+      tension: 0.3,
+      fill: true,
+      pointRadius: 5,
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { grid: { color: '#1e2535' } },
+      y: {
+        grid: { color: '#1e2535' },
+        ticks: { callback: v => `$${v}B` },
+        min: 0.9, max: 1.8
+      }
+    }
+  }
+});
+
+// ── Competitor Chart ──
+new Chart(document.getElementById('compChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Huawei', 'Cisco', 'Nokia', 'Infinera\n(Nokia)', 'Ciena\nWL6E'],
+    datasets: [{
+      label: '최대 속도 (Gbps)',
+      data: [400, 800, 800, 800, 1600],
+      backgroundColor: ['#2a1a1a','#1a2a2a','#1a2020','#1a2020','#00d4ff'],
+      borderColor: ['#ff4d6a','#5a6480','#5a6480','#5a6480','#00d4ff'],
+      borderWidth: 1,
+      borderRadius: 2,
+    }]
+  },
+  options: {
+    responsive: true,
+    indexAxis: 'y',
+    plugins: { legend: { display: false } },
+    scales: {
+      x: {
+        grid: { color: '#1e2535' },
+        ticks: { callback: v => v >= 1000 ? `${v/1000}T` : `${v}G` }
+      },
+      y: { grid: { color: '#1e2535' } }
+    }
+  }
+});
+
+// ── EPS Chart ──
+new Chart(document.getElementById('epsChart'), {
+  type: 'bar',
+  data: {
+    labels: ['FY2022', 'FY2023', 'FY2024', 'FY2025', 'FY2026E'],
+    datasets: [
+      {
+        label: 'GAAP EPS',
+        data: [0.12, 0.72, 0.58, 0.85, 5.5],
+        backgroundColor: 'rgba(255,77,106,0.25)',
+        borderColor: '#ff4d6a',
+        borderWidth: 1,
+        borderRadius: 2,
+      },
+      {
+        label: '조정 EPS (Non-GAAP)',
+        data: [1.44, 2.78, 1.82, 2.64, 7.0],
+        backgroundColor: 'rgba(0,229,160,0.25)',
+        borderColor: '#00e5a0',
+        borderWidth: 1,
+        borderRadius: 2,
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: { labels: { boxWidth: 12 } },
+      tooltip: { callbacks: { label: ctx => ` $${ctx.raw}` } }
+    },
+    scales: {
+      x: { grid: { color: '#1e2535' } },
+      y: {
+        grid: { color: '#1e2535' },
+        ticks: { callback: v => `$${v}` },
+        min: 0
+      }
+    }
+  }
+});
+
+// ── Segment Pie ──
+new Chart(document.getElementById('segChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Networking Platforms (광학+라우팅)', 'Global Services', 'Platform Software', 'Blue Planet'],
+    datasets: [{
+      data: [70, 13, 10, 7],
+      backgroundColor: ['#00d4ff','#00e5a0','#7b5ea7','#f5c518'],
+      borderColor: '#0a0c10',
+      borderWidth: 3,
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'right',
+        labels: { padding: 16, boxWidth: 14 }
+      },
+      tooltip: {
+        callbacks: { label: ctx => ` ${ctx.label}: ${ctx.raw}%` }
+      }
+    }
+  }
+});
+
+// ── Scenario Chart ──
+new Chart(document.getElementById('scenarioChart'), {
+  type: 'line',
+  data: {
+    labels: ['FY2024', 'FY2025', 'FY2026E', 'FY2027E', 'FY2028E'],
+    datasets: [
+      {
+        label: 'Bull Case',
+        data: [4.01, 4.77, 6.5, 8.5, 11.0],
+        borderColor: '#00e5a0',
+        backgroundColor: 'rgba(0,229,160,0.06)',
+        tension: 0.3,
+        fill: false,
+        borderDash: [],
+        pointRadius: 4,
+      },
+      {
+        label: 'Base Case',
+        data: [4.01, 4.77, 6.3, 7.8, 9.2],
+        borderColor: '#00d4ff',
+        backgroundColor: 'rgba(0,212,255,0.06)',
+        tension: 0.3,
+        fill: false,
+        borderDash: [6, 3],
+        pointRadius: 4,
+      },
+      {
+        label: 'Bear Case',
+        data: [4.01, 4.77, 5.8, 5.5, 5.0],
+        borderColor: '#ff4d6a',
+        backgroundColor: 'rgba(255,77,106,0.06)',
+        tension: 0.3,
+        fill: false,
+        borderDash: [3, 3],
+        pointRadius: 4,
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: { labels: { boxWidth: 14 } },
+      tooltip: { callbacks: { label: ctx => ` $${ctx.raw}B` } }
+    },
+    scales: {
+      x: { grid: { color: '#1e2535' } },
+      y: {
+        grid: { color: '#1e2535' },
+        ticks: { callback: v => `$${v}B` },
+        min: 3, max: 12
+      }
+    }
+  }
+});
+</script>
+</body>
+</html>
