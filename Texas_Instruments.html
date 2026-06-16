@@ -1,0 +1,1638 @@
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Texas Instruments (TXN) — M&A Acquisition Briefing</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+  :root {
+    --bg: #0a0c10;
+    --bg2: #0f1218;
+    --bg3: #161b24;
+    --bg4: #1d2433;
+    --border: #252e3f;
+    --border2: #2e3a50;
+    --accent: #c8a84b;
+    --accent2: #e8c86a;
+    --accent-dim: rgba(200,168,75,0.12);
+    --accent-glow: rgba(200,168,75,0.06);
+    --red: #e05c5c;
+    --green: #4caf87;
+    --blue: #5b9bd5;
+    --text: #cdd5e0;
+    --text-dim: #7a8699;
+    --text-bright: #eef2f8;
+    --font-heading: 'Space Grotesk', 'IBM Plex Sans KR', sans-serif;
+    --font-body: 'IBM Plex Sans KR', 'Space Grotesk', sans-serif;
+    --font-mono: 'IBM Plex Mono', monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: 15px;
+    line-height: 1.75;
+    padding: 0;
+  }
+
+  /* ── COVER ── */
+  .cover {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 80px 60px;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+    background:
+      radial-gradient(ellipse 60% 40% at 80% 50%, rgba(200,168,75,0.06) 0%, transparent 70%),
+      linear-gradient(135deg, #0a0c10 0%, #0d111a 100%);
+  }
+
+  .cover::before {
+    content: 'TXN';
+    position: absolute;
+    right: -20px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: var(--font-heading);
+    font-size: 28vw;
+    font-weight: 700;
+    color: rgba(200,168,75,0.03);
+    line-height: 1;
+    pointer-events: none;
+  }
+
+  .cover-meta { display: flex; gap: 16px; align-items: center; margin-bottom: 40px; }
+  .cover-tag {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 4px 12px;
+    border-radius: 2px;
+    color: var(--accent);
+    border: 1px solid var(--accent);
+    background: var(--accent-dim);
+  }
+  .cover-tag.grey {
+    color: var(--text-dim);
+    border-color: var(--border2);
+    background: transparent;
+  }
+
+  .cover h1 {
+    font-family: var(--font-heading);
+    font-size: clamp(42px, 6vw, 88px);
+    font-weight: 700;
+    line-height: 1.05;
+    color: var(--text-bright);
+    margin-bottom: 8px;
+    letter-spacing: -0.02em;
+  }
+
+  .cover h1 span { color: var(--accent); }
+
+  .cover-sub {
+    font-size: 20px;
+    color: var(--text-dim);
+    margin-bottom: 60px;
+    font-weight: 400;
+  }
+
+  .cover-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    max-width: 800px;
+    border: 1px solid var(--border);
+    overflow: hidden;
+    border-radius: 4px;
+  }
+
+  .cover-stat {
+    background: var(--bg3);
+    padding: 24px 28px;
+    border-right: 1px solid var(--border);
+  }
+  .cover-stat:last-child { border-right: none; }
+  .cs-label { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-dim); margin-bottom: 6px; }
+  .cs-value { font-family: var(--font-heading); font-size: 26px; font-weight: 700; color: var(--text-bright); }
+  .cs-value.gold { color: var(--accent2); }
+  .cs-unit { font-size: 12px; color: var(--text-dim); margin-top: 2px; }
+
+  /* ── LAYOUT ── */
+  .wrapper { max-width: 1100px; margin: 0 auto; padding: 0 40px; }
+
+  /* ── SECTION ── */
+  section { padding: 80px 0; border-bottom: 1px solid var(--border); }
+
+  .section-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .section-eyebrow::after {
+    content: '';
+    flex: 1;
+    max-width: 60px;
+    height: 1px;
+    background: var(--accent);
+    opacity: 0.4;
+  }
+
+  h2 {
+    font-family: var(--font-heading);
+    font-size: clamp(28px, 3.5vw, 44px);
+    font-weight: 700;
+    color: var(--text-bright);
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    margin-bottom: 40px;
+  }
+
+  h3 {
+    font-family: var(--font-heading);
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--text-bright);
+    margin-bottom: 16px;
+    margin-top: 40px;
+  }
+
+  h3:first-child { margin-top: 0; }
+
+  p { color: var(--text); margin-bottom: 16px; line-height: 1.8; }
+  p:last-child { margin-bottom: 0; }
+
+  /* ── VERDICT CARD (Section 1) ── */
+  .verdict-card {
+    background: var(--bg3);
+    border: 1px solid var(--border2);
+    border-left: 4px solid var(--accent);
+    border-radius: 4px;
+    padding: 32px 36px;
+    margin-bottom: 32px;
+  }
+
+  .verdict-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 12px;
+  }
+
+  .verdict-text {
+    font-size: 17px;
+    color: var(--text-bright);
+    line-height: 1.7;
+    margin: 0;
+  }
+
+  /* ── KEY METRICS GRID ── */
+  .metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 40px;
+  }
+
+  .metric-cell {
+    background: var(--bg3);
+    padding: 28px 24px;
+    position: relative;
+  }
+
+  .metric-cell::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--accent);
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  .metric-cell:hover::before { opacity: 1; }
+
+  .mc-label { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-dim); margin-bottom: 8px; }
+  .mc-value { font-family: var(--font-heading); font-size: 32px; font-weight: 700; color: var(--text-bright); line-height: 1; }
+  .mc-value.gold { color: var(--accent2); }
+  .mc-value.green { color: var(--green); }
+  .mc-value.red { color: var(--red); }
+  .mc-sub { font-size: 12px; color: var(--text-dim); margin-top: 6px; }
+
+  /* ── TWO-COL ── */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+  .three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 24px; }
+
+  /* ── INFO BOX ── */
+  .info-box {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 28px;
+  }
+
+  .info-box h4 {
+    font-family: var(--font-heading);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-bright);
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .info-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+    gap: 16px;
+  }
+
+  .info-row:last-child { border-bottom: none; }
+
+  .ir-label { font-size: 13px; color: var(--text-dim); white-space: nowrap; }
+  .ir-value { font-family: var(--font-mono); font-size: 13px; color: var(--text-bright); font-weight: 500; text-align: right; }
+  .ir-value.gold { color: var(--accent2); }
+  .ir-value.green { color: var(--green); }
+
+  /* ── CHART CONTAINER ── */
+  .chart-wrap {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 28px;
+    margin-bottom: 32px;
+  }
+
+  .chart-title {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 20px;
+  }
+
+  /* ── TIMELINE ── */
+  .timeline { position: relative; padding-left: 32px; }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 8px;
+    top: 8px;
+    bottom: 8px;
+    width: 1px;
+    background: linear-gradient(to bottom, var(--accent), var(--border));
+  }
+
+  .tl-item {
+    position: relative;
+    margin-bottom: 28px;
+  }
+
+  .tl-item::before {
+    content: '';
+    position: absolute;
+    left: -28px;
+    top: 7px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 8px var(--accent);
+  }
+
+  .tl-year {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--accent);
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    margin-bottom: 4px;
+  }
+
+  .tl-title {
+    font-weight: 600;
+    color: var(--text-bright);
+    margin-bottom: 4px;
+  }
+
+  .tl-desc { font-size: 13px; color: var(--text-dim); line-height: 1.6; }
+
+  /* ── RISK CARDS ── */
+  .risk-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+
+  .risk-card {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 24px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .risk-card.high { border-top: 3px solid var(--red); }
+  .risk-card.medium { border-top: 3px solid var(--accent); }
+  .risk-card.low { border-top: 3px solid var(--green); }
+
+  .risk-severity {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 500;
+    margin-bottom: 10px;
+  }
+  .risk-card.high .risk-severity { color: var(--red); }
+  .risk-card.medium .risk-severity { color: var(--accent); }
+  .risk-card.low .risk-severity { color: var(--green); }
+
+  .risk-title { font-weight: 600; color: var(--text-bright); margin-bottom: 8px; font-size: 15px; }
+  .risk-desc { font-size: 13px; color: var(--text-dim); line-height: 1.65; }
+
+  /* ── BULL BEAR ── */
+  .scenario-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 32px; }
+
+  .scenario-card {
+    border-radius: 4px;
+    padding: 32px;
+    border: 1px solid;
+  }
+
+  .scenario-card.bull {
+    background: rgba(76,175,135,0.04);
+    border-color: rgba(76,175,135,0.3);
+  }
+
+  .scenario-card.bear {
+    background: rgba(224,92,92,0.04);
+    border-color: rgba(224,92,92,0.3);
+  }
+
+  .scenario-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid;
+  }
+
+  .bull .scenario-header { border-color: rgba(76,175,135,0.2); }
+  .bear .scenario-header { border-color: rgba(224,92,92,0.2); }
+
+  .scenario-emoji { font-size: 28px; }
+
+  .scenario-label {
+    font-family: var(--font-heading);
+    font-size: 22px;
+    font-weight: 700;
+  }
+  .bull .scenario-label { color: var(--green); }
+  .bear .scenario-label { color: var(--red); }
+
+  .scenario-target {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-dim);
+  }
+
+  .scenario-price {
+    font-family: var(--font-heading);
+    font-size: 36px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .bull .scenario-price { color: var(--green); }
+  .bear .scenario-price { color: var(--red); }
+
+  .scenario-updown {
+    font-size: 13px;
+    margin-bottom: 24px;
+  }
+  .bull .scenario-updown { color: var(--green); }
+  .bear .scenario-updown { color: var(--red); }
+
+  .scenario-points { list-style: none; }
+  .scenario-points li {
+    font-size: 13px;
+    color: var(--text-dim);
+    padding: 7px 0;
+    border-bottom: 1px solid var(--border);
+    padding-left: 16px;
+    position: relative;
+    line-height: 1.5;
+  }
+  .scenario-points li:last-child { border-bottom: none; }
+  .scenario-points li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    font-family: var(--font-mono);
+    font-size: 11px;
+  }
+  .bull .scenario-points li::before { color: var(--green); }
+  .bear .scenario-points li::before { color: var(--red); }
+
+  /* ── PILL TAG ── */
+  .pill {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 2px;
+    background: var(--accent-dim);
+    color: var(--accent);
+    border: 1px solid rgba(200,168,75,0.2);
+    margin: 3px;
+  }
+
+  /* ── DIVIDER ── */
+  .subsection-divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 48px 0;
+  }
+
+  /* ── TABLE ── */
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    margin-top: 16px;
+  }
+
+  .data-table th {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    text-align: left;
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--border2);
+    background: var(--bg4);
+  }
+
+  .data-table td {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
+    vertical-align: middle;
+  }
+
+  .data-table tr:last-child td { border-bottom: none; }
+  .data-table tr:hover td { background: var(--bg4); }
+
+  .data-table td.number {
+    font-family: var(--font-mono);
+    text-align: right;
+  }
+  .data-table th.right { text-align: right; }
+  .data-table td.highlight { color: var(--text-bright); font-weight: 600; }
+  .data-table td.gold { color: var(--accent2); font-family: var(--font-mono); text-align: right; }
+  .data-table td.green { color: var(--green); font-family: var(--font-mono); text-align: right; }
+  .data-table td.red { color: var(--red); font-family: var(--font-mono); text-align: right; }
+
+  /* ── INSIGHT BOX ── */
+  .insight {
+    background: var(--accent-glow);
+    border: 1px solid rgba(200,168,75,0.2);
+    border-left: 3px solid var(--accent);
+    border-radius: 4px;
+    padding: 20px 24px;
+    margin: 24px 0;
+    font-size: 14px;
+    color: var(--text-bright);
+    line-height: 1.7;
+  }
+
+  .insight strong { color: var(--accent2); }
+
+  /* ── PORTFOLIO TAGS ── */
+  .portfolio-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .portfolio-item {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 24px;
+  }
+  .pi-icon { font-size: 24px; margin-bottom: 12px; }
+  .pi-title { font-weight: 600; color: var(--text-bright); margin-bottom: 8px; }
+  .pi-revenue { font-family: var(--font-mono); font-size: 12px; color: var(--accent); margin-bottom: 8px; }
+  .pi-desc { font-size: 13px; color: var(--text-dim); line-height: 1.6; }
+
+  /* ── MARKET SEGMENT ── */
+  .market-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--bg4);
+    border: 1px solid var(--border2);
+    border-radius: 20px;
+    padding: 6px 14px;
+    font-size: 12px;
+    color: var(--text-dim);
+    margin: 4px;
+  }
+
+  .market-badge .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    padding: 40px;
+    text-align: center;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-dim);
+    letter-spacing: 0.08em;
+    border-top: 1px solid var(--border);
+  }
+
+  /* ── TOC ── */
+  .toc {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 32px;
+    margin: 48px 0;
+  }
+
+  .toc-title {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 20px;
+  }
+
+  .toc-list { list-style: none; }
+  .toc-list li { padding: 6px 0; border-bottom: 1px solid var(--border); }
+  .toc-list li:last-child { border-bottom: none; }
+  .toc-list a {
+    color: var(--text);
+    text-decoration: none;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: color 0.2s;
+  }
+  .toc-list a:hover { color: var(--accent2); }
+  .toc-num { font-family: var(--font-mono); font-size: 11px; color: var(--text-dim); min-width: 24px; }
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════ COVER ══════════════════════ -->
+<div class="cover">
+  <div class="wrapper">
+    <div class="cover-meta">
+      <span class="cover-tag">M&A Acquisition Briefing</span>
+      <span class="cover-tag grey">NASDAQ: TXN</span>
+      <span class="cover-tag grey">June 2026</span>
+    </div>
+
+    <h1>Texas<br><span>Instruments</span></h1>
+    <p class="cover-sub">아날로그 반도체의 제국 — 인수 가능성 분석 보고서</p>
+
+    <div class="cover-stats">
+      <div class="cover-stat">
+        <div class="cs-label">2025 Revenue</div>
+        <div class="cs-value gold">$17.7B</div>
+        <div class="cs-unit">+13% YoY</div>
+      </div>
+      <div class="cover-stat">
+        <div class="cs-label">Net Income</div>
+        <div class="cs-value">$5.0B</div>
+        <div class="cs-unit">순이익률 28%</div>
+      </div>
+      <div class="cover-stat">
+        <div class="cs-label">Op. Income</div>
+        <div class="cs-value">$6.0B</div>
+        <div class="cs-unit">영업이익률 34%</div>
+      </div>
+      <div class="cover-stat">
+        <div class="cs-label">FCF (TTM)</div>
+        <div class="cs-value gold">$2.4B</div>
+        <div class="cs-unit">CapEx 사이클 정점 통과 중</div>
+      </div>
+    </div>
+
+    <div class="toc" style="margin-top:48px; max-width:640px;">
+      <div class="toc-title">목차 — Table of Contents</div>
+      <ul class="toc-list">
+        <li><a href="#s1"><span class="toc-num">01</span> 결론 요약 — Executive Summary</a></li>
+        <li><a href="#s2"><span class="toc-num">02</span> 기업 개요 및 현황</a></li>
+        <li><a href="#s3"><span class="toc-num">03</span> 핵심 투자 논리 및 가치 제안</a></li>
+        <li><a href="#s4"><span class="toc-num">04</span> 재무 성과 및 가치 평가</a></li>
+        <li><a href="#s5"><span class="toc-num">05</span> 주요 리스크 및 기회</a></li>
+        <li><a href="#s6"><span class="toc-num">06</span> Bull Case / Bear Case 시나리오</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════ SECTION 1: EXECUTIVE SUMMARY ══════════════════════ -->
+<section id="s1">
+  <div class="wrapper">
+    <div class="section-eyebrow">01 — Executive Summary</div>
+    <h2>결론 요약</h2>
+
+    <div class="verdict-card">
+      <div class="verdict-label">🎯 M&A 어드바이저의 핵심 판단</div>
+      <p class="verdict-text">
+        Texas Instruments는 <strong>아날로그 반도체 시장의 압도적 1위</strong>로, 단순한 칩 회사가 아닌 <strong>물리 인프라 기업</strong>입니다. 자사 공장(팹)에서 칩을 직접 만들고, 10만 개 이상의 제품을 10만 개 이상의 고객에게 직접 판매하는 구조는 경쟁자가 10년을 투자해도 복제하기 어렵습니다. 인수 매력도는 매우 높으나, 현재 주가 기준 시가총액 약 <strong>$1,700억~$1,800억 수준</strong>은 협상 테이블에 올리기 전 정치·규제 가능성을 먼저 검토해야 합니다. 전략적 인수자라면 반도체 공급망 내재화, 자동차/산업 IoT 포트폴리오 확보 목적으로 <strong>강력한 전략적 논거</strong>가 존재합니다.
+      </p>
+    </div>
+
+    <div class="metrics-grid">
+      <div class="metric-cell">
+        <div class="mc-label">인수 매력도</div>
+        <div class="mc-value gold">★★★★☆</div>
+        <div class="mc-sub">전략적 자산가치 최상위권</div>
+      </div>
+      <div class="metric-cell">
+        <div class="mc-label">딜 복잡도</div>
+        <div class="mc-value red">Very High</div>
+        <div class="mc-sub">규모·규제·독과점 심사</div>
+      </div>
+      <div class="metric-cell">
+        <div class="mc-label">적정 EV 추정</div>
+        <div class="mc-value gold">$195B~$220B</div>
+        <div class="mc-sub">30% 프리미엄 기준</div>
+      </div>
+    </div>
+
+    <div class="two-col" style="margin-top:32px;">
+      <div>
+        <h3>✅ 인수 찬성 요인 Top 5</h3>
+        <div class="info-box">
+          <div class="info-row"><span class="ir-label">① 시장지배력</span><span class="ir-value gold">아날로그 반도체 글로벌 #1</span></div>
+          <div class="info-row"><span class="ir-label">② 수직 통합 생산</span><span class="ir-value green">자사 팹 보유 → 원가 우위</span></div>
+          <div class="info-row"><span class="ir-label">③ 분기별 배당 성장</span><span class="ir-value gold">21년 연속 배당 증가</span></div>
+          <div class="info-row"><span class="ir-label">④ 산업/자동차 집중</span><span class="ir-value green">장기 수요 사이클 매력적</span></div>
+          <div class="info-row"><span class="ir-label">⑤ 고객 다변화</span><span class="ir-value green">10만+ 고객, 단일 의존 없음</span></div>
+        </div>
+      </div>
+      <div>
+        <h3>⚠️ 핵심 리스크 Top 5</h3>
+        <div class="info-box">
+          <div class="info-row"><span class="ir-label">① CapEx 과부담</span><span class="ir-value red">5년간 $40B+ 투자 계획</span></div>
+          <div class="info-row"><span class="ir-label">② 반도체 사이클</span><span class="ir-value red">다운사이클 수익성 급락</span></div>
+          <div class="info-row"><span class="ir-label">③ 중국 매출 의존</span><span class="ir-value red">매출 25%+, 지정학 리스크</span></div>
+          <div class="info-row"><span class="ir-label">④ 규제·독과점 심사</span><span class="ir-value red">FTC/EU 승인 불확실</span></div>
+          <div class="info-row"><span class="ir-label">⑤ FCF 일시 압박</span><span class="ir-value red">팹 완공 전 FCF 저조</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════ SECTION 2: COMPANY OVERVIEW ══════════════════════ -->
+<section id="s2">
+  <div class="wrapper">
+    <div class="section-eyebrow">02 — Company Overview</div>
+    <h2>기업 개요 및 현황</h2>
+
+    <!-- 2.1 Basic Info -->
+    <h3>2.1 기본 정보 및 핵심 지표</h3>
+
+    <div class="two-col">
+      <div class="info-box">
+        <h4>🏢 기업 프로필</h4>
+        <div class="info-row"><span class="ir-label">정식 명칭</span><span class="ir-value">Texas Instruments Inc.</span></div>
+        <div class="info-row"><span class="ir-label">티커</span><span class="ir-value gold">NASDAQ: TXN</span></div>
+        <div class="info-row"><span class="ir-label">본사</span><span class="ir-value">Dallas, Texas, USA</span></div>
+        <div class="info-row"><span class="ir-label">설립</span><span class="ir-value">1951년 (전신 1930년)</span></div>
+        <div class="info-row"><span class="ir-label">CEO</span><span class="ir-value">Haviv Ilan</span></div>
+        <div class="info-row"><span class="ir-label">CTO</span><span class="ir-value">Ahmad Bahai</span></div>
+        <div class="info-row"><span class="ir-label">직원 수</span><span class="ir-value">34,000명 (2025)</span></div>
+        <div class="info-row"><span class="ir-label">사업 분류</span><span class="ir-value">반도체 (IDM)</span></div>
+      </div>
+      <div class="info-box">
+        <h4>📊 2025 주요 재무 지표</h4>
+        <div class="info-row"><span class="ir-label">연간 매출</span><span class="ir-value gold">$17.7B</span></div>
+        <div class="info-row"><span class="ir-label">영업이익</span><span class="ir-value gold">$6.02B</span></div>
+        <div class="info-row"><span class="ir-label">순이익</span><span class="ir-value gold">$5.0B</span></div>
+        <div class="info-row"><span class="ir-label">총 자산</span><span class="ir-value">$34.6B</span></div>
+        <div class="info-row"><span class="ir-label">총 자본</span><span class="ir-value">$16.3B</span></div>
+        <div class="info-row"><span class="ir-label">영업이익률</span><span class="ir-value green">~34%</span></div>
+        <div class="info-row"><span class="ir-label">순이익률</span><span class="ir-value green">28%</span></div>
+        <div class="info-row"><span class="ir-label">배당 연속 증가</span><span class="ir-value gold">21년+</span></div>
+      </div>
+    </div>
+
+    <div class="insight" style="margin-top:28px;">
+      <strong>인수자 관점 핵심 포인트:</strong> TI는 설계(Design)와 제조(Manufacturing)를 모두 자사에서 수행하는 IDM(Integrated Device Manufacturer) 모델입니다. TSMC같은 파운드리에 의존하지 않아 공급망 리스크가 적고, 300mm 웨이퍼 기반 자사 팹에서 경쟁사 대비 구조적으로 낮은 원가를 유지합니다.
+    </div>
+
+    <!-- 2.2 History -->
+    <hr class="subsection-divider">
+    <h3>2.2 혁신에서 시작된 역사 — 반세기를 넘는 성장 스토리</h3>
+
+    <div class="two-col">
+      <div class="timeline">
+        <div class="tl-item">
+          <div class="tl-year">1930</div>
+          <div class="tl-title">Geophysical Service Inc. 설립</div>
+          <div class="tl-desc">석유 탐사 장비 회사로 출발. 지진파 분석 도구를 공급하며 전자공학 역량 축적.</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">1951</div>
+          <div class="tl-title">Texas Instruments로 사명 변경</div>
+          <div class="tl-desc">국방부 전자 장비 계약을 발판으로 반도체 사업에 본격 진입.</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">1954</div>
+          <div class="tl-title">세계 최초 실리콘 트랜지스터 상용화</div>
+          <div class="tl-desc">Gordon Teal 박사 주도. TI를 반도체 역사의 중심에 올려놓은 사건.</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">1958</div>
+          <div class="tl-title">집적회로(IC) 발명 — Jack Kilby</div>
+          <div class="tl-desc">Jack Kilby, TI 연구소에서 세계 최초 집적회로 발명. 2000년 노벨 물리학상 수상. 현대 전자산업의 출발점.</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">1967</div>
+          <div class="tl-title">세계 최초 휴대용 전자계산기 개발</div>
+          <div class="tl-desc">소비자 전자 시대를 열며 대중에게 TI 브랜드를 각인.</div>
+        </div>
+      </div>
+      <div class="timeline">
+        <div class="tl-item">
+          <div class="tl-year">1990</div>
+          <div class="tl-title">TI-81 그래핑 계산기 출시</div>
+          <div class="tl-desc">교육 시장 장악. 북미 교실의 사실상 표준이 됨. 브랜드 충성도 형성.</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">1997</div>
+          <div class="tl-title">국방 사업부 Raytheon에 매각</div>
+          <div class="tl-desc">선택과 집중 — 반도체 코어 사업에 올인하는 전략적 전환점.</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">2011</div>
+          <div class="tl-title">National Semiconductor 인수 ($6.5B)</div>
+          <div class="tl-desc">아날로그 포트폴리오 대폭 확장. 현재 TI 아날로그 제국의 기반.</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">2013~</div>
+          <div class="tl-title">"직접 판매" 전략 본격화</div>
+          <div class="tl-desc">ti.com 직접 판매 채널 구축. 마진 개선 + 고객 데이터 내재화. 경쟁사와 차별화된 GTM 전략.</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">2022~</div>
+          <div class="tl-title">300mm 팹 대규모 확장 (CHIPS Act)</div>
+          <div class="tl-desc">텍사스·유타 신규 팹 건설. 2030년까지 생산능력 2.5배 확장 목표. 미국 반도체 공급망 재편의 핵심 플레이어.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="insight">
+      <strong>역사가 주는 교훈:</strong> TI는 단순한 칩 회사가 아닙니다. <strong>집적회로를 발명한 회사</strong>입니다. 70년간 사업 포트폴리오를 정제해온 결과, 현재 남은 것은 "지우기 어려운 해자(Moat)"만입니다. 이 역사적 맥락은 인수 후 문화 통합 난이도를 의미하기도 합니다.
+    </div>
+
+    <!-- 2.3 Portfolio -->
+    <hr class="subsection-divider">
+    <h3>2.3 핵심 사업 포트폴리오</h3>
+
+    <div class="portfolio-grid">
+      <div class="portfolio-item">
+        <div class="pi-icon">⚡</div>
+        <div class="pi-title">Analog (아날로그) — 핵심 엔진</div>
+        <div class="pi-revenue">2024 매출 $12.2B | 전체의 ~78%</div>
+        <div class="pi-desc">전력 관리 IC, 데이터 컨버터, 앰프, 인터페이스 칩. 현실 세계의 물리 신호(온도·압력·빛·소리)를 디지털로 변환하는 모든 곳에 필수. 자동차 한 대에 최소 50~100개 탑재.</div>
+        <div style="margin-top:12px;">
+          <span class="pill">Power Mgmt</span>
+          <span class="pill">Data Converter</span>
+          <span class="pill">Amplifiers</span>
+          <span class="pill">Interface</span>
+        </div>
+      </div>
+      <div class="portfolio-item">
+        <div class="pi-icon">🔧</div>
+        <div class="pi-title">Embedded Processing — 두뇌</div>
+        <div class="pi-revenue">2024 매출 $2.5B | 전체의 ~16%</div>
+        <div class="pi-desc">마이크로컨트롤러(MCU), DSP. 산업 자동화·모터 제어·실시간 제어 시스템에 탑재. 아날로그와 합쳐지면 산업/자동차용 완전한 시스템 솔루션 제공 가능.</div>
+        <div style="margin-top:12px;">
+          <span class="pill">MCU</span>
+          <span class="pill">DSP</span>
+          <span class="pill">ADAS</span>
+        </div>
+      </div>
+      <div class="portfolio-item">
+        <div class="pi-icon">💡</div>
+        <div class="pi-title">DLP (Digital Light Processing)</div>
+        <div class="pi-revenue">기타 부문 포함 ($947M, 2024)</div>
+        <div class="pi-desc">TI가 발명한 마이크로미러 칩. 프로젝터·시네마 영사기·자동차 HUD에 탑재. 니치 마켓이지만 압도적 기술 우위 보유. M&A 관점에서 부가가치 자산.</div>
+        <div style="margin-top:12px;">
+          <span class="pill">Projector</span>
+          <span class="pill">Cinema</span>
+          <span class="pill">Auto HUD</span>
+        </div>
+      </div>
+      <div class="portfolio-item">
+        <div class="pi-icon">🎓</div>
+        <div class="pi-title">교육용 계산기 — 브랜드 자산</div>
+        <div class="pi-revenue">매출 비중 소, 전략적 가치 유지</div>
+        <div class="pi-desc">TI-84, TI-Nspire 등 북미 교육 시장 사실상 독점. 재무 기여도는 작지만 엔지니어 세대를 TI 생태계로 유입시키는 '브랜드 파이프라인' 역할.</div>
+        <div style="margin-top:12px;">
+          <span class="pill">TI-84</span>
+          <span class="pill">TI-Nspire</span>
+          <span class="pill">Education</span>
+        </div>
+      </div>
+    </div>
+
+    <hr class="subsection-divider">
+    <h3>📍 최종 수요 시장 분포</h3>
+    <p>TI의 매출을 최종 시장 기준으로 분류하면 다음과 같습니다. 사이클을 타는 소비자 전자는 의도적으로 축소, 장기 성장성이 높은 산업·자동차 비중을 지속 확대 중입니다.</p>
+
+    <div class="chart-wrap">
+      <div class="chart-title">매출 엔드마켓 구성 (추정, 2024~2025 기준)</div>
+      <canvas id="endMarketChart" height="90"></canvas>
+    </div>
+
+    <div style="display:flex; flex-wrap:wrap; gap:8px; margin-top:8px;">
+      <span class="market-badge"><span class="dot" style="background:#c8a84b;"></span>Industrial ~40%</span>
+      <span class="market-badge"><span class="dot" style="background:#5b9bd5;"></span>Automotive ~30%</span>
+      <span class="market-badge"><span class="dot" style="background:#4caf87;"></span>Personal Electronics ~15%</span>
+      <span class="market-badge"><span class="dot" style="background:#9b7ccc;"></span>Comms Equipment ~8%</span>
+      <span class="market-badge"><span class="dot" style="background:#e05c5c;"></span>Enterprise Systems ~7%</span>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════ SECTION 3: INVESTMENT THESIS ══════════════════════ -->
+<section id="s3">
+  <div class="wrapper">
+    <div class="section-eyebrow">03 — Investment Thesis</div>
+    <h2>핵심 투자 논리 및 가치 제안</h2>
+
+    <div class="insight">
+      <strong>핵심 질문:</strong> "왜 TI를 지금 인수해야 하는가?" → 답은 세 가지입니다. <strong>① 복제 불가능한 제조 해자, ② 전기화(Electrification) 시대의 가장 직접적인 수혜자, ③ 폭락해도 배당을 늘리는 자본 규율.</strong>
+    </div>
+
+    <h3>🏭 논리 1 — 300mm 웨이퍼가 만드는 원가 해자</h3>
+    <p>
+      반도체 산업에서 같은 면적의 실리콘 웨이퍼를 쓸 때, 200mm 웨이퍼 대비 300mm 웨이퍼는 <strong>칩 생산량이 2.3배</strong>이지만 비용은 1.5배 수준입니다. TI는 경쟁사보다 훨씬 먼저 아날로그 칩의 300mm 전환에 투자했고, 현재 경쟁사(ADI, Renesas 등)는 대부분 여전히 200mm 기반에 의존합니다.
+    </p>
+    <p>
+      결과적으로 TI는 동일 제품에서 <strong>칩 1개당 원가가 경쟁사 대비 20~40% 낮은 것으로 추정</strong>되며, 이 격차는 팹이 가동될수록 벌어집니다. 인수 시 이 구조적 원가 우위는 그대로 획득됩니다.
+    </p>
+
+    <div class="chart-wrap">
+      <div class="chart-title">300mm vs 200mm 웨이퍼 원가 효율 비교 (개념도)</div>
+      <canvas id="waferChart" height="100"></canvas>
+    </div>
+
+    <h3>🚗 논리 2 — 전기차·산업 자동화는 TI가 가장 많이 파는 시장</h3>
+    <p>
+      전기차(EV) 한 대에는 내연기관차 대비 <strong>3~5배 많은 아날로그/전력 반도체</strong>가 필요합니다. 배터리 관리 시스템(BMS), 모터 드라이버, 온보드 충전기, DC-DC 컨버터 — 모두 TI의 핵심 제품군입니다. 동시에 공장 자동화(스마트 팩토리)는 산업용 MCU와 모터 제어 IC 수요를 폭발적으로 늘리고 있습니다.
+    </p>
+    <p>
+      TI의 산업+자동차 매출 비중은 <strong>현재 약 70%</strong>이며, 이는 의도적인 포트폴리오 재편의 결과입니다. 단기 사이클을 타는 스마트폰·PC 의존도를 줄이고 10~20년 장기 성장 궤도에 올라선 셈입니다.
+    </p>
+
+    <h3>💰 논리 3 — 21년 배당 성장이 말해주는 자본 규율</h3>
+    <p>
+      TI는 <strong>21년 연속 배당금을 증가</strong>시켰습니다. 반도체 다운사이클에서도 배당을 줄이지 않고 오히려 늘린 것은 경영진이 현금 창출 능력에 대한 확고한 자신감을 갖고 있다는 신호입니다. 2024년 기준 주주환원(배당+바이백) 금액은 <strong>$5.7B</strong>으로 순이익을 상회합니다.
+    </p>
+
+    <h3>🔒 논리 4 — 직접 판매(Direct Sales) 전략이 만드는 고객 점착성</h3>
+    <p>
+      TI는 ti.com을 통한 직접 판매 비율을 꾸준히 늘렸습니다. 직접 판매 채널은 세 가지 이점을 제공합니다: <strong>① 마진 개선 (유통 마진 절감), ② 고객 데이터 확보, ③ 재고 사이클 조기 파악.</strong> 이를 통해 반도체 사이클 예측 능력이 향상되고, 고객 교체 비용(Switching Cost)이 높아집니다.
+    </p>
+
+    <div class="chart-wrap">
+      <div class="chart-title">TI 핵심 경쟁 우위 요소 (정성 평가)</div>
+      <canvas id="radarChart" height="120"></canvas>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════ SECTION 4: FINANCIALS ══════════════════════ -->
+<section id="s4">
+  <div class="wrapper">
+    <div class="section-eyebrow">04 — Financials & Valuation</div>
+    <h2>재무 성과 및 가치 평가</h2>
+
+    <!-- 4.1 Financial Trends -->
+    <h3>4.1 주요 재무 동향 분석</h3>
+
+    <div class="chart-wrap">
+      <div class="chart-title">연간 매출 / 영업이익 / 순이익 추이 (단위: $B)</div>
+      <canvas id="revenueChart" height="100"></canvas>
+    </div>
+
+    <div class="insight">
+      <strong>2023~2024 실적 하락의 이유:</strong> 반도체 업계 전반의 재고 조정 사이클이 원인입니다. 특히 산업용 재고 과잉이 심했습니다. 그러나 2025년부터 회복이 확인되고 있으며 (<strong>Q3 2025 +14% YoY</strong>), 이는 수요 저점이 지나갔음을 시사합니다. 인수 타이밍 관점에서는 <strong>사이클 회복 초입</strong>에 해당합니다.
+    </div>
+
+    <div class="chart-wrap" style="margin-top:32px;">
+      <div class="chart-title">분기별 매출 추이 (2024 Q1 ~ 2025 Q3)</div>
+      <canvas id="quarterlyChart" height="90"></canvas>
+    </div>
+
+    <div class="three-col" style="margin-top:32px;">
+      <div class="info-box">
+        <h4>💵 현금 창출력</h4>
+        <div class="info-row"><span class="ir-label">영업현금흐름 (TTM)</span><span class="ir-value gold">$6.9B</span></div>
+        <div class="info-row"><span class="ir-label">잉여현금흐름 (TTM)</span><span class="ir-value gold">$2.4B</span></div>
+        <div class="info-row"><span class="ir-label">CapEx (연간)</span><span class="ir-value red">~$4.8B</span></div>
+        <div class="info-row"><span class="ir-label">CHIPS Act 수혜</span><span class="ir-value green">$588M+ (2024)</span></div>
+        <div class="info-row"><span class="ir-label">FCF Margin</span><span class="ir-value">~9.6% (회복 중)</span></div>
+      </div>
+      <div class="info-box">
+        <h4>📊 수익성 지표</h4>
+        <div class="info-row"><span class="ir-label">매출총이익률</span><span class="ir-value gold">58%</span></div>
+        <div class="info-row"><span class="ir-label">영업이익률</span><span class="ir-value gold">34%</span></div>
+        <div class="info-row"><span class="ir-label">순이익률</span><span class="ir-value gold">28%</span></div>
+        <div class="info-row"><span class="ir-label">R&D / 매출</span><span class="ir-value">~12.5%</span></div>
+        <div class="info-row"><span class="ir-label">유효세율</span><span class="ir-value green">~12% (CHIPS 혜택)</span></div>
+      </div>
+      <div class="info-box">
+        <h4>🏦 재무 건전성</h4>
+        <div class="info-row"><span class="ir-label">현금+단기투자</span><span class="ir-value">$7.6B</span></div>
+        <div class="info-row"><span class="ir-label">장기부채</span><span class="ir-value red">$12.8B</span></div>
+        <div class="info-row"><span class="ir-label">순부채 (추정)</span><span class="ir-value red">~$5.2B</span></div>
+        <div class="info-row"><span class="ir-label">D/E 비율</span><span class="ir-value red">높음 (CapEx 사이클)</span></div>
+        <div class="info-row"><span class="ir-label">연속 배당 증가</span><span class="ir-value gold">21년+</span></div>
+      </div>
+    </div>
+
+    <!-- 4.2 Competitor Comparison -->
+    <hr class="subsection-divider">
+    <h3>4.2 경쟁사 비교 분석</h3>
+
+    <div class="chart-wrap">
+      <div class="chart-title">아날로그 반도체 주요 경쟁사 매출 및 수익성 비교 (2024~2025)</div>
+      <canvas id="compChart" height="120"></canvas>
+    </div>
+
+    <table class="data-table" style="margin-top:28px;">
+      <thead>
+        <tr>
+          <th>기업</th>
+          <th>티커</th>
+          <th class="right">매출 (2025)</th>
+          <th class="right">순이익</th>
+          <th class="right">영업이익률</th>
+          <th class="right">직원수</th>
+          <th>특이사항</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="highlight">Texas Instruments</td>
+          <td><span class="pill">TXN</span></td>
+          <td class="gold">$17.7B</td>
+          <td class="gold">$5.0B</td>
+          <td class="gold">~34%</td>
+          <td class="number">34,000</td>
+          <td>아날로그 #1, IDM, 자사팹 300mm</td>
+        </tr>
+        <tr>
+          <td>Analog Devices</td>
+          <td><span class="pill">ADI</span></td>
+          <td class="number">$11.0B</td>
+          <td class="number">$2.3B</td>
+          <td class="number">~27%</td>
+          <td class="number">24,500</td>
+          <td>고정밀 측정, 팹라이트 전략</td>
+        </tr>
+        <tr>
+          <td>STMicroelectronics</td>
+          <td><span class="pill">STM</span></td>
+          <td class="number">$13.3B</td>
+          <td class="number">$1.6B</td>
+          <td class="number">~13%</td>
+          <td class="number">49,602</td>
+          <td>MCU 강점, 유럽·車 의존</td>
+        </tr>
+        <tr>
+          <td>Infineon Technologies</td>
+          <td><span class="pill">IFX</span></td>
+          <td class="number">€14.7B</td>
+          <td class="number">€1.0B</td>
+          <td class="number">~10%</td>
+          <td class="number">57,077</td>
+          <td>전력반도체 전문, 車 중심</td>
+        </tr>
+        <tr>
+          <td>onsemi</td>
+          <td><span class="pill">ON</span></td>
+          <td class="number">$6.0B</td>
+          <td class="number">$0.1B</td>
+          <td class="number">~2%</td>
+          <td class="number">~23,000</td>
+          <td>EV 파워반도체, 수익성 하락</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="insight" style="margin-top:24px;">
+      <strong>비교 인사이트:</strong> TI의 영업이익률 34%는 경쟁사 대비 <strong>월등히 높습니다.</strong> STM 13%, Infineon 10%, onsemi 2%와 비교하면 TI의 원가 구조가 얼마나 탁월한지 드러납니다. 이는 단순히 제품 가격 때문이 아니라 <strong>300mm 팹 + 직접판매 채널 + 10만+ 제품 포트폴리오의 규모 경제</strong>에서 나옵니다.
+    </div>
+
+    <!-- 4.3 Valuation -->
+    <hr class="subsection-divider">
+    <h3>4.3 가치 평가 요약</h3>
+
+    <div class="two-col">
+      <div>
+        <div class="chart-wrap">
+          <div class="chart-title">Peer EV/EBITDA 멀티플 비교</div>
+          <canvas id="multChart" height="140"></canvas>
+        </div>
+      </div>
+      <div>
+        <div class="info-box">
+          <h4>💰 인수 가격 추정 (Acquisition Price Range)</h4>
+          <div class="info-row"><span class="ir-label">현재 시가총액 (추정)</span><span class="ir-value">~$165~185B</span></div>
+          <div class="info-row"><span class="ir-label">EV (순부채 포함)</span><span class="ir-value">~$170~195B</span></div>
+          <div class="info-row"><span class="ir-label">Premium (30%)</span><span class="ir-value red">+$50~55B</span></div>
+          <div class="info-row"><span class="ir-label">인수 예상 EV</span><span class="ir-value gold">$195~220B</span></div>
+          <div class="info-row"><span class="ir-label">EV/Sales (2025E)</span><span class="ir-value">~11~12x</span></div>
+          <div class="info-row"><span class="ir-label">EV/EBITDA (2025E)</span><span class="ir-value">~25~30x</span></div>
+          <div class="info-row"><span class="ir-label">Forward P/E</span><span class="ir-value">~30~35x</span></div>
+        </div>
+        <div class="insight" style="margin-top:16px;">
+          <strong>밸류에이션 코멘트:</strong> 30x+ 멀티플은 성숙 반도체 기업치고 고평가처럼 보이나, <strong>팹 CapEx 완료 이후 FCF가 $6~8B 수준으로 급증</strong>할 것을 감안하면 합리적 범위입니다. 단, 사이클 하락 시 멀티플 컨트랙션 리스크는 존재합니다.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════ SECTION 5: RISKS ══════════════════════ -->
+<section id="s5">
+  <div class="wrapper">
+    <div class="section-eyebrow">05 — Risks & Opportunities</div>
+    <h2>주요 리스크 및 기회</h2>
+
+    <div class="insight">
+      <strong>어드바이저의 솔직한 한 마디:</strong> TI를 인수하려는 이유가 명확하더라도, <strong>리스크는 결코 작지 않습니다.</strong> 특히 CapEx 부담과 중국 지정학 리스크는 딜 구조 설계에서 반드시 헤징 전략을 사전에 수립해야 합니다. 아래 8개 리스크를 면밀히 검토하십시오.
+    </div>
+
+    <div class="risk-grid">
+
+      <div class="risk-card high">
+        <div class="risk-severity">🔴 HIGH — 재무 리스크</div>
+        <div class="risk-title">① CapEx 폭탄: 5년간 $40B+ 투자 계획</div>
+        <div class="risk-desc">TI는 2022~2030년까지 텍사스(Sherman) 및 유타(Lehi) 신규 300mm 팹 건설에 총 $400억 이상 투자 예정입니다. 현재 연간 CapEx는 ~$4.8B으로 영업현금흐름의 70%를 잠식합니다. 팹 완공 전까지 FCF는 억압된 상태이며, 인수 후 추가 자금 조달이 필요할 수 있습니다. <strong>팹이 예정대로 완공되지 않거나 수요가 받쳐주지 않으면, 대규모 감가상각 부담만 남을 수 있습니다.</strong></div>
+      </div>
+
+      <div class="risk-card high">
+        <div class="risk-severity">🔴 HIGH — 지정학 리스크</div>
+        <div class="risk-title">② 중국 매출 의존도 25%+</div>
+        <div class="risk-desc">TI의 전체 매출 중 중국 고객 비중이 약 20~25%로 추정됩니다. 미·중 반도체 전쟁이 심화되면 수출 규제 확대, 중국 현지 경쟁사(화웨이 하이실리콘, CXMT 등) 부상, 고객이탈 등 복합 리스크가 동시에 발생합니다. 이미 일부 아날로그 제품에 대한 중국 수출 통제가 논의 중입니다.</div>
+      </div>
+
+      <div class="risk-card high">
+        <div class="risk-severity">🔴 HIGH — 규제 리스크</div>
+        <div class="risk-title">③ 인수 규제 심사 — 사실상 가장 큰 장벽</div>
+        <div class="risk-desc">TI는 아날로그 반도체 시장의 글로벌 1위입니다. 대형 전략적 인수자(예: 반도체 기업)가 TI를 인수할 경우, <strong>FTC·EU·중국 규제당국의 반독점 심사</strong>를 통과하기 매우 어렵습니다. 브로드컴의 퀄컴 인수($117B) 실패, NVIDIA의 ARM 인수($66B) 실패가 선례입니다. PE 인수라면 상대적으로 규제 허들이 낮습니다.</div>
+      </div>
+
+      <div class="risk-card high">
+        <div class="risk-severity">🔴 HIGH — 사이클 리스크</div>
+        <div class="risk-title">④ 반도체 업사이클/다운사이클의 극단성</div>
+        <div class="risk-desc">2021년 매출 $17.5B → 2024년 $15.6B으로 급락. 영업이익은 더 극적입니다 ($7.3B → $5.5B). 인수 타이밍이 다운사이클 초입이라면 예상 EBITDA 대비 실제 현금흐름 간 괴리가 커집니다. <strong>사이클 조정 EBITDA(Normalized EBITDA) 기반 가치평가가 필수입니다.</strong></div>
+      </div>
+
+      <div class="risk-card medium">
+        <div class="risk-severity">🟡 MEDIUM — 기술 리스크</div>
+        <div class="risk-title">⑤ Embedded Processing 경쟁력 약화</div>
+        <div class="risk-desc">Embedded 부문은 2024년 매출이 전년 대비 -25% 급감, 영업이익은 -65% 폭락했습니다. MCU 시장에서 STM32, Nordic Semiconductor, Renesas 등의 경쟁이 심화되고 있습니다. TI가 아날로그에 집중하는 동안 MCU 생태계(SDK, IDE, 커뮤니티)에서 뒤처질 위험이 있습니다.</div>
+      </div>
+
+      <div class="risk-card medium">
+        <div class="risk-severity">🟡 MEDIUM — 시장 리스크</div>
+        <div class="risk-title">⑥ 중국산 저가 아날로그 칩 경쟁 부상</div>
+        <div class="risk-desc">Willsemi, 3PEAK, 기타 중국 로컬 반도체 기업들이 저가 아날로그 칩 시장에서 빠르게 점유율을 늘리고 있습니다. 현재는 고성능 제품 중심이지만, 중국 내 테크 내재화 흐름이 가속화될 경우 TI의 중국 시장 내 제품 경쟁력이 잠식될 수 있습니다.</div>
+      </div>
+
+      <div class="risk-card medium">
+        <div class="risk-severity">🟡 MEDIUM — 재고 리스크</div>
+        <div class="risk-title">⑦ 공급 과잉 & 재고 적체</div>
+        <div class="risk-desc">2024년 말 기준 재고 $4.5B으로 전년 대비 증가. 팹을 자체 보유한 IDM 모델의 숙명적 리스크는 '공급 과잉 시 재고가 쌓인다'는 점입니다. 재고 조정에 4~6분기가 소요되면 그동안 ASP(평균 판매 단가) 압력을 받을 수 있습니다.</div>
+      </div>
+
+      <div class="risk-card low">
+        <div class="risk-severity">🟢 LOW(기회) — 전략적 기회</div>
+        <div class="risk-title">⑧ CHIPS Act + 미국 제조 르네상스</div>
+        <div class="risk-desc">TI는 미국 CHIPS and Science Act의 최대 수혜 기업 중 하나입니다. 2024년에만 세액공제(ITC) $588M을 확보. 향후 신규 팹 완공 시 연간 $1B+ 수준의 세금 혜택이 기대됩니다. 인수자 입장에서 이 정책 혜택은 그대로 승계 가능합니다.</div>
+      </div>
+    </div>
+
+    <hr class="subsection-divider">
+    <h3>🎯 딜 구조 제안 — 리스크 헤징 전략</h3>
+
+    <div class="three-col">
+      <div class="info-box">
+        <h4>구조 A: 전략적 인수</h4>
+        <div class="info-row"><span class="ir-label">인수자 유형</span><span class="ir-value">대형 기술·방산·에너지 기업</span></div>
+        <div class="info-row"><span class="ir-label">딜 사이즈</span><span class="ir-value red">$195~220B</span></div>
+        <div class="info-row"><span class="ir-label">규제 리스크</span><span class="ir-value red">매우 높음</span></div>
+        <div class="info-row"><span class="ir-label">시너지</span><span class="ir-value green">Supply chain 내재화</span></div>
+        <div class="info-row"><span class="ir-label">실현 가능성</span><span class="ir-value red">낮음 (독과점)</span></div>
+      </div>
+      <div class="info-box">
+        <h4>구조 B: PE 바이아웃</h4>
+        <div class="info-row"><span class="ir-label">인수자 유형</span><span class="ir-value">대형 PE (KKR, Blackstone)</span></div>
+        <div class="info-row"><span class="ir-label">딜 구조</span><span class="ir-value">레버리지 바이아웃</span></div>
+        <div class="info-row"><span class="ir-label">규제 리스크</span><span class="ir-value">중간</span></div>
+        <div class="info-row"><span class="ir-label">CapEx 부담</span><span class="ir-value red">심각 (고부채 + 팹투자)</span></div>
+        <div class="info-row"><span class="ir-label">실현 가능성</span><span class="ir-value">이론상 가능</span></div>
+      </div>
+      <div class="info-box">
+        <h4>구조 C: 부문 분리 매각</h4>
+        <div class="info-row"><span class="ir-label">대상</span><span class="ir-value">Embedded / DLP 분리</span></div>
+        <div class="info-row"><span class="ir-label">아날로그 부문만</span><span class="ir-value">EV $120~140B 수준</span></div>
+        <div class="info-row"><span class="ir-label">규제 리스크</span><span class="ir-value green">낮음</span></div>
+        <div class="info-row"><span class="ir-label">TI 동의</span><span class="ir-value red">현실적으로 불가</span></div>
+        <div class="info-row"><span class="ir-label">실현 가능성</span><span class="ir-value red">TI 측 거부 가능성</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════ SECTION 6: BULL/BEAR ══════════════════════ -->
+<section id="s6">
+  <div class="wrapper">
+    <div class="section-eyebrow">06 — Scenario Analysis</div>
+    <h2>Bull Case / Bear Case 시나리오</h2>
+
+    <div class="chart-wrap">
+      <div class="chart-title">3개 시나리오 매출 / FCF 전망 (2025~2028E)</div>
+      <canvas id="scenarioChart" height="100"></canvas>
+    </div>
+
+    <div class="scenario-grid" style="margin-top:32px;">
+      <div class="scenario-card bull">
+        <div class="scenario-header">
+          <span class="scenario-emoji">🐂</span>
+          <div>
+            <div class="scenario-label">Bull Case</div>
+            <div class="scenario-target">목표 EV: $260~280B | 주당 $230~250 추정</div>
+          </div>
+        </div>
+        <div class="scenario-price">+45~55%</div>
+        <div class="scenario-updown">현재 대비 상승 여력</div>
+        <ul class="scenario-points">
+          <li>EV/전기차 침투율이 예상보다 2~3년 빠르게 진행되며 자동차용 TI 칩 수요 폭증</li>
+          <li>2026~2027년 새 팹 완공 → CapEx 급감 → FCF $6~8B 시대 개막</li>
+          <li>CHIPS Act 세제 혜택 연장 + 미국 제조업 리쇼어링 가속</li>
+          <li>중국 이외 신흥시장(인도, 동남아) 에서 산업 자동화 수요 급등</li>
+          <li>아날로그 칩 공급 부족 → ASP 상승, 리드타임 연장으로 고마진 지속</li>
+          <li>배당 수익률 + 바이백 확대로 주주 가치 극대화</li>
+        </ul>
+      </div>
+
+      <div class="scenario-card bear">
+        <div class="scenario-header">
+          <span class="scenario-emoji">🐻</span>
+          <div>
+            <div class="scenario-label">Bear Case</div>
+            <div class="scenario-target">목표 EV: $120~140B | 주당 $105~125 추정</div>
+          </div>
+        </div>
+        <div class="scenario-price">-30~40%</div>
+        <div class="scenario-updown">현재 대비 하락 위험</div>
+        <ul class="scenario-points">
+          <li>글로벌 경기침체로 산업·자동차 수요 동반 급락 (2023년 재현 우려)</li>
+          <li>새 팹 완공 후에도 수요 부진 → 대규모 과잉설비 + 감가상각 직격탄</li>
+          <li>중국 수출 제재 강화로 매출 $3~4B 구조적 손실 발생</li>
+          <li>중국 로컬 아날로그 기업들이 중가 시장 점유율 빠르게 잠식</li>
+          <li>CHIPS Act 폐지 또는 예산 삭감으로 세제 혜택 소멸</li>
+          <li>부채 부담 속 신용등급 하락 → 금융비용 증가 → FCF 재압박</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Base Case -->
+    <div style="background: var(--bg3); border: 1px solid var(--border2); border-top: 3px solid var(--blue); border-radius: 4px; padding: 32px; margin-top: 24px;">
+      <div style="display:flex; align-items:center; gap:12px; margin-bottom:20px; padding-bottom:16px; border-bottom: 1px solid var(--border);">
+        <span style="font-size:28px;">⚖️</span>
+        <div>
+          <div style="font-family: var(--font-heading); font-size:22px; font-weight:700; color: var(--blue);">Base Case — 가장 개연성 높은 시나리오</div>
+          <div style="font-family: var(--font-mono); font-size:11px; color: var(--text-dim);">목표 EV: $195~215B | 현재 대비 +10~20%</div>
+        </div>
+      </div>
+      <div class="three-col">
+        <div>
+          <div style="font-family: var(--font-mono); font-size:10px; letter-spacing:0.1em; text-transform:uppercase; color: var(--text-dim); margin-bottom:8px;">2025~2026</div>
+          <p style="font-size:13px; color: var(--text-dim);">반도체 업사이클 진행 중. 산업+자동차 수요 회복으로 매출 $17.7B → $19~20B 성장. CapEx 유지로 FCF는 아직 억압.</p>
+        </div>
+        <div>
+          <div style="font-family: var(--font-mono); font-size:10px; letter-spacing:0.1em; text-transform:uppercase; color: var(--text-dim); margin-bottom:8px;">2027~2028</div>
+          <p style="font-size:13px; color: var(--text-dim);">신규 팹 완공. CapEx 정상화($2~3B 수준). FCF $4~6B으로 급증. 배당+바이백 확대. EV/FCF 멀티플 재평가.</p>
+        </div>
+        <div>
+          <div style="font-family: var(--font-mono); font-size:10px; letter-spacing:0.1em; text-transform:uppercase; color: var(--text-dim); margin-bottom:8px;">장기 (2029+)</div>
+          <p style="font-size:13px; color: var(--text-dim);">매출 $22~25B, FCF $7~9B 수준 도달. ROE 30%+ 회복. 아날로그 제국의 진정한 가치가 멀티플에 반영되는 시점.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="insight" style="margin-top:32px;">
+      <strong>최종 M&A 어드바이저 의견:</strong> Texas Instruments는 <strong>이 시대에 인수할 수 있는 가장 견고한 반도체 자산 중 하나</strong>입니다. 다만 규모($200B+)와 규제 장벽이 현실적인 제약입니다. <strong>PE 컨소시엄 구조 + 팹 인프라 CHIPS Act 크레딧 유지</strong>가 현실적 경로이며, 시너지 실현은 2027~2028년 CapEx 사이클 완료 이후입니다. 지금 인수한다면 <strong>"싸게 사는 것이 아니라, 20년의 제조 해자를 사는 것"</strong>임을 기억하십시오.
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrapper">
+    <p>Texas Instruments (TXN) M&A Acquisition Briefing — Prepared June 2026</p>
+    <p style="margin-top:6px; font-size:10px;">본 보고서는 공개 정보(SEC Filing, TI IR, Wikipedia)에 기반하며 투자 권유가 아닙니다. 실제 M&A 의사결정 전 법률·회계·금융 자문을 받으십시오.</p>
+  </div>
+</footer>
+
+<script>
+const gold = '#c8a84b';
+const gold2 = '#e8c86a';
+const red = '#e05c5c';
+const green = '#4caf87';
+const blue = '#5b9bd5';
+const purple = '#9b7ccc';
+const border = '#252e3f';
+const textDim = '#7a8699';
+const textBright = '#eef2f8';
+
+Chart.defaults.color = textDim;
+Chart.defaults.borderColor = border;
+Chart.defaults.font.family = "'IBM Plex Mono', monospace";
+Chart.defaults.font.size = 11;
+
+const gridOpts = {
+  color: 'rgba(37,46,63,0.8)',
+  drawBorder: false
+};
+
+// End Market Donut
+new Chart(document.getElementById('endMarketChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Industrial ~40%', 'Automotive ~30%', 'Personal Electronics ~15%', 'Communications ~8%', 'Enterprise Systems ~7%'],
+    datasets: [{
+      data: [40, 30, 15, 8, 7],
+      backgroundColor: [gold, blue, green, purple, red],
+      borderColor: '#0f1218',
+      borderWidth: 3,
+      hoverOffset: 8
+    }]
+  },
+  options: {
+    responsive: true,
+    cutout: '65%',
+    plugins: {
+      legend: {
+        position: 'right',
+        labels: { padding: 16, font: { size: 11 }, color: textDim }
+      }
+    }
+  }
+});
+
+// Wafer Efficiency Bar
+new Chart(document.getElementById('waferChart'), {
+  type: 'bar',
+  data: {
+    labels: ['칩 생산량 (상대값)', '원가 (상대값)', '원가 효율 (칩/원가)'],
+    datasets: [
+      {
+        label: '200mm 웨이퍼 (경쟁사 주력)',
+        data: [1.0, 1.0, 1.0],
+        backgroundColor: 'rgba(91,155,213,0.5)',
+        borderColor: blue,
+        borderWidth: 1
+      },
+      {
+        label: '300mm 웨이퍼 (TI 주력)',
+        data: [2.3, 1.5, 1.53],
+        backgroundColor: 'rgba(200,168,75,0.4)',
+        borderColor: gold,
+        borderWidth: 1
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    plugins: { legend: { labels: { color: textDim } } },
+    scales: {
+      x: { grid: gridOpts, ticks: { color: textDim } },
+      y: {
+        grid: gridOpts,
+        ticks: { color: textDim },
+        title: { display: true, text: '상대 값 (200mm = 1.0)', color: textDim }
+      }
+    }
+  }
+});
+
+// Radar: competitive advantage
+new Chart(document.getElementById('radarChart'), {
+  type: 'radar',
+  data: {
+    labels: ['원가 경쟁력', '제조 자급도', '제품 다양성', '고객 분산도', '수익성', 'R&D 역량', '브랜드 인지도'],
+    datasets: [
+      {
+        label: 'Texas Instruments',
+        data: [95, 95, 90, 92, 90, 85, 88],
+        borderColor: gold,
+        backgroundColor: 'rgba(200,168,75,0.15)',
+        pointBackgroundColor: gold,
+        pointRadius: 4
+      },
+      {
+        label: 'Analog Devices (ADI)',
+        data: [70, 60, 80, 75, 75, 90, 80],
+        borderColor: blue,
+        backgroundColor: 'rgba(91,155,213,0.1)',
+        pointBackgroundColor: blue,
+        pointRadius: 4
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    plugins: { legend: { labels: { color: textDim } } },
+    scales: {
+      r: {
+        grid: { color: border },
+        angleLines: { color: border },
+        ticks: { backdropColor: 'transparent', color: textDim, stepSize: 20 },
+        pointLabels: { color: textDim, font: { size: 11 } },
+        min: 0, max: 100
+      }
+    }
+  }
+});
+
+// Revenue Chart
+new Chart(document.getElementById('revenueChart'), {
+  type: 'bar',
+  data: {
+    labels: ['2021', '2022', '2023', '2024', '2025'],
+    datasets: [
+      {
+        label: '매출 (Revenue)',
+        data: [14.38, 20.03, 17.52, 15.64, 17.70],
+        backgroundColor: 'rgba(200,168,75,0.4)',
+        borderColor: gold,
+        borderWidth: 1,
+        order: 2
+      },
+      {
+        label: '영업이익 (Operating Income)',
+        data: [6.58, 9.39, 7.33, 5.47, 6.02],
+        backgroundColor: 'rgba(91,155,213,0.4)',
+        borderColor: blue,
+        borderWidth: 1,
+        order: 2
+      },
+      {
+        label: '순이익 (Net Income)',
+        data: [7.77, 8.75, 6.51, 4.80, 5.00],
+        type: 'line',
+        borderColor: green,
+        backgroundColor: 'transparent',
+        pointBackgroundColor: green,
+        pointRadius: 5,
+        tension: 0.3,
+        order: 1
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    plugins: { legend: { labels: { color: textDim } } },
+    scales: {
+      x: { grid: gridOpts, ticks: { color: textDim } },
+      y: {
+        grid: gridOpts,
+        ticks: { color: textDim, callback: v => '$' + v + 'B' },
+        title: { display: true, text: 'USD Billion', color: textDim }
+      }
+    }
+  }
+});
+
+// Quarterly Chart
+new Chart(document.getElementById('quarterlyChart'), {
+  type: 'line',
+  data: {
+    labels: ['24Q1', '24Q2', '24Q3', '24Q4', '25Q1', '25Q2', '25Q3'],
+    datasets: [
+      {
+        label: '분기 매출 ($B)',
+        data: [3.66, 3.82, 4.15, 4.01, 4.07, 4.45, 4.74],
+        borderColor: gold,
+        backgroundColor: 'rgba(200,168,75,0.08)',
+        pointBackgroundColor: gold,
+        pointRadius: 5,
+        tension: 0.3,
+        fill: true
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    plugins: { legend: { labels: { color: textDim } } },
+    scales: {
+      x: { grid: gridOpts, ticks: { color: textDim } },
+      y: {
+        grid: gridOpts,
+        min: 3.0,
+        ticks: { color: textDim, callback: v => '$' + v + 'B' }
+      }
+    }
+  }
+});
+
+// Competitor Chart
+new Chart(document.getElementById('compChart'), {
+  type: 'bar',
+  data: {
+    labels: ['TI (TXN)', 'STMicro (STM)', 'ADI', 'Infineon (IFX)', 'onsemi (ON)'],
+    datasets: [
+      {
+        label: '매출 ($B)',
+        data: [17.7, 13.3, 11.0, 15.8, 6.0],
+        backgroundColor: [
+          'rgba(200,168,75,0.5)',
+          'rgba(91,155,213,0.4)',
+          'rgba(155,124,204,0.4)',
+          'rgba(76,175,135,0.4)',
+          'rgba(224,92,92,0.4)'
+        ],
+        borderColor: [gold, blue, purple, green, red],
+        borderWidth: 1,
+        yAxisID: 'y'
+      },
+      {
+        label: '영업이익률 (%)',
+        data: [34, 13, 27, 10, 2],
+        type: 'line',
+        borderColor: gold2,
+        backgroundColor: 'transparent',
+        pointBackgroundColor: gold2,
+        pointRadius: 6,
+        tension: 0.3,
+        yAxisID: 'y2'
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    plugins: { legend: { labels: { color: textDim } } },
+    scales: {
+      x: { grid: gridOpts, ticks: { color: textDim } },
+      y: {
+        grid: gridOpts,
+        position: 'left',
+        ticks: { color: textDim, callback: v => '$' + v + 'B' },
+        title: { display: true, text: 'Revenue ($B)', color: textDim }
+      },
+      y2: {
+        grid: { display: false },
+        position: 'right',
+        ticks: { color: gold2, callback: v => v + '%' },
+        title: { display: true, text: 'Op. Margin (%)', color: gold2 }
+      }
+    }
+  }
+});
+
+// Valuation Multiple Chart
+new Chart(document.getElementById('multChart'), {
+  type: 'bar',
+  data: {
+    labels: ['TI (TXN)', 'ADI', 'STM', 'Infineon'],
+    datasets: [{
+      label: 'EV/EBITDA (추정)',
+      data: [28, 22, 11, 14],
+      backgroundColor: [
+        'rgba(200,168,75,0.5)',
+        'rgba(155,124,204,0.4)',
+        'rgba(91,155,213,0.4)',
+        'rgba(76,175,135,0.4)'
+      ],
+      borderColor: [gold, purple, blue, green],
+      borderWidth: 1
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true,
+    plugins: {
+      legend: { display: false },
+      annotation: {}
+    },
+    scales: {
+      x: {
+        grid: gridOpts,
+        ticks: { color: textDim, callback: v => v + 'x' }
+      },
+      y: { grid: { display: false }, ticks: { color: textDim } }
+    }
+  }
+});
+
+// Scenario Chart
+new Chart(document.getElementById('scenarioChart'), {
+  type: 'line',
+  data: {
+    labels: ['2024A', '2025A', '2026E', '2027E', '2028E'],
+    datasets: [
+      {
+        label: 'Bull Case 매출',
+        data: [15.64, 17.70, 20.5, 23.5, 26.5],
+        borderColor: green,
+        borderDash: [],
+        pointBackgroundColor: green,
+        pointRadius: 4,
+        tension: 0.3,
+        fill: false
+      },
+      {
+        label: 'Base Case 매출',
+        data: [15.64, 17.70, 19.0, 21.0, 23.5],
+        borderColor: blue,
+        borderDash: [5,4],
+        pointBackgroundColor: blue,
+        pointRadius: 4,
+        tension: 0.3,
+        fill: false
+      },
+      {
+        label: 'Bear Case 매출',
+        data: [15.64, 17.70, 16.5, 17.0, 18.5],
+        borderColor: red,
+        borderDash: [3,3],
+        pointBackgroundColor: red,
+        pointRadius: 4,
+        tension: 0.3,
+        fill: false
+      },
+      {
+        label: 'Base FCF',
+        data: [1.50, 2.40, 3.2, 5.5, 7.0],
+        borderColor: gold,
+        borderDash: [8,4],
+        pointBackgroundColor: gold,
+        pointRadius: 4,
+        tension: 0.3,
+        fill: false
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    plugins: { legend: { labels: { color: textDim } } },
+    scales: {
+      x: { grid: gridOpts, ticks: { color: textDim } },
+      y: {
+        grid: gridOpts,
+        ticks: { color: textDim, callback: v => '$' + v + 'B' }
+      }
+    }
+  }
+});
+</script>
+</body>
+</html>
