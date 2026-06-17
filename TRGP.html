@@ -1,0 +1,1350 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TRGP | M&A 인수 브리핑</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;600&family=Bebas+Neue&display=swap');
+
+  :root {
+    --bg-primary: #0a0c10;
+    --bg-card: #111418;
+    --bg-elevated: #181c23;
+    --border: #1e2530;
+    --border-accent: #2a3545;
+    --text-primary: #e8edf5;
+    --text-secondary: #7a8a9e;
+    --text-muted: #465565;
+    --accent-gold: #c9a227;
+    --accent-gold-dim: #8a6d12;
+    --accent-blue: #3d8bcd;
+    --accent-teal: #2bb5a0;
+    --accent-red: #d64f3c;
+    --accent-green: #4aab6e;
+    --accent-orange: #e07832;
+    --pipeline-line: #c9a22740;
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  body {
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: 'IBM Plex Sans KR', sans-serif;
+    font-size: 14px;
+    line-height: 1.7;
+  }
+
+  /* PIPELINE HERO BACKGROUND */
+  .hero {
+    position: relative;
+    overflow: hidden;
+    background: var(--bg-primary);
+    border-bottom: 1px solid var(--border);
+    padding: 64px 48px 48px;
+  }
+
+  .hero-pipeline {
+    position: absolute; top:0; left:0; right:0; bottom:0; opacity:0.18;
+    background-image:
+      repeating-linear-gradient(0deg, transparent, transparent 59px, var(--accent-gold) 60px),
+      repeating-linear-gradient(90deg, transparent, transparent 119px, #2a3545 120px);
+  }
+
+  .hero-tag {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    color: var(--accent-gold);
+    text-transform: uppercase;
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .hero-tag::before {
+    content: '';
+    display: block;
+    width: 32px; height: 1px;
+    background: var(--accent-gold);
+  }
+
+  .hero-ticker {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 96px;
+    letter-spacing: 0.06em;
+    color: var(--text-primary);
+    line-height: 0.9;
+    margin-bottom: 8px;
+    background: linear-gradient(135deg, #e8edf5 60%, #c9a227);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero-name {
+    font-size: 20px;
+    font-weight: 300;
+    color: var(--text-secondary);
+    letter-spacing: 0.05em;
+    margin-bottom: 32px;
+  }
+
+  .hero-stats {
+    display: flex;
+    gap: 40px;
+    flex-wrap: wrap;
+  }
+  .hero-stat { display:flex; flex-direction:column; gap:4px; }
+  .hero-stat-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    color: var(--text-muted);
+    text-transform: uppercase;
+  }
+  .hero-stat-value {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+  .hero-stat-value.gold { color: var(--accent-gold); }
+  .hero-stat-value.green { color: var(--accent-green); }
+  .hero-stat-change {
+    font-size: 11px;
+    color: var(--accent-green);
+    font-family: 'IBM Plex Mono', monospace;
+  }
+  .hero-stat-change.red { color: var(--accent-red); }
+
+  /* NAV */
+  .toc {
+    background: var(--bg-card);
+    border-bottom: 1px solid var(--border);
+    padding: 0 48px;
+    display: flex;
+    gap: 0;
+    overflow-x: auto;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .toc a {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    text-decoration: none;
+    padding: 16px 18px;
+    border-bottom: 2px solid transparent;
+    white-space: nowrap;
+    transition: all 0.15s;
+  }
+  .toc a:hover { color: var(--accent-gold); border-bottom-color: var(--accent-gold); }
+
+  /* LAYOUT */
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 48px;
+  }
+
+  /* SECTION */
+  .section {
+    padding: 56px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .section-header {
+    display: flex;
+    align-items: flex-end;
+    gap: 16px;
+    margin-bottom: 36px;
+  }
+
+  .section-num {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--accent-gold);
+    letter-spacing: 0.15em;
+    padding-bottom: 4px;
+  }
+
+  .section-title {
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--text-primary);
+    letter-spacing: -0.02em;
+    border-bottom: 1px solid var(--border-accent);
+    padding-bottom: 12px;
+    flex: 1;
+  }
+
+  .subsection {
+    margin-bottom: 40px;
+  }
+  .subsection-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--accent-gold);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .subsection-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* VERDICT BOX */
+  .verdict {
+    background: linear-gradient(135deg, #111c0e, #0a1410);
+    border: 1px solid #2a4a30;
+    border-left: 4px solid var(--accent-green);
+    border-radius: 4px;
+    padding: 28px 32px;
+    margin-bottom: 32px;
+  }
+  .verdict-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: var(--accent-green);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .verdict-text {
+    font-size: 16px;
+    line-height: 1.8;
+    color: var(--text-primary);
+    font-weight: 400;
+  }
+
+  /* CARDS GRID */
+  .cards { display: grid; gap: 16px; }
+  .cards-2 { grid-template-columns: 1fr 1fr; }
+  .cards-3 { grid-template-columns: 1fr 1fr 1fr; }
+  .cards-4 { grid-template-columns: 1fr 1fr 1fr 1fr; }
+
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 22px;
+    transition: border-color 0.15s;
+  }
+  .card:hover { border-color: var(--border-accent); }
+  .card-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .card-value {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 26px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+  }
+  .card-value.gold { color: var(--accent-gold); }
+  .card-value.green { color: var(--accent-green); }
+  .card-value.red { color: var(--accent-red); }
+  .card-value.blue { color: var(--accent-blue); }
+  .card-sub {
+    font-size: 12px;
+    color: var(--text-secondary);
+  }
+  .card-delta {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    margin-top: 6px;
+  }
+  .card-delta.up { color: var(--accent-green); }
+  .card-delta.down { color: var(--accent-red); }
+
+  /* RISK ITEMS */
+  .risk-list { display: flex; flex-direction: column; gap: 14px; }
+  .risk-item {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 20px 24px;
+    display: flex;
+    gap: 18px;
+    align-items: flex-start;
+  }
+  .risk-badge {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    padding: 4px 10px;
+    border-radius: 2px;
+    white-space: nowrap;
+    margin-top: 2px;
+    flex-shrink: 0;
+  }
+  .risk-badge.high { background: #3d1212; color: var(--accent-red); border: 1px solid #5a2020; }
+  .risk-badge.medium { background: #3d2a10; color: var(--accent-orange); border: 1px solid #5a3f18; }
+  .risk-badge.low { background: #0f2e1e; color: var(--accent-teal); border: 1px solid #1a4530; }
+
+  .risk-content h4 { font-size: 14px; font-weight: 600; margin-bottom: 6px; color: var(--text-primary); }
+  .risk-content p { font-size: 13px; color: var(--text-secondary); line-height: 1.65; }
+
+  /* CHART CONTAINERS */
+  .chart-wrap {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 28px;
+    margin-bottom: 20px;
+  }
+  .chart-title {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+
+  /* TIMELINE */
+  .timeline { position: relative; padding-left: 24px; }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 7px; top: 0; bottom: 0;
+    width: 1px;
+    background: var(--border-accent);
+  }
+  .timeline-item {
+    position: relative;
+    margin-bottom: 28px;
+    padding-left: 24px;
+  }
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -17px; top: 6px;
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--accent-gold);
+    border: 2px solid var(--bg-primary);
+  }
+  .timeline-year {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    color: var(--accent-gold);
+    letter-spacing: 0.12em;
+    margin-bottom: 4px;
+  }
+  .timeline-text { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+  .timeline-text strong { color: var(--text-primary); }
+
+  /* BULL BEAR BOXES */
+  .scenario-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+  .scenario-card {
+    border-radius: 4px;
+    padding: 24px;
+    border: 1px solid;
+  }
+  .scenario-card.bull { background: #091c10; border-color: #1a4a28; }
+  .scenario-card.base { background: #0d1520; border-color: #1a2e45; }
+  .scenario-card.bear { background: #1a0a0a; border-color: #4a1a1a; }
+  .scenario-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+  .scenario-label.bull { color: var(--accent-green); }
+  .scenario-label.base { color: var(--accent-blue); }
+  .scenario-label.bear { color: var(--accent-red); }
+  .scenario-target {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 30px;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+  .scenario-target.bull { color: var(--accent-green); }
+  .scenario-target.base { color: var(--accent-blue); }
+  .scenario-target.bear { color: var(--accent-red); }
+  .scenario-sub { font-size: 12px; color: var(--text-muted); margin-bottom: 14px; }
+  .scenario-points { font-size: 12px; color: var(--text-secondary); line-height: 1.8; }
+  .scenario-points li { margin-left: 14px; }
+
+  /* LOGIC PILLARS */
+  .pillar-list { display: flex; flex-direction: column; gap: 12px; }
+  .pillar {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent-gold);
+    border-radius: 4px;
+    padding: 18px 22px;
+    display: flex;
+    gap: 18px;
+    align-items: flex-start;
+  }
+  .pillar-num {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--accent-gold-dim);
+    flex-shrink: 0;
+    line-height: 1;
+    margin-top: 2px;
+  }
+  .pillar h4 { font-size: 14px; font-weight: 600; color: var(--text-primary); margin-bottom: 6px; }
+  .pillar p { font-size: 13px; color: var(--text-secondary); line-height: 1.65; }
+
+  /* COMPETITOR TABLE */
+  .comp-table { width: 100%; border-collapse: collapse; }
+  .comp-table th {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border-accent);
+    background: var(--bg-elevated);
+  }
+  .comp-table td {
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+    color: var(--text-secondary);
+    font-family: 'IBM Plex Mono', monospace;
+  }
+  .comp-table tr.highlight td {
+    color: var(--accent-gold);
+    background: #1a1508;
+  }
+  .comp-table td:first-child { color: var(--text-primary); font-weight: 500; }
+
+  /* SEGMENT BOXES */
+  .segment-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .segment-card {
+    background: var(--bg-elevated);
+    border: 1px solid var(--border-accent);
+    border-radius: 4px;
+    padding: 24px;
+  }
+  .segment-card h3 { font-size: 15px; font-weight: 600; margin-bottom: 6px; color: var(--text-primary); }
+  .segment-card .seg-pct {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--accent-gold);
+    margin-bottom: 10px;
+  }
+  .segment-card p { font-size: 12px; color: var(--text-secondary); line-height: 1.7; }
+  .seg-items { margin-top: 10px; display: flex; flex-direction: column; gap: 4px; }
+  .seg-item {
+    font-size: 12px;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .seg-item::before {
+    content: '▸';
+    color: var(--accent-teal);
+    font-size: 10px;
+  }
+
+  /* FOOTER */
+  footer {
+    padding: 32px 48px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--text-muted);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+  }
+
+  /* INLINE BADGES */
+  .badge {
+    display: inline-block;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    padding: 2px 8px;
+    border-radius: 2px;
+    font-weight: 600;
+  }
+  .badge.gold { background: #2a2008; color: var(--accent-gold); border: 1px solid #3d3010; }
+  .badge.green { background: #0a2014; color: var(--accent-green); border: 1px solid #1a4028; }
+  .badge.red { background: #2a0a0a; color: var(--accent-red); border: 1px solid #4a1a1a; }
+  .badge.blue { background: #0a1830; color: var(--accent-blue); border: 1px solid #1a3050; }
+
+  .prose { font-size: 14px; color: var(--text-secondary); line-height: 1.85; margin-bottom: 14px; }
+  .prose strong { color: var(--text-primary); font-weight: 600; }
+  .prose em { color: var(--accent-gold); font-style: normal; }
+
+  .divider { height: 1px; background: var(--border); margin: 28px 0; }
+
+  @media (max-width: 900px) {
+    .hero { padding: 40px 24px 32px; }
+    .container { padding: 0 24px; }
+    .toc { padding: 0 24px; }
+    .cards-3, .cards-4 { grid-template-columns: 1fr 1fr; }
+    .scenario-grid { grid-template-columns: 1fr; }
+    .segment-grid { grid-template-columns: 1fr; }
+    .hero-ticker { font-size: 60px; }
+    footer { padding: 24px; flex-direction: column; gap: 8px; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== HERO ===== -->
+<div class="hero">
+  <div class="hero-pipeline"></div>
+  <div class="hero-tag">M&A 인수 타겟 브리핑 · NYSE: TRGP</div>
+  <div class="hero-ticker">TARGA RESOURCES</div>
+  <div class="hero-name">Targa Resources Corp. — 북미 최대 독립 미드스트림 인프라 기업</div>
+  <div class="hero-stats">
+    <div class="hero-stat">
+      <span class="hero-stat-label">2025 Adj. EBITDA</span>
+      <span class="hero-stat-value gold">$4.96B</span>
+      <span class="hero-stat-change">▲ +20% YoY (역대 최고)</span>
+    </div>
+    <div class="hero-stat">
+      <span class="hero-stat-label">시가총액 (추정)</span>
+      <span class="hero-stat-value">~$52B</span>
+      <span class="hero-stat-change">S&P 500 구성 종목</span>
+    </div>
+    <div class="hero-stat">
+      <span class="hero-stat-label">2025 순이익</span>
+      <span class="hero-stat-value green">$1.92B</span>
+      <span class="hero-stat-change">▲ +47% YoY</span>
+    </div>
+    <div class="hero-stat">
+      <span class="hero-stat-label">2026E EBITDA 가이던스</span>
+      <span class="hero-stat-value">$5.4–5.6B</span>
+      <span class="hero-stat-change">▲ +11% 중간값</span>
+    </div>
+    <div class="hero-stat">
+      <span class="hero-stat-label">CEO</span>
+      <span class="hero-stat-value" style="font-size:16px">Matt Meloy</span>
+      <span class="hero-stat-change">Houston, Texas</span>
+    </div>
+  </div>
+</div>
+
+<!-- ===== NAV ===== -->
+<nav class="toc">
+  <a href="#s1">결론</a>
+  <a href="#s2">기업 개요</a>
+  <a href="#s3">투자 논리</a>
+  <a href="#s4">재무 분석</a>
+  <a href="#s5">리스크</a>
+  <a href="#s6">Bull/Bear</a>
+</nav>
+
+<div class="container">
+
+<!-- ===== 1. 결론 요약 ===== -->
+<section class="section" id="s1">
+  <div class="section-header">
+    <span class="section-num">01</span>
+    <h2 class="section-title">결론 요약 — 투자 판단</h2>
+  </div>
+
+  <div class="verdict">
+    <div class="verdict-label">📋 M&A 어드바이저 최종 의견</div>
+    <div class="verdict-text">
+      Targa Resources는 <strong>퍼미안 분지(Permian Basin)라는 세계 최대 원유·가스 생산지의 인프라 독점 포지션</strong>을 보유한 기업입니다. 단순한 에너지 기업이 아니라, <strong>생산자와 글로벌 시장을 연결하는 필수 통행료 수취 인프라(toll-road model)</strong>입니다. EBITDA는 3년 연속 역대 최고를 경신 중이며, 2026년 $5.5B, 2027년 이후 자유현금흐름 폭발적 확대가 예고되어 있습니다. 다만 <strong>$17.4B의 총부채</strong>와 <strong>연간 $4.5B에 달하는 성장 CapEx 부담</strong>, 퍼미안 집중 리스크는 인수 시 반드시 가격에 반영해야 할 요소입니다. 전략적 인수자 관점에서, 이 기업의 핵심 가치는 자산이 아니라 <em>고객 잠금(customer lock-in)과 규모의 네트워크 효과</em>입니다.
+    </div>
+  </div>
+
+  <div class="cards cards-4">
+    <div class="card">
+      <div class="card-label">투자 매력도</div>
+      <div class="card-value gold">★★★★☆</div>
+      <div class="card-sub">전략적 인프라 가치 매우 높음</div>
+    </div>
+    <div class="card">
+      <div class="card-label">성장 모멘텀</div>
+      <div class="card-value green">매우 강함</div>
+      <div class="card-sub">3년 연속 최고 EBITDA 경신</div>
+    </div>
+    <div class="card">
+      <div class="card-label">주요 리스크</div>
+      <div class="card-value red">부채·집중</div>
+      <div class="card-sub">$17.4B 부채 / 퍼미안 집중도</div>
+    </div>
+    <div class="card">
+      <div class="card-label">인수 복잡도</div>
+      <div class="card-value blue">높음</div>
+      <div class="card-sub">Fortune 500 / 대형 인프라</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 2. 기업 개요 ===== -->
+<section class="section" id="s2">
+  <div class="section-header">
+    <span class="section-num">02</span>
+    <h2 class="section-title">기업 개요 및 현황</h2>
+  </div>
+
+  <!-- 2.1 기본 정보 -->
+  <div class="subsection">
+    <div class="subsection-title">2.1 기본 정보 및 핵심 지표</div>
+    <div class="cards cards-3" style="margin-bottom:16px">
+      <div class="card">
+        <div class="card-label">설립</div>
+        <div class="card-value" style="font-size:20px">2005년</div>
+        <div class="card-sub">텍사스 휴스턴 본사</div>
+      </div>
+      <div class="card">
+        <div class="card-label">2025 매출</div>
+        <div class="card-value gold">$17.0B</div>
+        <div class="card-delta up">▲ +4% YoY</div>
+      </div>
+      <div class="card">
+        <div class="card-label">임직원 수</div>
+        <div class="card-value" style="font-size:20px">~3,570명</div>
+        <div class="card-sub">Fortune 500 · S&P 500</div>
+      </div>
+    </div>
+    <div class="cards cards-4">
+      <div class="card">
+        <div class="card-label">파이프라인</div>
+        <div class="card-value blue">28,400 mi</div>
+        <div class="card-sub">총 파이프라인 네트워크</div>
+      </div>
+      <div class="card">
+        <div class="card-label">처리 플랜트</div>
+        <div class="card-value blue">42개</div>
+        <div class="card-sub">가스 처리 설비</div>
+      </div>
+      <div class="card">
+        <div class="card-label">저장 용량</div>
+        <div class="card-value blue">76M bbl</div>
+        <div class="card-sub">NGL 저장 용량</div>
+      </div>
+      <div class="card">
+        <div class="card-label">2025 NGL 생산</div>
+        <div class="card-value blue">1,043 MBbl/d</div>
+        <div class="card-delta up">▲ +10% YoY</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2.2 역사 -->
+  <div class="subsection">
+    <div class="subsection-title">2.2 혁신에서 시작된 역사 — 20년의 성장 궤적</div>
+    <div class="chart-wrap">
+      <div class="chart-title">회사 성장 연대기</div>
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-year">2005</div>
+          <div class="timeline-text"><strong>창립 및 IPO 준비</strong> — 텍사스주 델라웨어 법인 설립. 소규모 미드스트림 자산을 시작으로 미드컨티넌트(Mid-Continent) 가스 수집 사업 시작.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-year">2010</div>
+          <div class="timeline-text"><strong>기업공개(IPO)</strong> — NYSE 상장. 이 시기 오클라호마 및 텍사스 Panhandle 지역 G&P 자산 확보를 통해 미드스트림 입지 구축.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-year">2016</div>
+          <div class="timeline-text"><strong>퍼미안 진출 가속화</strong> — 원유 가격 하락기임에도 퍼미안 분지 수집 자산을 적극 인수. 이 역발상 투자가 이후 10년 성장의 씨앗이 됨. Atlas Pipeline Partners 관련 자산 통합 완료.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-year">2019</div>
+          <div class="timeline-text"><strong>MLP 구조 단순화</strong> — Targa Resources Partners LP를 흡수합병, C-Corp 단일 구조로 전환. 기관 투자자 유치 확대 및 세금 구조 최적화.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-year">2021-2022</div>
+          <div class="timeline-text"><strong>퍼미안 인프라 대규모 확장</strong> — Daytona NGL 파이프라인, Train 7·8·9 분류기(fractionator) 신설. 델라웨어 분지 처리 플랜트 연속 완공. EBITDA 3년 만에 2배 성장.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-year">2024</div>
+          <div class="timeline-text"><strong>역대 최고 실적</strong> — Adj. EBITDA $4.14B(+17% YoY). Train 10 분류기 완공, Greenwood II 처리 플랜트 가동. S&P 500 편입 유지, Fortune 500 등재 지속. Galena Park LPG 수출 터미널 확장 착수.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-year">2025</div>
+          <div class="timeline-text"><strong>또 다시 역대 최고</strong> — Adj. EBITDA $4.96B(+20% YoY). Bull Moose, Bull Moose II, Pembrook II 플랜트 완공. Blackstone 보유 Badlands 우선주 $1.8B에 환매. Stakeholder Midstream $1.25B 인수 발표. 주당 배당 33% 인상.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-year">2026~</div>
+          <div class="timeline-text"><strong>Targa의 다음 전환점</strong> — 2026 EBITDA $5.4-5.6B 가이던스. 6개 신규 퍼미안 플랜트, Train 11-13 분류기, Speedway NGL 파이프라인 건설 중. 2027년 하반기 대형 하류 프로젝트 완공 시 <em>자유현금흐름 폭발적 확대</em> 예고.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2.3 사업 포트폴리오 -->
+  <div class="subsection">
+    <div class="subsection-title">2.3 핵심 사업 포트폴리오</div>
+    <div class="segment-grid">
+      <div class="segment-card">
+        <h3>① G&P — Gathering & Processing (수집·처리)</h3>
+        <div class="seg-pct">~52%</div>
+        <p>유정에서 나오는 원천가스(raw gas)를 파이프라인으로 수집해 불순물 제거 후 상품가스와 NGL로 분리. 이른바 "에너지 고속도로 입구 게이트". 2025년 총 인렛 볼륨 8,016 MMcf/d.</p>
+        <div class="seg-items">
+          <div class="seg-item">퍼미안 분지 집중 — Midland + Delaware 양 분지 커버</div>
+          <div class="seg-item">Eagle Ford, Barnett, Anadarko, Williston 등 다각화</div>
+          <div class="seg-item">2025 퍼미안 인렛 +11% YoY → 6,391 MMcf/d</div>
+          <div class="seg-item">조정 영업마진 $3,346M (+7% YoY)</div>
+        </div>
+      </div>
+      <div class="segment-card">
+        <h3>② L&T — Logistics & Transportation (물류·운송)</h3>
+        <div class="seg-pct">~48%</div>
+        <p>혼합 NGL을 분류기(fractionator)에서 제품별로 분리 후 파이프라인 운송, 저장, LPG 수출. Mont Belvieu(텍사스 최대 NGL 허브)와 Galena Park 수출 터미널이 핵심 자산.</p>
+        <div class="seg-items">
+          <div class="seg-item">NGL 파이프라인 운송 968 MBbl/d (+21% YoY)</div>
+          <div class="seg-item">분류 볼륨 1,058 MBbl/d (+13% YoY)</div>
+          <div class="seg-item">LPG 수출 429 MBbl/d (국제 시장 연결)</div>
+          <div class="seg-item">조정 영업마진 $3,182M (+17% YoY)</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="chart-wrap">
+      <div class="chart-title">사업 구조 — Targa의 가치사슬 (Upstream → Midstream → Market)</div>
+      <canvas id="valueChainChart" height="90"></canvas>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 3. 투자 논리 ===== -->
+<section class="section" id="s3">
+  <div class="section-header">
+    <span class="section-num">03</span>
+    <h2 class="section-title">핵심 투자 논리 및 가치 제안</h2>
+  </div>
+
+  <p class="prose">왜 이 리스크를 감수하고 Targa를 인수해야 하는가? 6가지 핵심 논거를 제시합니다.</p>
+
+  <div class="pillar-list">
+    <div class="pillar">
+      <div class="pillar-num">01</div>
+      <div>
+        <h4>퍼미안 분지 — 세계 최대 산유지의 인프라 독점</h4>
+        <p>퍼미안 분지는 사우디아라비아 기어와르 유전에 맞먹는 생산량을 자랑하는 세계 최대 육상 원유·가스 생산지입니다. Targa는 이 분지에서 가장 큰 독립 미드스트림 플레이어 중 하나로, 이미 완공된 파이프라인·플랜트 네트워크의 중복 건설이 경제적으로 불가능한 수준입니다. <strong>생산자 입장에서 Targa 인프라를 대체할 경쟁자를 선택하면 수백 마일의 신규 파이프라인이 필요</strong>합니다 — 이것이 진정한 해자(moat)입니다.</p>
+      </div>
+    </div>
+    <div class="pillar">
+      <div class="pillar-num">02</div>
+      <div>
+        <h4>통행료 모델(Toll-Road) — 유가와 무관한 수익성</h4>
+        <p>Targa 수익의 핵심은 처리 수수료(fee-based revenue)입니다. 생산자가 가스를 생산하는 한, 가스 가격이 어떻든 Targa는 수수료를 받습니다. 이 구조는 유가 급락 시에도 현금흐름을 방어합니다. 또한 장기 계약(long-term dedications) 기반으로 운영되어 고객 이탈이 극히 어렵습니다. <strong>2025년 기준 피-베이스드 수익 비중이 지속 확대 중</strong>이며, 2027년 이후 하류 프로젝트 완공 시 이 비중이 더욱 높아집니다.</p>
+      </div>
+    </div>
+    <div class="pillar">
+      <div class="pillar-num">03</div>
+      <div>
+        <h4>EBITDA 복리 성장기계 — 3년 연속 역대 최고 경신</h4>
+        <p>2022년 $2.6B → 2023년 $3.5B → 2024년 $4.1B → 2025년 $4.96B. <strong>3년 만에 EBITDA가 거의 2배</strong>로 성장했습니다. 2026년 $5.5B(+11%), 2027년 이후 대형 하류 프로젝트 완공 후 $6B+ 진입 가시권. 이는 현재 진행 중인 CapEx 사이클이 끝나면 "성장에서 현금 수확"으로 전환되는 전형적인 인프라 비즈니스 패턴입니다.</p>
+      </div>
+    </div>
+    <div class="pillar">
+      <div class="pillar-num">04</div>
+      <div>
+        <h4>글로벌 NGL 수출 플랫폼 — LNG 이후 다음 에너지 무역</h4>
+        <p>Galena Park 해양 터미널을 통해 프로판·부탄을 아시아·유럽으로 수출합니다. 글로벌 LPG 수요(특히 인도·중국)는 구조적 성장세입니다. 현재 터미널 확장 중이며 2027년 완공 시 수출 용량이 월 19MMBbl로 대폭 확대됩니다. <strong>미국 에너지를 세계 시장에 판매하는 "수출 게이트웨이"</strong>로서의 희소 자산 가치를 가집니다.</p>
+      </div>
+    </div>
+    <div class="pillar">
+      <div class="pillar-num">05</div>
+      <div>
+        <h4>주주환원 가속화 — 배당 33% → 25% 연속 인상</h4>
+        <p>2025년 배당 33% 인상($3.00 → $4.00/주), 2026년 추가 25% 인상($4.00 → $5.00/주). 2025년 자사주 매입 $642M 집행. CEO는 "2027년 이후 자유현금흐름 급증에 따라 주주환원 지속 확대" 명시. 이는 경영진이 현재 CapEx 사이클 완료 후의 현금 창출 능력에 높은 자신감을 가지고 있다는 신호입니다.</p>
+      </div>
+    </div>
+    <div class="pillar">
+      <div class="pillar-num">06</div>
+      <div>
+        <h4>투자등급 신용 + 유동성 $4.1B — 재무적 안정성</h4>
+        <p>투자등급(Investment Grade) 신용 등급 유지. 2025년말 기준 유동성 $4.1B($3.3B 리볼버 + $0.6B 매출채권 유동화 + $166M 현금). 2025년 2월 리볼버를 $2.75B → $3.5B로 확대. 높은 부채 수준이 우려되지만, <strong>안정적 EBITDA 대비 레버리지 비율은 관리 가능한 수준으로 지속 개선 중</strong>입니다.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 4. 재무 분석 ===== -->
+<section class="section" id="s4">
+  <div class="section-header">
+    <span class="section-num">04</span>
+    <h2 class="section-title">재무 성과 및 가치 평가</h2>
+  </div>
+
+  <!-- 4.1 재무 동향 -->
+  <div class="subsection">
+    <div class="subsection-title">4.1 주요 재무 동향 분석</div>
+
+    <div class="cards cards-4" style="margin-bottom:20px">
+      <div class="card">
+        <div class="card-label">2025 매출</div>
+        <div class="card-value gold">$17.0B</div>
+        <div class="card-delta up">▲ +4% YoY</div>
+      </div>
+      <div class="card">
+        <div class="card-label">2025 Adj. EBITDA</div>
+        <div class="card-value green">$4.96B</div>
+        <div class="card-delta up">▲ +20% YoY · 역대 최고</div>
+      </div>
+      <div class="card">
+        <div class="card-label">2025 순이익 (TRGP귀속)</div>
+        <div class="card-value green">$1.92B</div>
+        <div class="card-delta up">▲ +47% YoY</div>
+      </div>
+      <div class="card">
+        <div class="card-label">2025 이자비용(순)</div>
+        <div class="card-value red">$853M</div>
+        <div class="card-delta down">▲ +11% YoY (부채 증가)</div>
+      </div>
+      <div class="card">
+        <div class="card-label">2025 Adj. FCF</div>
+        <div class="card-value blue">$539M</div>
+        <div class="card-delta up">▲ +285% YoY</div>
+      </div>
+      <div class="card">
+        <div class="card-label">총 부채 (2025말)</div>
+        <div class="card-value red">$17.4B</div>
+        <div class="card-sub">투자등급 유지 중</div>
+      </div>
+      <div class="card">
+        <div class="card-label">2025 성장 CapEx</div>
+        <div class="card-value red">$3.34B</div>
+        <div class="card-sub">2026E $4.5B으로 확대</div>
+      </div>
+      <div class="card">
+        <div class="card-label">2026 EBITDA 가이던스</div>
+        <div class="card-value gold">$5.4–5.6B</div>
+        <div class="card-delta up">▲ 중간값 +11%</div>
+      </div>
+    </div>
+
+    <div class="chart-wrap">
+      <div class="chart-title">Adj. EBITDA 성장 추이 (2022–2026E) / $B</div>
+      <canvas id="ebitdaChart" height="120"></canvas>
+    </div>
+
+    <div class="chart-wrap">
+      <div class="chart-title">CapEx vs. 조정 EBITDA / $B — 투자 사이클과 현금 창출 구조</div>
+      <canvas id="capexChart" height="120"></canvas>
+    </div>
+  </div>
+
+  <!-- 4.2 경쟁사 비교 -->
+  <div class="subsection">
+    <div class="subsection-title">4.2 경쟁사 비교분석</div>
+    <div class="chart-wrap">
+      <table class="comp-table">
+        <thead>
+          <tr>
+            <th>기업명</th>
+            <th>티커</th>
+            <th>비즈니스 모델</th>
+            <th>EV/EBITDA</th>
+            <th>EBITDA 성장률</th>
+            <th>부채/EBITDA</th>
+            <th>배당 수익률</th>
+            <th>Targa 대비</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="highlight">
+            <td>Targa Resources</td>
+            <td>TRGP</td>
+            <td>G&P + L&T 통합</td>
+            <td>~14.9x (프리미엄)</td>
+            <td>+20% (2025)</td>
+            <td>~3.5x</td>
+            <td>~2.0%</td>
+            <td>기준</td>
+          </tr>
+          <tr>
+            <td>Enterprise Products</td>
+            <td>EPD</td>
+            <td>대형 파이프라인 통합</td>
+            <td>~10-11x</td>
+            <td>+4~6%</td>
+            <td>~3.2x</td>
+            <td>~7%</td>
+            <td>안정형 · 저성장</td>
+          </tr>
+          <tr>
+            <td>Williams Companies</td>
+            <td>WMB</td>
+            <td>가스 파이프라인 중심</td>
+            <td>~12-13x</td>
+            <td>+8~10%</td>
+            <td>~4.0x</td>
+            <td>~4.5%</td>
+            <td>천연가스 집중</td>
+          </tr>
+          <tr>
+            <td>Western Midstream</td>
+            <td>WES</td>
+            <td>G&P (OXY 연계)</td>
+            <td>~8-9x</td>
+            <td>+5~7%</td>
+            <td>~2.8x</td>
+            <td>~8%</td>
+            <td>저평가 · 낮은 성장</td>
+          </tr>
+          <tr>
+            <td>ONEOK</td>
+            <td>OKE</td>
+            <td>NGL/가스 파이프라인</td>
+            <td>~12-13x</td>
+            <td>+8~12%</td>
+            <td>~4.2x</td>
+            <td>~5%</td>
+            <td>가장 유사한 경쟁자</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="prose"><strong>핵심 인사이트:</strong> Targa는 동종업계 대비 <em>가장 높은 EV/EBITDA 멀티플(~15x)</em>에 거래되고 있습니다. 이는 시장이 Targa의 퍼미안 성장 프리미엄을 인정하는 것이지만, 인수자 관점에서는 <strong>"성장 기대치가 이미 가격에 충분히 반영된 프리미엄 자산"</strong>이라는 의미이기도 합니다. 인수 가격 협상 시 이 멀티플 갭을 어떻게 정당화할지가 핵심 과제입니다.</p>
+  </div>
+
+  <!-- 4.3 가치 평가 요약 -->
+  <div class="subsection">
+    <div class="subsection-title">4.3 가치 평가 요약</div>
+    <div class="chart-wrap">
+      <div class="chart-title">EV/EBITDA 기반 인수 가치 범위 분석 (2026E EBITDA $5.5B 기준)</div>
+      <canvas id="valuationChart" height="110"></canvas>
+    </div>
+    <div class="cards cards-3">
+      <div class="card">
+        <div class="card-label">보수적 (12x)</div>
+        <div class="card-value" style="font-size:20px">$66B EV</div>
+        <div class="card-sub">순부채 ~$17.4B 차감 시 주식가치 ~$48.6B</div>
+      </div>
+      <div class="card">
+        <div class="card-label">기준 (14.9x · 시장 현재가)</div>
+        <div class="card-value gold" style="font-size:20px">$81.9B EV</div>
+        <div class="card-sub">주식가치 ~$64.5B · 현 시장 반영치</div>
+      </div>
+      <div class="card">
+        <div class="card-label">인수 프리미엄 포함 (17x)</div>
+        <div class="card-value" style="font-size:20px">$93.5B EV</div>
+        <div class="card-sub">25~30% 프리미엄 반영 시 예상 딜 규모</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 5. 리스크 ===== -->
+<section class="section" id="s5">
+  <div class="section-header">
+    <span class="section-num">05</span>
+    <h2 class="section-title">주요 리스크 및 기회 — 넘어가선 안 될 것들</h2>
+  </div>
+
+  <div class="risk-list">
+
+    <div class="risk-item">
+      <span class="risk-badge high">HIGH</span>
+      <div class="risk-content">
+        <h4>① 퍼미안 단일 집중 리스크 (지리적 집중)</h4>
+        <p>2025년 기준 Targa 총 가스 인렛의 약 80%가 퍼미안 분지에서 나옵니다. 퍼미안의 Waha 허브 가스 가격은 파이프라인 병목 시 <strong>마이너스 가격</strong>으로 추락하는 경우가 있습니다 (실제 2024년 4분기 발생). 퍼미안 생산자들이 생산을 일시 중단하면 Targa 볼륨이 직접 타격을 받습니다. 단일 지역 집중은 "모 아니면 도" 베팅 구조와 같습니다. 퍼미안 규제 리스크, 수자원 제한, 지진 활동 증가 등도 장기 리스크 요인입니다.</p>
+      </div>
+    </div>
+
+    <div class="risk-item">
+      <span class="risk-badge high">HIGH</span>
+      <div class="risk-content">
+        <h4>② 막대한 성장 CapEx와 부채 부담</h4>
+        <p>2025년말 총 부채 <strong>$17.4B</strong>. 2026년 성장 CapEx 계획만 <strong>$4.5B</strong>. 조정 FCF는 $539M(2025)으로 아직 CapEx 대비 매우 작습니다. 즉 <strong>현재 Targa는 빚을 내서 성장에 투자하는 단계</strong>입니다. 금리가 높은 수준을 유지하면 리파이낸싱 비용 증가 → EBITDA 성장분을 이자가 잠식. 2025년 이자비용만 $853M이며 2026년에는 $960M으로 증가 예상. 금리 환경 악화 시 레버리지 트랩에 빠질 가능성 있음.</p>
+      </div>
+    </div>
+
+    <div class="risk-item">
+      <span class="risk-badge high">HIGH</span>
+      <div class="risk-content">
+        <h4>③ CapEx 실행 리스크 — 동시다발 대형 프로젝트</h4>
+        <p>현재 동시 진행 중인 프로젝트: 6개 신규 퍼미안 가스처리 플랜트, 3개 신규 분류기(Train 11-13), Speedway NGL 파이프라인, Galena Park 수출 터미널 확장, 다수 파이프라인 프로젝트. 이 규모의 동시다발 건설은 <strong>인력 부족, 원자재 가격 인플레이션, 공급망 지연</strong> 리스크에 고스란히 노출됩니다. 프로젝트 하나만 6개월 지연되어도 EBITDA 가이던스 miss → 주가 급락.</p>
+      </div>
+    </div>
+
+    <div class="risk-item">
+      <span class="risk-badge medium">MEDIUM</span>
+      <div class="risk-content">
+        <h4>④ 상품가격(NGL·가스) 노출 — 헤지에도 불구한 잔존 리스크</h4>
+        <p>2026년 사업 계획: Waha 가스 $1.00/MMBtu, NGL $0.60/갤런, 원유 $63/bbl 가정. 이 가정이 크게 빗나가면 EBITDA 직격탄. 특히 NGL 가격은 석유화학 수요, 아시아 LPG 수요, 미국 수출 용량 등에 연동되어 변동성이 큽니다. 피-베이스드 수익 비중이 늘고 있지만 <strong>여전히 약 25-30%는 상품 가격에 직접 노출</strong>되어 있습니다. Waha 가격이 상습적 음수(-) 전환 구간에 진입하면 수집 볼륨 자체가 감소합니다.</p>
+      </div>
+    </div>
+
+    <div class="risk-item">
+      <span class="risk-badge medium">MEDIUM</span>
+      <div class="risk-content">
+        <h4>⑤ 프리미엄 밸류에이션 — 실수할 여지가 없다</h4>
+        <p>EV/EBITDA ~15x는 동종업계 평균 대비 30-40% 프리미엄. 이미 성장 기대치가 가격에 반영되어 있다는 의미입니다. <strong>단 한 분기라도 가이던스를 miss하면 멀티플 리레이팅(re-rating) 리스크</strong>가 있습니다. 인수 후 통합 과정에서 EBITDA 창출이 예상보다 느리면 지불한 프리미엄 회수가 어려워집니다. 인수 이후의 synergy 실현 계획이 매우 구체적이어야 합니다.</p>
+      </div>
+    </div>
+
+    <div class="risk-item">
+      <span class="risk-badge medium">MEDIUM</span>
+      <div class="risk-content">
+        <h4>⑥ 에너지 전환 장기 리스크 — 미드스트림의 10-20년 후</h4>
+        <p>천연가스와 NGL은 에너지 전환 과정에서 '브릿지 연료'로 수십 년은 유효하지만, 장기적으로 수요 정점(peak demand)에 대한 불확실성이 있습니다. 특히 인수 후 자산 상각 기간(15-30년)을 고려하면 에너지 믹스 변화가 자산 손상(impairment)으로 이어질 수 있습니다. 단기~중기(~2035)에는 이 리스크가 크지 않지만, <strong>인수 딜 구조 설계 시 장기 자산 건전성을 검토해야 합니다.</strong></p>
+      </div>
+    </div>
+
+    <div class="risk-item">
+      <span class="risk-badge low">LOW-MED</span>
+      <div class="risk-content">
+        <h4>⑦ 경영진 이탈 리스크 — 리더십 전환 신호</h4>
+        <p>2025년 4분기 실적 발표에서 리더십 승계 계획(succession planning) 및 임원 은퇴가 언급됐습니다. M&A 딜에서 핵심 경영진 이탈은 통합 실행력 약화로 직결될 수 있습니다. 특히 복잡한 인프라 운영에서는 현장 노하우를 가진 인력의 유지가 중요합니다. <strong>딜 클로징 후 핵심 인력 리텐션 패키지를 딜 구조에 반드시 포함</strong>시켜야 합니다.</p>
+      </div>
+    </div>
+
+    <div class="risk-item">
+      <span class="risk-badge low">LOW</span>
+      <div class="risk-content">
+        <h4>⑧ 규제 및 환경 리스크</h4>
+        <p>미드스트림 인프라는 FERC(연방에너지규제위원회) 규제, 주(州) 환경 규제, 파이프라인 안전 규제의 영향을 받습니다. 탄소 포집·저장(CCS) 관련 45Q 세금 공제를 활용 중이지만, 정책 변화 시 이 혜택이 축소될 수 있습니다. 퍼미안 분지의 유해 가스(sour gas) 처리 관련 환경 소송 리스크도 모니터링 필요합니다. 단, 현재는 관리 가능한 수준으로 평가됩니다.</p>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="subsection-title" style="margin-top:28px">기회 요인 — 리스크 감수의 보상</div>
+  <div class="cards cards-3">
+    <div class="card" style="border-left: 3px solid var(--accent-green);">
+      <div class="card-label">🌏 아시아 LPG 수요</div>
+      <div class="card-value green" style="font-size:16px">구조적 성장</div>
+      <div class="card-sub">인도·인도네시아 LPG 가스화 확대, 중국 석화 원료 수요. Targa 수출 터미널 확장 완공 시 직접 수혜.</div>
+    </div>
+    <div class="card" style="border-left: 3px solid var(--accent-teal);">
+      <div class="card-label">⚡ AI 데이터센터 전력 수요</div>
+      <div class="card-value" style="color:var(--accent-teal); font-size:16px">간접 수혜</div>
+      <div class="card-sub">데이터센터 전력의 천연가스 발전 의존도 상승 → 퍼미안 가스 생산 증가 → Targa 처리 볼륨 증가의 연결고리.</div>
+    </div>
+    <div class="card" style="border-left: 3px solid var(--accent-gold);">
+      <div class="card-label">💰 2027+ FCF 전환</div>
+      <div class="card-value gold" style="font-size:16px">현금 폭발</div>
+      <div class="card-sub">대형 하류 프로젝트 완공 시 성장 CapEx 급감 + EBITDA 유지 = 자유현금흐름 급팽창. 인수 후 De-leveraging 가속 가능.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 6. Bull / Bear ===== -->
+<section class="section" id="s6">
+  <div class="section-header">
+    <span class="section-num">06</span>
+    <h2 class="section-title">Bull Case · Base Case · Bear Case</h2>
+  </div>
+
+  <div class="scenario-grid">
+    <div class="scenario-card bull">
+      <div class="scenario-label bull">🐂 Bull Case</div>
+      <div class="scenario-target bull">$110B+ EV</div>
+      <div class="scenario-sub">발생 확률 추정: 25~30%</div>
+      <ul class="scenario-points">
+        <li>퍼미안 생산 증가율 가속화 (YoY +15%+)</li>
+        <li>Waha 가스 가격 $2+ 안정화 (신규 파이프라인 완공)</li>
+        <li>NGL 가격 회복 ($0.70+/갤런)</li>
+        <li>2026 EBITDA $5.8B+ 달성</li>
+        <li>2027 대형 프로젝트 예정대로 완공</li>
+        <li>아시아 LPG 수출 급증 / 신규 장기계약</li>
+        <li>FCF 전환 후 부채 급속 축소</li>
+        <li>2026E EBITDA 기준 멀티플 18-20x 정당화</li>
+      </ul>
+    </div>
+    <div class="scenario-card base">
+      <div class="scenario-label base">⚖️ Base Case</div>
+      <div class="scenario-target base">$80-90B EV</div>
+      <div class="scenario-sub">발생 확률 추정: 50~55%</div>
+      <ul class="scenario-points">
+        <li>EBITDA 연 10~15% 성장 지속</li>
+        <li>2026 EBITDA $5.4-5.6B 가이던스 달성</li>
+        <li>Waha 가격 $1.00 수준 유지</li>
+        <li>CapEx 사이클 2027 예정대로 일단락</li>
+        <li>부채 수준 현상유지 후 2027+ 감소</li>
+        <li>배당 $5.00/주 (2026) 지급</li>
+        <li>현재 시장가 ~$52B 시총 유지/소폭 성장</li>
+        <li>멀티플 14-16x 밴드 유지</li>
+      </ul>
+    </div>
+    <div class="scenario-card bear">
+      <div class="scenario-label bear">🐻 Bear Case</div>
+      <div class="scenario-target bear">$50-60B EV</div>
+      <div class="scenario-sub">발생 확률 추정: 15~25%</div>
+      <ul class="scenario-points">
+        <li>퍼미안 생산자 대규모 생산 감축</li>
+        <li>NGL 가격 $0.45 이하 급락 (수요 둔화)</li>
+        <li>Waha 마이너스 가격 상습 재발</li>
+        <li>금리 지속 고공 → 이자비용 $1B+ 돌파</li>
+        <li>대형 CapEx 프로젝트 지연/비용 초과</li>
+        <li>신용등급 하락 → 리파이낸싱 어려움</li>
+        <li>EBITDA 성장 둔화 → 멀티플 리레이팅 10-11x</li>
+        <li>FCF 전환 시점 2029-2030으로 지연</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="chart-wrap" style="margin-top:20px">
+    <div class="chart-title">시나리오별 EBITDA 경로 비교 (2023–2028E) / $B</div>
+    <canvas id="scenarioChart" height="130"></canvas>
+  </div>
+
+  <div class="verdict" style="border-left-color: var(--accent-gold); background: linear-gradient(135deg, #1a1508, #100f05); border-color: #3a2f10;">
+    <div class="verdict-label" style="color:var(--accent-gold)">🎯 M&A 어드바이저 최종 의견 — 인수를 정당화하는 이유</div>
+    <div class="verdict-text">
+      Targa Resources는 <strong>에너지 인프라 비즈니스의 교과서적 사례</strong>입니다. 고통스러운 CapEx 사이클을 지나면 폭발적 FCF가 기다리는 구조, 필수 인프라의 고객 잠금 효과, 퍼미안이라는 세계 최고의 생산지 독점 — 이것이 인수자가 프리미엄을 지불해야 하는 이유입니다. <strong>단, 타이밍이 핵심입니다.</strong> 현재는 CapEx 피크(Peak CapEx) 구간으로, 인수 즉시 높은 레버리지와 낮은 FCF를 감당해야 합니다. 2027년 대형 프로젝트 완공 이후 FCF 전환이 시작되면 이 기업은 완전히 다른 가치를 발휘합니다. <em>인내심 있는 전략적 인수자, 특히 에너지 인프라 포트폴리오를 강화하려는 대형 에너지 기업이라면, "지금 고통, 나중 과실"의 전형적인 인프라 딜로 접근할 수 있습니다.</em>
+    </div>
+  </div>
+</section>
+
+</div><!-- /container -->
+
+<footer>
+  <span>TARGA RESOURCES (TRGP) — M&A 인수 브리핑</span>
+  <span>데이터 기준: FY2025 실적 발표 (2026.02.19) · Q1 2026 (2026.05.07)</span>
+  <span>본 보고서는 투자 권고가 아닌 분석 목적으로 작성되었습니다</span>
+</footer>
+
+<!-- ===== CHARTS ===== -->
+<script>
+const gold = '#c9a227';
+const goldDim = '#8a6d12';
+const blue = '#3d8bcd';
+const teal = '#2bb5a0';
+const red = '#d64f3c';
+const green = '#4aab6e';
+const orange = '#e07832';
+const gridColor = '#1e2530';
+const textColor = '#7a8a9e';
+
+Chart.defaults.color = textColor;
+Chart.defaults.borderColor = gridColor;
+Chart.defaults.font.family = "'IBM Plex Mono', monospace";
+
+// EBITDA Chart
+new Chart(document.getElementById('ebitdaChart'), {
+  type: 'bar',
+  data: {
+    labels: ['2022', '2023', '2024', '2025', '2026E'],
+    datasets: [{
+      label: 'Adj. EBITDA ($B)',
+      data: [2.60, 3.53, 4.14, 4.96, 5.50],
+      backgroundColor: [goldDim, goldDim, goldDim, gold, '#c9a22755'],
+      borderColor: [gold, gold, gold, gold, gold],
+      borderWidth: 1,
+      borderRadius: 2,
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: { display: false },
+      tooltip: { callbacks: { label: ctx => `$${ctx.raw}B` } }
+    },
+    scales: {
+      x: { grid: { color: gridColor } },
+      y: {
+        grid: { color: gridColor },
+        ticks: { callback: v => `$${v}B` },
+        min: 0, max: 7
+      }
+    }
+  }
+});
+
+// CapEx Chart
+new Chart(document.getElementById('capexChart'), {
+  type: 'bar',
+  data: {
+    labels: ['2022', '2023', '2024', '2025', '2026E', '2027E'],
+    datasets: [
+      {
+        label: 'Adj. EBITDA',
+        data: [2.60, 3.53, 4.14, 4.96, 5.50, 6.30],
+        backgroundColor: '#c9a22733',
+        borderColor: gold,
+        borderWidth: 1.5,
+        borderRadius: 2,
+        type: 'bar',
+      },
+      {
+        label: '성장 CapEx (Net)',
+        data: [1.80, 2.50, 3.00, 3.34, 4.50, 3.00],
+        backgroundColor: '#d64f3c33',
+        borderColor: red,
+        borderWidth: 1.5,
+        borderRadius: 2,
+        type: 'bar',
+      },
+      {
+        label: 'Adj. FCF',
+        data: [0.35, 0.25, 0.14, 0.54, 0.80, 2.50],
+        borderColor: green,
+        backgroundColor: 'transparent',
+        borderWidth: 2.5,
+        pointBackgroundColor: green,
+        pointRadius: 5,
+        type: 'line',
+        tension: 0.3,
+        yAxisID: 'y',
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: { position: 'top', labels: { boxWidth: 12, padding: 16 } },
+      tooltip: { callbacks: { label: ctx => `${ctx.dataset.label}: $${ctx.raw}B` } }
+    },
+    scales: {
+      x: { grid: { color: gridColor } },
+      y: { grid: { color: gridColor }, ticks: { callback: v => `$${v}B` }, min: 0, max: 7 }
+    }
+  }
+});
+
+// Valuation Chart
+new Chart(document.getElementById('valuationChart'), {
+  type: 'bar',
+  data: {
+    labels: ['12x (보수)', '13x', '14x', '15x (현재)', '16x', '17x (인수프리미엄)'],
+    datasets: [{
+      label: 'Enterprise Value ($B)',
+      data: [66, 71.5, 77, 82.5, 88, 93.5],
+      backgroundColor: [
+        '#3d8bcd44', '#3d8bcd55', '#c9a22755', gold, '#c9a22755', '#4aab6e55'
+      ],
+      borderColor: [blue, blue, goldDim, gold, goldDim, green],
+      borderWidth: 1.5,
+      borderRadius: 2,
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true,
+    plugins: {
+      legend: { display: false },
+      tooltip: { callbacks: { label: ctx => `EV: $${ctx.raw}B` } }
+    },
+    scales: {
+      x: { grid: { color: gridColor }, ticks: { callback: v => `$${v}B` }, min: 50 },
+      y: { grid: { color: gridColor } }
+    }
+  }
+});
+
+// Scenario Chart
+new Chart(document.getElementById('scenarioChart'), {
+  type: 'line',
+  data: {
+    labels: ['2023', '2024', '2025', '2026E', '2027E', '2028E'],
+    datasets: [
+      {
+        label: '🐂 Bull Case',
+        data: [3.53, 4.14, 4.96, 5.80, 7.00, 8.20],
+        borderColor: green,
+        backgroundColor: '#4aab6e11',
+        borderWidth: 2,
+        pointRadius: 4,
+        tension: 0.3,
+        fill: false,
+        borderDash: [0],
+      },
+      {
+        label: '⚖️ Base Case',
+        data: [3.53, 4.14, 4.96, 5.50, 6.30, 7.00],
+        borderColor: blue,
+        backgroundColor: '#3d8bcd11',
+        borderWidth: 2.5,
+        pointRadius: 5,
+        tension: 0.3,
+        fill: false,
+      },
+      {
+        label: '🐻 Bear Case',
+        data: [3.53, 4.14, 4.96, 4.80, 5.10, 5.40],
+        borderColor: red,
+        backgroundColor: '#d64f3c11',
+        borderWidth: 2,
+        pointRadius: 4,
+        tension: 0.3,
+        fill: false,
+        borderDash: [5, 3],
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: { position: 'top', labels: { boxWidth: 12, padding: 16 } },
+      tooltip: { callbacks: { label: ctx => `${ctx.dataset.label}: $${ctx.raw}B` } }
+    },
+    scales: {
+      x: { grid: { color: gridColor } },
+      y: { grid: { color: gridColor }, ticks: { callback: v => `$${v}B` }, min: 2, max: 9 }
+    }
+  }
+});
+
+// Value Chain (horizontal bar illustrative)
+new Chart(document.getElementById('valueChainChart'), {
+  type: 'bar',
+  data: {
+    labels: ['G&P 조정 마진', 'L&T 조정 마진', '2025 총 조정 마진'],
+    datasets: [
+      {
+        label: '2024',
+        data: [3.127, 2.717, 5.844],
+        backgroundColor: goldDim + '88',
+        borderColor: goldDim,
+        borderWidth: 1,
+        borderRadius: 2,
+      },
+      {
+        label: '2025',
+        data: [3.346, 3.182, 6.528],
+        backgroundColor: gold + 'aa',
+        borderColor: gold,
+        borderWidth: 1,
+        borderRadius: 2,
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: { position: 'top', labels: { boxWidth: 12, padding: 16 } },
+      tooltip: { callbacks: { label: ctx => `$${ctx.raw}B` } }
+    },
+    scales: {
+      x: { grid: { color: gridColor } },
+      y: { grid: { color: gridColor }, ticks: { callback: v => `$${v}B` } }
+    }
+  }
+});
+</script>
+</body>
+</html>
