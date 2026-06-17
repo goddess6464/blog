@@ -1,1 +1,21 @@
-Take it one step at the time.
+---
+---
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>나의 링크 모음 메인페이지</title>
+</head>
+<body>
+    <h1>자동 생성된 파일 목록</h1>
+    <ul>
+        {% for file in site.static_files %}
+          {% if file.extname == '.html' and file.name != 'index.html' %}
+            <li>
+              <a href=".{{ file.path }}">{{ file.name }}</a>
+            </li>
+          {% endif %}
+        {% endfor %}
+    </ul>
+</body>
+</html>
