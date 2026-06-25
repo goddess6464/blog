@@ -1,0 +1,1173 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Adobe Inc. (ADBE) — M&A 인수 브리핑 2026</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=DM+Serif+Display&display=swap');
+
+  :root {
+    --bg: #0d0d0f;
+    --surface: #141417;
+    --surface2: #1c1c21;
+    --border: #2a2a32;
+    --red: #e8432a;
+    --red-dim: rgba(232,67,42,0.12);
+    --red-mid: rgba(232,67,42,0.35);
+    --text: #e8e8ec;
+    --muted: #8888a0;
+    --accent: #ff6b4a;
+    --green: #3ecf8e;
+    --yellow: #f5c842;
+    --blue: #4f9eff;
+    --purple: #a78bfa;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    line-height: 1.7;
+    padding: 0 0 80px;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    background: linear-gradient(135deg, #1a0a06 0%, #0d0d0f 50%, #060610 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 64px 48px 52px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -100px; right: -100px;
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(232,67,42,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-label {
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--red);
+    font-weight: 600;
+    margin-bottom: 16px;
+  }
+  .hero h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 52px;
+    line-height: 1.1;
+    color: #fff;
+    margin-bottom: 12px;
+  }
+  .hero h1 span { color: var(--accent); }
+  .hero-sub {
+    font-size: 16px;
+    color: var(--muted);
+    margin-bottom: 36px;
+    max-width: 640px;
+  }
+  .hero-stats {
+    display: flex;
+    gap: 40px;
+    flex-wrap: wrap;
+  }
+  .hero-stat { }
+  .hero-stat .val {
+    font-size: 28px;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .hero-stat .val.red { color: var(--accent); }
+  .hero-stat .val.green { color: var(--green); }
+  .hero-stat .label { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
+  .divider { width: 1px; background: var(--border); height: 48px; align-self: center; }
+  .hero-date {
+    position: absolute;
+    top: 32px; right: 48px;
+    font-size: 12px;
+    color: var(--muted);
+    text-align: right;
+  }
+
+  /* ── LAYOUT ── */
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 48px;
+  }
+
+  /* ── VERDICT BANNER ── */
+  .verdict {
+    background: var(--red-dim);
+    border: 1px solid var(--red-mid);
+    border-left: 4px solid var(--red);
+    border-radius: 8px;
+    padding: 24px 28px;
+    margin: 48px 0 0;
+  }
+  .verdict-tag {
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: var(--red);
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .verdict p {
+    font-size: 15px;
+    color: var(--text);
+    line-height: 1.75;
+  }
+
+  /* ── SECTION ── */
+  .section {
+    margin-top: 72px;
+  }
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    margin-bottom: 32px;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 16px;
+  }
+  .section-num {
+    font-size: 12px;
+    color: var(--red);
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    min-width: 24px;
+  }
+  .section-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 28px;
+    color: #fff;
+  }
+
+  /* ── CARDS GRID ── */
+  .cards {
+    display: grid;
+    gap: 16px;
+  }
+  .cards-2 { grid-template-columns: 1fr 1fr; }
+  .cards-3 { grid-template-columns: 1fr 1fr 1fr; }
+  .cards-4 { grid-template-columns: 1fr 1fr 1fr 1fr; }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+  }
+  .card-label {
+    font-size: 11px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 8px;
+    font-weight: 600;
+  }
+  .card-value {
+    font-size: 26px;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.1;
+    margin-bottom: 6px;
+  }
+  .card-value.red { color: var(--accent); }
+  .card-value.green { color: var(--green); }
+  .card-value.yellow { color: var(--yellow); }
+  .card-note {
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  /* ── TABLE ── */
+  .table-wrap {
+    overflow-x: auto;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+  thead tr {
+    background: var(--surface2);
+    border-bottom: 1px solid var(--border);
+  }
+  thead th {
+    padding: 14px 18px;
+    text-align: left;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--muted);
+    font-weight: 600;
+  }
+  tbody tr {
+    border-bottom: 1px solid var(--border);
+    transition: background 0.15s;
+  }
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:hover { background: var(--surface2); }
+  tbody td {
+    padding: 13px 18px;
+    color: var(--text);
+  }
+  .td-highlight { color: #fff; font-weight: 600; }
+  .td-red { color: var(--accent); font-weight: 600; }
+  .td-green { color: var(--green); font-weight: 600; }
+  .td-yellow { color: var(--yellow); font-weight: 600; }
+
+  /* ── CHART BOX ── */
+  .chart-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px;
+    position: relative;
+  }
+  .chart-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 20px;
+  }
+  .chart-container { position: relative; }
+
+  /* ── TIMELINE ── */
+  .timeline {
+    position: relative;
+    padding-left: 32px;
+  }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 8px; top: 8px; bottom: 8px;
+    width: 2px;
+    background: var(--border);
+  }
+  .tl-item {
+    position: relative;
+    margin-bottom: 28px;
+  }
+  .tl-dot {
+    position: absolute;
+    left: -28px;
+    top: 6px;
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: var(--red);
+    border: 2px solid var(--bg);
+  }
+  .tl-year {
+    font-size: 12px;
+    color: var(--red);
+    font-weight: 700;
+    margin-bottom: 4px;
+    letter-spacing: 1px;
+  }
+  .tl-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 4px;
+  }
+  .tl-desc {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  /* ── RISK / OPPORTUNITY ── */
+  .risk-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+  .risk-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+  }
+  .risk-card.danger { border-left: 4px solid var(--red); }
+  .risk-card.warn { border-left: 4px solid var(--yellow); }
+  .risk-card.opp { border-left: 4px solid var(--green); }
+  .risk-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+  .risk-icon { font-size: 20px; }
+  .risk-title { font-size: 15px; font-weight: 700; color: #fff; }
+  .risk-body { font-size: 14px; color: var(--muted); line-height: 1.65; }
+  .risk-body strong { color: var(--text); }
+
+  /* ── BULL / BEAR ── */
+  .bull-bear {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+  .bb-card {
+    border-radius: 12px;
+    padding: 28px;
+  }
+  .bb-bull {
+    background: rgba(62,207,142,0.06);
+    border: 1px solid rgba(62,207,142,0.25);
+  }
+  .bb-bear {
+    background: rgba(232,67,42,0.06);
+    border: 1px solid rgba(232,67,42,0.25);
+  }
+  .bb-header {
+    font-size: 18px;
+    font-weight: 800;
+    margin-bottom: 20px;
+  }
+  .bb-bull .bb-header { color: var(--green); }
+  .bb-bear .bb-header { color: var(--accent); }
+  .bb-item {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+  .bb-bullet {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    margin-top: 8px;
+    flex-shrink: 0;
+  }
+  .bb-bull .bb-bullet { background: var(--green); }
+  .bb-bear .bb-bullet { background: var(--accent); }
+  .bb-text { font-size: 14px; color: var(--muted); line-height: 1.6; }
+  .bb-text strong { color: var(--text); }
+
+  /* ── PORTFOLIO ── */
+  .portfolio-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin-bottom: 12px;
+  }
+  .portfolio-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+  .portfolio-name { font-size: 15px; font-weight: 700; color: #fff; }
+  .portfolio-rev { font-size: 14px; font-weight: 600; color: var(--green); }
+  .portfolio-desc { font-size: 14px; color: var(--muted); }
+  .portfolio-badge {
+    display: inline-block;
+    font-size: 10px;
+    letter-spacing: 1px;
+    padding: 3px 9px;
+    border-radius: 4px;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-left: 8px;
+  }
+  .badge-cc { background: rgba(79,158,255,0.15); color: var(--blue); }
+  .badge-dc { background: rgba(167,139,250,0.15); color: var(--purple); }
+  .badge-dx { background: rgba(245,200,66,0.15); color: var(--yellow); }
+
+  /* ── SUBSECTION ── */
+  .subsection {
+    margin-top: 48px;
+  }
+  .subsection-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  /* ── INSIGHT BOX ── */
+  .insight {
+    background: rgba(79,158,255,0.07);
+    border: 1px solid rgba(79,158,255,0.2);
+    border-left: 4px solid var(--blue);
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin-top: 16px;
+    font-size: 14px;
+    color: var(--text);
+    line-height: 1.7;
+  }
+  .insight strong { color: var(--blue); }
+
+  p { margin-bottom: 12px; }
+
+  @media (max-width: 768px) {
+    .hero { padding: 40px 24px 36px; }
+    .hero h1 { font-size: 32px; }
+    .container { padding: 0 24px; }
+    .cards-2, .cards-3, .cards-4, .risk-grid, .bull-bear { grid-template-columns: 1fr; }
+    .hero-stats { gap: 24px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-date">기준일: 2026년 6월 25일<br>보고서 유형: M&A 인수 브리핑</div>
+  <div class="hero-label">M&A Acquisition Briefing · NASDAQ: ADBE</div>
+  <h1>Adobe Inc.<br><span>크리에이티브 AI의 제왕</span></h1>
+  <p class="hero-sub">디지털 미디어 · 문서 · 마케팅 플랫폼을 아우르는 글로벌 소프트웨어 제국. AI 전환기의 가장 논쟁적인 역발상 인수 기회.</p>
+  <div class="hero-stats">
+    <div class="hero-stat">
+      <div class="val">$78B</div>
+      <div class="label">시가총액 (현재)</div>
+    </div>
+    <div class="divider"></div>
+    <div class="hero-stat">
+      <div class="val green">$26.5B+</div>
+      <div class="label">FY2026 가이던스</div>
+    </div>
+    <div class="divider"></div>
+    <div class="hero-stat">
+      <div class="val">~11x</div>
+      <div class="label">P/E (역사적 저점)</div>
+    </div>
+    <div class="divider"></div>
+    <div class="hero-stat">
+      <div class="val red">-49%</div>
+      <div class="label">52주 주가 하락</div>
+    </div>
+    <div class="divider"></div>
+    <div class="hero-stat">
+      <div class="val">$10.3B</div>
+      <div class="label">잉여현금흐름 (TTM)</div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+<!-- 1. 결론 요약 -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-num">01</div>
+    <div class="section-title">결론 요약</div>
+  </div>
+
+  <div class="verdict">
+    <div class="verdict-tag">인수 의견 — 조건부 강력 매수 (Conditional Strong Buy)</div>
+    <p>
+      Adobe는 현재 역사적 저점 밸류에이션(P/E ~11x, 10년 평균 44x 대비 75% 할인)에 거래되고 있다. 주가는 고점 대비 49% 하락했지만, 비즈니스 펀더멘털은 견고하다 — FY2025 매출 $23.8B(+11% YoY), 잉여현금흐름 $10.3B, FY2026 Q2 매출은 기대치를 크게 상회($6.62B, +13% YoY)했다. 시장은 "AI가 Adobe를 죽일 것"이라는 공포를 가격에 반영했지만, 데이터는 반대를 가리킨다 — AI-first ARR이 전년 대비 3배 증가해 $500M을 돌파했고, Firefly 자산 생성은 4배 급증했다. 핵심 인수 논리는: <strong>강력한 해자(lock-in) + 역대급 저평가 + AI 모네타이제이션 가속화</strong>. 단, 경영진 불확실성(CFO 교체), 경쟁압력(Canva, OpenAI), 프리미엄 전략의 프리미엄 모델로의 전환 리스크는 반드시 관리해야 한다.
+    </p>
+  </div>
+
+  <div class="cards cards-4" style="margin-top:24px;">
+    <div class="card">
+      <div class="card-label">인수 매력도</div>
+      <div class="card-value green">★★★★☆</div>
+      <div class="card-note">밸류에이션 매력 + AI 기회</div>
+    </div>
+    <div class="card">
+      <div class="card-label">리스크 레벨</div>
+      <div class="card-value yellow">중-고 (Medium-High)</div>
+      <div class="card-note">경쟁 + 전략 전환 리스크</div>
+    </div>
+    <div class="card">
+      <div class="card-label">적정 인수가 범위</div>
+      <div class="card-value">$200~$250</div>
+      <div class="card-note">현재가: ~$197</div>
+    </div>
+    <div class="card">
+      <div class="card-label">컨센서스 목표가</div>
+      <div class="card-value">$282</div>
+      <div class="card-note">현재가 대비 +41% 업사이드</div>
+    </div>
+  </div>
+</div>
+
+<!-- 2. 기업 개요 -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-num">02</div>
+    <div class="section-title">기업 개요 및 현황</div>
+  </div>
+
+  <!-- 2.1 기본 정보 -->
+  <div class="subsection">
+    <div class="subsection-title">2.1 기본 정보 및 핵심 지표</div>
+    <div class="cards cards-2">
+      <div class="table-wrap">
+        <table>
+          <tbody>
+            <tr><td class="td-highlight">회사명</td><td>Adobe Inc.</td></tr>
+            <tr><td class="td-highlight">티커</td><td>NASDAQ: ADBE</td></tr>
+            <tr><td class="td-highlight">본사</td><td>San Jose, California, USA</td></tr>
+            <tr><td class="td-highlight">설립</td><td>1982년 12월</td></tr>
+            <tr><td class="td-highlight">CEO</td><td>Shantanu Narayen (2007~현재)</td></tr>
+            <tr><td class="td-highlight">임직원</td><td>약 31,360명</td></tr>
+            <tr><td class="td-highlight">FY2025 매출</td><td>$23.77B (+11% YoY)</td></tr>
+            <tr><td class="td-highlight">비즈니스 모델</td><td>SaaS 구독 (수익의 ~96%)</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <tbody>
+            <tr><td class="td-highlight">시가총액</td><td>~$78B</td></tr>
+            <tr><td class="td-highlight">EV</td><td>~$79B</td></tr>
+            <tr><td class="td-highlight">P/E (TTM)</td><td>~11x (역대 최저 수준)</td></tr>
+            <tr><td class="td-highlight">EV/FCF</td><td>~7.7x</td></tr>
+            <tr><td class="td-highlight">영업이익률</td><td>~36.7% (GAAP)</td></tr>
+            <tr><td class="td-highlight">순이익률</td><td>~30%</td></tr>
+            <tr><td class="td-highlight">ROE</td><td>63%</td></tr>
+            <tr><td class="td-highlight">잉여현금흐름</td><td>$10.3B (TTM)</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2.2 역사 -->
+  <div class="subsection">
+    <div class="subsection-title">2.2 혁신에서 시작된 역사 — 차고에서 $78B 제국까지</div>
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-year">1982</div>
+        <div class="tl-title">창업 — Xerox PARC의 두 과학자</div>
+        <div class="tl-desc">John Warnock과 Charles Geschke가 Xerox가 상용화를 거부한 페이지 기술 언어를 가지고 독립. 캘리포니아 Los Altos의 Adobe Creek에서 이름을 따왔다. Steve Jobs이 회사를 $5M에 인수하려 했지만 거절 — 대신 지분 19%를 5배 밸류에이션에 매각, 실리콘밸리 역사상 첫 1년 흑자 스타트업이 됐다.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-year">1984~1986</div>
+        <div class="tl-title">PostScript 혁명 — 인쇄 산업의 표준을 만들다</div>
+        <div class="tl-desc">PostScript는 어떤 기기에서도 동일한 결과물을 만드는 페이지 기술 언어. Apple LaserWriter에 탑재되며 데스크톱 퍼블리싱 혁명을 일으켰다. 1986년 NASDAQ 상장, 연매출 $16M, 87명 임직원.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-year">1987~1990</div>
+        <div class="tl-title">Illustrator + Photoshop — 크리에이티브 제국의 탄생</div>
+        <div class="tl-desc">1987년 Adobe Illustrator 출시. 1990년 Thomas & John Knoll 형제로부터 Photoshop 라이선스 획득 — 디지털 이미지 편집의 절대 표준이 됐다. "Photoshop하다"가 동사가 되는 소프트웨어 역사의 희귀한 사례.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-year">1993</div>
+        <div class="tl-title">PDF 발명 — 디지털 문서의 기반 인프라</div>
+        <div class="tl-desc">Warnock의 "Camelot" 프로젝트에서 탄생. 어떤 기기에서도 완벽히 재현되는 문서 포맷. 2008년 오픈 국제표준(ISO 32000)으로 채택. 오늘날 하루 수십억 개의 PDF가 교환되며 글로벌 상업, 정부, 교육의 핵심 인프라.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-year">2003~2013</div>
+        <div class="tl-title">Creative Suite → Creative Cloud — SaaS 전환의 교과서</div>
+        <div class="tl-desc">2003년 Creative Suite로 통합 번들. 2013년 일회성 패키지 판매 완전 포기, 구독 모델(Creative Cloud)으로 전환 — 당시 주가는 30% 급락했지만 이는 역사상 가장 탁월한 비즈니스 모델 전환의 하나가 됐다. 구독으로 인한 예측 가능한 현금흐름과 소프트웨어 불법복제 문제 해결.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-year">2018</div>
+        <div class="tl-title">Marketo 인수 $4.75B — 마케팅 클라우드 진출</div>
+        <div class="tl-desc">B2B 마케팅 자동화의 선두주자 Marketo 인수로 Digital Experience 세그먼트 강화. Magento($1.68B) 커머스 플랫폼도 동시 인수 — 크리에이티브에서 마케팅 실행까지 엔드투엔드 플랫폼 완성.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-year">2023~현재</div>
+        <div class="tl-title">Firefly AI + Figma 실패 + 밸류에이션 붕괴</div>
+        <div class="tl-desc">Figma $20B 인수 시도는 EU/미국 규제당국의 차단으로 무산(종료수수료 $1B 지불). 그러나 Firefly 생성형 AI 통합으로 반격 — 18개월간 180억 건 이상의 생성 기록. AI-first ARR $500M+ 돌파. 주가는 -49% 붕괴했지만 사업은 성장 중.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2.3 포트폴리오 -->
+  <div class="subsection">
+    <div class="subsection-title">2.3 핵심 사업 포트폴리오</div>
+
+    <div class="portfolio-item">
+      <div class="portfolio-top">
+        <div class="portfolio-name">Creative Cloud <span class="portfolio-badge badge-cc">CC</span></div>
+        <div class="portfolio-rev">~$12.7B ARR / 전체 매출의 ~54%</div>
+      </div>
+      <div class="portfolio-desc">Photoshop, Illustrator, InDesign, Premiere Pro, After Effects, Acrobat — 크리에이티브 전문가의 절대적 표준 도구 모음. 전 세계 수천만 명의 디자이너, 사진작가, 영상편집자, 그래픽 아티스트가 사용. Firefly AI가 깊이 통합되며 AI 크레딧 기반 업그레이드 수요 창출.</div>
+    </div>
+
+    <div class="portfolio-item">
+      <div class="portfolio-top">
+        <div class="portfolio-name">Document Cloud <span class="portfolio-badge badge-dc">DC</span></div>
+        <div class="portfolio-rev">~$3.2B ARR / FY2024 +18% YoY 성장</div>
+      </div>
+      <div class="portfolio-desc">Acrobat 및 PDF 에코시스템. AI Assistant 기능(문서 요약, Q&A)으로 Acrobat ARR이 전년 대비 3배 성장. 기업 디지털 전환의 핵심 인프라 역할. 전자서명(Adobe Sign) 포함.</div>
+    </div>
+
+    <div class="portfolio-item">
+      <div class="portfolio-top">
+        <div class="portfolio-name">Digital Experience (Experience Cloud) <span class="portfolio-badge badge-dx">DX</span></div>
+        <div class="portfolio-rev">~$5.8B / FY2024 +10% YoY</div>
+      </div>
+      <div class="portfolio-desc">Adobe Experience Manager, Analytics, Campaign, Marketo Engage, Commerce(Magento) — 기업 마케팅 & CX 플랫폼. Fortune 500 기업들의 디지털 경험 오케스트레이션 핵심. GenStudio(AI 콘텐츠 생성·관리 플랫폼)가 +25% 이상 ARR 성장 중.</div>
+    </div>
+
+    <div class="portfolio-item">
+      <div class="portfolio-top">
+        <div class="portfolio-name">Firefly & AI 플랫폼 <span class="portfolio-badge badge-cc">AI</span></div>
+        <div class="portfolio-rev">AI-first ARR $500M+ (전년 대비 3배↑)</div>
+      </div>
+      <div class="portfolio-desc">상업적으로 안전한 생성형 AI — 라이선스 보유 이미지로만 학습. 18억+ 생성 기록(출시 18개월). 프리미엄 구독 플랜(Standard/Pro/Premium)을 통한 직접 수익화. Content Credentials(AI 워터마크)로 "윤리적 AI" 포지셔닝 — Hollywood 스튜디오와 에이전시의 핵심 셀링포인트.</div>
+    </div>
+
+    <div class="portfolio-item">
+      <div class="portfolio-top">
+        <div class="portfolio-name">SEMrush (2025년 인수) <span class="portfolio-badge badge-dx">신규</span></div>
+        <div class="portfolio-rev">~$480M ARR 기여</div>
+      </div>
+      <div class="portfolio-desc">디지털 마케팅 분석 · SEO · 브랜드 가시성 플랫폼. 마케터에게 Creative + Analytics + SEO를 원스톱으로 제공. Experience Cloud와 통합 예정으로 마케팅 전문가 Lock-in 심화.</div>
+    </div>
+  </div>
+</div>
+
+<!-- 3. 핵심 투자 논리 -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-num">03</div>
+    <div class="section-title">핵심 투자 논리 및 가치 제안</div>
+  </div>
+
+  <div class="cards cards-2" style="margin-bottom:24px;">
+    <div class="risk-card opp">
+      <div class="risk-header">
+        <div class="risk-icon">🏰</div>
+        <div class="risk-title">해자 #1: 전환 비용의 블랙홀</div>
+      </div>
+      <div class="risk-body">Photoshop을 20년 쓴 디자이너, InDesign으로 작업하는 출판팀, Experience Cloud에 마케팅 스택을 올린 Fortune 500. <strong>단순히 소프트웨어가 좋아서가 아니라, 대안으로 옮기는 비용(재교육 + 워크플로우 재설계 + 파일 포맷 호환)이 너무 커서 안 떠난다.</strong> 이것이 진짜 해자.</div>
+    </div>
+    <div class="risk-card opp">
+      <div class="risk-header">
+        <div class="risk-icon">🔁</div>
+        <div class="risk-title">해자 #2: 예측 가능한 현금 창출 기계</div>
+      </div>
+      <div class="risk-body">매출의 96%가 구독. ARR $27.1B. 잉여현금흐름 $10.3B(TTM). <strong>EV/FCF 7.7x는 이 수준의 성장성과 마진을 가진 SaaS 기업으로는 거의 전례 없는 가격이다.</strong> 현금이 너무 많이 남아 연간 $5B+ 자사주 매입 중.</div>
+    </div>
+    <div class="risk-card opp">
+      <div class="risk-header">
+        <div class="risk-icon">🤖</div>
+        <div class="risk-title">해자 #3: AI가 이탈 도구가 아닌 업셀 도구</div>
+      </div>
+      <div class="risk-body">시장의 공포: "AI가 Adobe를 불필요하게 만든다." 현실: AI-influenced ARR이 전체 ARR의 1/3 돌파, Generative Credit 소비 분기 대비 3배 급증. <strong>사용자들이 Adobe를 떠나 AI 사용하는 것이 아니라 Adobe 안에서 AI를 사용하며 더 많이 지불하고 있다.</strong></div>
+    </div>
+    <div class="risk-card opp">
+      <div class="risk-header">
+        <div class="risk-icon">🌐</div>
+        <div class="risk-title">해자 #4: PDF = 글로벌 인프라</div>
+      </div>
+      <div class="risk-body">PDF는 ISO 국제표준. 정부, 법원, 병원, 교육기관, 은행 — 어디서나 Adobe 없이는 작동하지 않는 세계. <strong>이 인프라를 소유한 기업을 인수한다는 것은 디지털 문서 경제의 통행세를 인수하는 것과 같다.</strong></div>
+    </div>
+  </div>
+
+  <div class="insight">
+    <strong>인수자 관점의 핵심 인사이트:</strong> Adobe는 "크리에이티브 소프트웨어 회사"가 아니다. 크리에이티브 → 문서 → 마케팅 실행 → 성과 분석을 연결하는 <strong>크리에이티브 경제의 풀스택 플랫폼</strong>이다. 인수 시 각 레이어에서 교차판매(cross-sell)와 업셀(upsell) 기회가 무수히 존재하며, AI 기반 사용량 기반 과금(usage-based pricing)이 ARR 성장을 가속할 여지가 크다.
+  </div>
+</div>
+
+<!-- 4. 재무 성과 -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-num">04</div>
+    <div class="section-title">재무 성과 및 가치 평가</div>
+  </div>
+
+  <!-- 4.1 재무 동향 -->
+  <div class="subsection">
+    <div class="subsection-title">4.1 주요 재무 동향 분석</div>
+    <div class="cards cards-2" style="margin-bottom:24px;">
+      <div class="chart-box">
+        <div class="chart-title">연간 매출 추이 (단위: $B)</div>
+        <div class="chart-container" style="height:260px;">
+          <canvas id="revenueChart"></canvas>
+        </div>
+      </div>
+      <div class="chart-box">
+        <div class="chart-title">잉여현금흐름 vs 영업이익 (단위: $B)</div>
+        <div class="chart-container" style="height:260px;">
+          <canvas id="cashFlowChart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <div class="cards cards-4" style="margin-bottom:24px;">
+      <div class="card">
+        <div class="card-label">FY2025 매출</div>
+        <div class="card-value green">$23.8B</div>
+        <div class="card-note">+10.5% YoY</div>
+      </div>
+      <div class="card">
+        <div class="card-label">FY2025 순이익</div>
+        <div class="card-value green">$7.1B</div>
+        <div class="card-note">+28.2% YoY</div>
+      </div>
+      <div class="card">
+        <div class="card-label">영업현금흐름</div>
+        <div class="card-value">$10.5B</div>
+        <div class="card-note">TTM 기준</div>
+      </div>
+      <div class="card">
+        <div class="card-label">Q2 FY2026 매출</div>
+        <div class="card-value green">$6.62B</div>
+        <div class="card-note">+13% YoY, 컨센서스 대폭 상회</div>
+      </div>
+    </div>
+
+    <div class="chart-box">
+      <div class="chart-title">세그먼트별 매출 구성 (FY2025 기준)</div>
+      <div class="chart-container" style="height:220px;">
+        <canvas id="segmentChart"></canvas>
+      </div>
+    </div>
+
+    <div class="insight" style="margin-top:20px;">
+      <strong>FY2026 가이던스 상향:</strong> Q2 FY2026 어닝 발표 후 Adobe는 전체 연도 가이던스를 $25.9B → <strong>$26.5~$26.6B</strong>으로 대폭 상향 조정. Non-GAAP EPS 역시 $23.30~$23.50 → <strong>$24.35~$24.45</strong>로 상향. 사업 모멘텀은 가속 중이나 주가는 오히려 하락 — 전략 전환(프리미엄 모델)에 대한 시장의 불신.
+    </div>
+  </div>
+
+  <!-- 4.2 경쟁사 비교 -->
+  <div class="subsection">
+    <div class="subsection-title">4.2 경쟁사 비교분석</div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>기업</th>
+            <th>시가총액</th>
+            <th>매출 YoY</th>
+            <th>영업이익률</th>
+            <th>P/E</th>
+            <th>EV/FCF</th>
+            <th>비고</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="td-highlight">Adobe (ADBE)</td>
+            <td>$78B</td>
+            <td class="td-green">+13% (Q2 FY26)</td>
+            <td class="td-green">~45%</td>
+            <td class="td-red">~11x</td>
+            <td class="td-red">~7.7x</td>
+            <td>역사적 밸류에이션 저점</td>
+          </tr>
+          <tr>
+            <td class="td-highlight">Salesforce (CRM)</td>
+            <td>~$260B</td>
+            <td>+8% YoY</td>
+            <td>~20%</td>
+            <td>~40x</td>
+            <td>~30x</td>
+            <td>AI 에이전트 전환 중</td>
+          </tr>
+          <tr>
+            <td class="td-highlight">ServiceNow (NOW)</td>
+            <td>~$230B</td>
+            <td>+22% YoY</td>
+            <td>~25%</td>
+            <td>~80x</td>
+            <td>~60x</td>
+            <td>엔터프라이즈 AI 수혜주</td>
+          </tr>
+          <tr>
+            <td class="td-highlight">Intuit (INTU)</td>
+            <td>~$180B</td>
+            <td>+14% YoY</td>
+            <td>~19%</td>
+            <td>~50x</td>
+            <td>~35x</td>
+            <td>소기업 금융 SaaS</td>
+          </tr>
+          <tr>
+            <td class="td-highlight">Canva (비상장)</td>
+            <td>~$26B (추정)</td>
+            <td>+40%+ 추정</td>
+            <td>N/A</td>
+            <td>N/A</td>
+            <td>N/A</td>
+            <td>260M MAU, 하위 시장 위협</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="insight" style="margin-top:16px;">
+      <strong>핵심 관찰:</strong> Adobe는 소프트웨어 피어 대비 성장성(+13%), 마진(~45%), FCF 생성력에서 우위에 있음에도 P/E는 동종 그룹 평균(~59x)의 1/5 수준. Simply Wall St 분석 기준 Fair P/E가 30.9x임을 감안하면 <strong>현재 주가는 이론적 적정가 대비 65% 할인</strong>된 상태.
+    </div>
+  </div>
+
+  <!-- 4.3 가치 평가 -->
+  <div class="subsection">
+    <div class="subsection-title">4.3 가치 평가 요약</div>
+    <div class="chart-box" style="margin-bottom:24px;">
+      <div class="chart-title">시나리오별 적정 주가 분석 (현재가: ~$197)</div>
+      <div class="chart-container" style="height:240px;">
+        <canvas id="valuationChart"></canvas>
+      </div>
+    </div>
+    <div class="cards cards-3">
+      <div class="card">
+        <div class="card-label">베이스 케이스 (P/E 20x)</div>
+        <div class="card-value green">$350</div>
+        <div class="card-note">현재가 대비 +78%<br>EPS $17.49 기준</div>
+      </div>
+      <div class="card">
+        <div class="card-label">베어 케이스 (P/E 14x)</div>
+        <div class="card-value yellow">$245</div>
+        <div class="card-note">현재가 대비 +24%<br>경쟁 심화 반영</div>
+      </div>
+      <div class="card">
+        <div class="card-label">불 케이스 (P/E 30x)</div>
+        <div class="card-value">$524</div>
+        <div class="card-note">현재가 대비 +166%<br>AI 모네타이제이션 성공 시</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 5. 리스크 및 기회 -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-num">05</div>
+    <div class="section-title">주요 리스크 및 기회</div>
+  </div>
+
+  <div class="risk-grid" style="margin-bottom:32px;">
+    <div class="risk-card danger">
+      <div class="risk-header">
+        <div class="risk-icon">⚠️</div>
+        <div class="risk-title">리스크 #1: Canva의 하위 시장 침식</div>
+      </div>
+      <div class="risk-body"><strong>260M 월간 사용자를 보유한 Canva</strong>가 Affinity 인수로 전문가 시장까지 진출 중. 프리미엄 Adobe 요금의 1/5 이하 가격으로 "80% 충분한" 기능 제공. 다음 세대 디자이너가 Canva부터 시작하면 Adobe의 미래 고객 파이프라인이 고갈될 수 있다. <strong>장기적으로 가장 실존적인 위협.</strong></div>
+    </div>
+    <div class="risk-card danger">
+      <div class="risk-header">
+        <div class="risk-icon">🎬</div>
+        <div class="risk-title">리스크 #2: OpenAI Sora · 비디오 AI 충격</div>
+      </div>
+      <div class="risk-body">OpenAI Sora, Runway, Pika 등 텍스트→영상 AI 도구가 Premiere Pro의 영역을 위협. Adobe는 Generate Soundtrack/Generate Speech 기능으로 대응했지만 <strong>GPU 인프라 비용 급증으로 영업마진이 2026년 45%에서 추가 압축될 수 있다.</strong> 비디오 AI 군비 경쟁에서 뒤처지면 타격이 크다.</div>
+    </div>
+    <div class="risk-card warn">
+      <div class="risk-header">
+        <div class="risk-icon">⚖️</div>
+        <div class="risk-title">리스크 #3: AI 저작권 소송 및 규제 리스크</div>
+      </div>
+      <div class="risk-body">Firefly는 "상업적으로 안전"하게 라이선스 이미지로 학습됐다고 홍보하지만, <strong>소규모 AI 모델 관련 저작권 집단소송이 제기됐다.</strong> 규제 환경이 강화될 경우 모델 재학습 비용과 배상금으로 마진이 훼손될 수 있다. EU AI Act 준수 비용도 변수.</div>
+    </div>
+    <div class="risk-card warn">
+      <div class="risk-header">
+        <div class="risk-icon">👔</div>
+        <div class="risk-title">리스크 #4: 경영진 불확실성</div>
+      </div>
+      <div class="risk-body">CFO Dan Durn이 2026년 6월 15일 돌연 사임. 임시 CFO(Steve Day) 체제 운영 중이며 영구 CFO 선임이 지연되고 있다. <strong>전략적 전환기(프리미엄→프리미엄 모델 전환)에 리더십 공백은 실행 리스크를 높인다.</strong> CEO 후계자 문제도 장기 과제.</div>
+    </div>
+    <div class="risk-card warn">
+      <div class="risk-header">
+        <div class="risk-icon">📉</div>
+        <div class="risk-title">리스크 #5: 프리미엄 전략 전환의 ARR 단기 희생</div>
+      </div>
+      <div class="risk-body">Adobe는 Q2 FY2026에 <strong>단기 ARR 성장을 희생하고 MAU(월간 활성 사용자) 확대를 우선</strong>하는 프리미엄 전략을 선택했다. Creative Cloud 가격 최적화 계획을 연기했으며 이는 H2 ARR 성장률 둔화를 의미한다. 장기 수익화 전제로만 정당화되는 베팅.</div>
+    </div>
+    <div class="risk-card warn">
+      <div class="risk-header">
+        <div class="risk-icon">🏛️</div>
+        <div class="risk-title">리스크 #6: Figma 실패가 남긴 규제 트라우마</div>
+      </div>
+      <div class="risk-body">$20B Figma 인수 시도가 EU와 미국 규제당국에 의해 차단됐다. <strong>$1B 위약금을 지불했으며 경쟁사는 그 동안 성장했다.</strong> 대형 M&A 시도 시 규제 리스크가 상존하며, Figma는 현재 2025년 IPO를 마치고 독립 성장 중 — 협업 디자인 툴 시장에서 경쟁 激化.</div>
+    </div>
+  </div>
+
+  <div class="subsection-title" style="margin-top:32px;">전략적 기회 요인</div>
+  <div class="risk-grid">
+    <div class="risk-card opp">
+      <div class="risk-header">
+        <div class="risk-icon">📈</div>
+        <div class="risk-title">기회 #1: AI 기반 Usage-Based 수익화</div>
+      </div>
+      <div class="risk-body">Generative Credit 소비가 분기 대비 3배 증가 중. <strong>구독에서 사용량 기반 과금으로 전환하면 ARR의 상한선이 사라진다.</strong> 헤비 유저일수록 더 많이 지불하는 구조 — 파워 유저 세그먼트 monetization이 핵심 성장 드라이버.</div>
+    </div>
+    <div class="risk-card opp">
+      <div class="risk-header">
+        <div class="risk-icon">🏢</div>
+        <div class="risk-title">기회 #2: 엔터프라이즈 확장 가속</div>
+      </div>
+      <div class="risk-body">$10M+ ARR 고객 수가 25%+ 성장 중. GenStudio가 대형 브랜드의 AI 콘텐츠 생성 중앙 허브로 부상. <strong>엔터프라이즈 딜은 Lock-in이 가장 강하고 이탈률이 가장 낮다.</strong> SEMrush 통합으로 CMO 예산 접근성도 확대.</div>
+    </div>
+    <div class="risk-card opp">
+      <div class="risk-header">
+        <div class="risk-icon">🌏</div>
+        <div class="risk-title">기회 #3: 아시아-태평양 성장 여지</div>
+      </div>
+      <div class="risk-body">현재 APAC 매출 비중은 ~17%로 미국(57%), 유럽(26%) 대비 저조. <strong>한국, 일본, 인도, 동남아의 크리에이티브 이코노미 성장은 Adobe 구독 침투율 확대의 구조적 기회다.</strong> 특히 AI 도구를 통한 신규 사용자 유입 채널로서 아시아 시장이 핵심.</div>
+    </div>
+    <div class="risk-card opp">
+      <div class="risk-header">
+        <div class="risk-icon">🎵</div>
+        <div class="risk-title">기회 #4: 오디오·비디오 AI 확장</div>
+      </div>
+      <div class="risk-body">Generate Soundtrack, Generate Speech 출시로 $400B+ 글로벌 비디오 콘텐츠 시장 공략 시작. <strong>크리에이터 이코노미의 폭발적 성장은 Premiere Pro + AI 도구의 TAM(전체 주소가능 시장)을 대폭 확장한다.</strong></div>
+    </div>
+  </div>
+</div>
+
+<!-- 6. Bull / Bear -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-num">06</div>
+    <div class="section-title">Bull Case vs Bear Case</div>
+  </div>
+
+  <div class="cards cards-2" style="margin-bottom:24px;">
+    <div class="chart-box">
+      <div class="chart-title">시나리오별 3년 EPS 전망 ($)</div>
+      <div class="chart-container" style="height:220px;">
+        <canvas id="epsChart"></canvas>
+      </div>
+    </div>
+    <div class="chart-box">
+      <div class="chart-title">ARR 성장 시나리오 ($B)</div>
+      <div class="chart-container" style="height:220px;">
+        <canvas id="arrChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <div class="bull-bear">
+    <div class="bb-card bb-bull">
+      <div class="bb-header">🐂 Bull Case — 목표주가 $450~$524</div>
+      <div class="bb-item">
+        <div class="bb-bullet"></div>
+        <div class="bb-text"><strong>AI 모네타이제이션 가속:</strong> Firefly AI-first ARR이 2년 내 $5B+ 돌파, 전체 ARR 성장률이 15%+ 재가속화</div>
+      </div>
+      <div class="bb-item">
+        <div class="bb-bullet"></div>
+        <div class="bb-text"><strong>프리미엄 전략 성공:</strong> 70M+ 프리 사용자가 유료 전환되며 Creative Cloud 구독자 기반이 2배 확장</div>
+      </div>
+      <div class="bb-item">
+        <div class="bb-bullet"></div>
+        <div class="bb-text"><strong>엔터프라이즈 도미넌스:</strong> GenStudio + Experience Cloud가 Fortune 500 CMO 예산의 허브가 되어 ARPU 50%+ 상승</div>
+      </div>
+      <div class="bb-item">
+        <div class="bb-bullet"></div>
+        <div class="bb-text"><strong>밸류에이션 재평가:</strong> 시장이 AI 위협 과대평가를 인식하고 P/E가 역사적 평균(30~40x)으로 회귀 → 현재가 대비 3x 업사이드</div>
+      </div>
+      <div class="bb-item">
+        <div class="bb-bullet"></div>
+        <div class="bb-text"><strong>SEMrush 시너지:</strong> 마케팅 플랫폼 통합으로 연간 $1B+ 추가 ARR 창출</div>
+      </div>
+    </div>
+    <div class="bb-card bb-bear">
+      <div class="bb-header">🐻 Bear Case — 목표주가 $100~$150</div>
+      <div class="bb-item">
+        <div class="bb-bullet"></div>
+        <div class="bb-text"><strong>창의성의 민주화:</strong> AI 도구가 너무 강력해져 "1인 = 10인 생산성"이 실현, 기업이 디자이너를 90% 감원 → Adobe 구독 대규모 이탈</div>
+      </div>
+      <div class="bb-item">
+        <div class="bb-bullet"></div>
+        <div class="bb-text"><strong>Canva의 프로 시장 침투 성공:</strong> Affinity 도구 + 낮은 가격으로 중소기업 디자이너 대거 이탈, 차세대 크리에이터의 Adobe 선택률 급락</div>
+      </div>
+      <div class="bb-item">
+        <div class="bb-bullet"></div>
+        <div class="bb-text"><strong>AI 인프라 비용 폭증:</strong> GPU 비용 급증으로 영업마진이 45%에서 30%대로 구조적 압축 → 재평가 불가피</div>
+      </div>
+      <div class="bb-item">
+        <div class="bb-bullet"></div>
+        <div class="bb-text"><strong>프리미엄 전략 실패:</strong> 프리 사용자가 유료로 전환하지 않고, 단기 ARR 희생이 영구 성장 둔화로 귀결</div>
+      </div>
+      <div class="bb-item">
+        <div class="bb-bullet"></div>
+        <div class="bb-text"><strong>규제 리스크 현실화:</strong> AI 저작권 소송에서 대규모 배상 명령, 모델 재학습 요구로 Firefly 전략 근본 훼손</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="verdict" style="margin-top:32px;">
+    <div class="verdict-tag">최종 인수 판단</div>
+    <p>
+      Adobe는 40년 역사의 소프트웨어 제국이 AI 전환기의 공포로 인해 역사적 저평가를 받고 있는 <strong>역발상(Contrarian) 인수 기회</strong>다. 사업 펀더멘털(매출 성장 가속, FCF $10B+, ARR $27B)은 주가(-49%)와 완전히 괴리돼 있다. 핵심 리스크는 Canva의 장기 침식과 AI 비용 구조 변화이며, 이는 반드시 인수 후 통합 전략과 모니터링 체계를 통해 관리해야 한다. <strong>현재가($197) 기준 EV/FCF 7.7x는 이 수준의 해자와 현금 창출력을 보유한 기업으로서는 매우 드문 진입 기회이며, 베이스 케이스 기준 3년 내 2~3배 업사이드가 존재한다.</strong> 단, 프리미엄 전략 전환의 ARR 가시화(2026년 하반기)가 확인될 때까지는 분할 매수 접근이 권장된다.
+    </p>
+  </div>
+</div>
+
+<div style="text-align:center; margin-top:60px; color:var(--muted); font-size:12px; padding:20px 0; border-top:1px solid var(--border);">
+  본 보고서는 공개 데이터 기반의 M&A 분석 참고자료이며, 투자 조언이 아닙니다. 기준일: 2026년 6월 25일
+</div>
+
+</div><!-- /container -->
+
+<script>
+const chartDefaults = {
+  color: '#8888a0',
+  plugins: {
+    legend: { labels: { color: '#8888a0', font: { size: 12 }, boxWidth: 12, padding: 16 } }
+  }
+};
+
+// Revenue Chart
+new Chart(document.getElementById('revenueChart'), {
+  type: 'bar',
+  data: {
+    labels: ['FY2020', 'FY2021', 'FY2022', 'FY2023', 'FY2024', 'FY2025', 'FY2026E'],
+    datasets: [{
+      label: '연간 매출 ($B)',
+      data: [12.87, 15.79, 17.61, 19.41, 21.51, 23.77, 26.55],
+      backgroundColor: ['#2a2a32','#2a2a32','#2a2a32','#2a2a32','#2a2a32','rgba(232,67,42,0.7)','rgba(62,207,142,0.7)'],
+      borderColor: ['#3a3a45','#3a3a45','#3a3a45','#3a3a45','#3a3a45','rgba(232,67,42,1)','rgba(62,207,142,1)'],
+      borderWidth: 1, borderRadius: 4
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { ticks: { color: '#8888a0', font:{size:11} }, grid: { color: 'rgba(42,42,50,0.8)' } },
+      y: { ticks: { color: '#8888a0', font:{size:11}, callback: v => '$'+v+'B' }, grid: { color: 'rgba(42,42,50,0.8)' } }
+    }
+  }
+});
+
+// Cash Flow Chart
+new Chart(document.getElementById('cashFlowChart'), {
+  type: 'line',
+  data: {
+    labels: ['FY2021','FY2022','FY2023','FY2024','FY2025','FY2026 TTM'],
+    datasets: [
+      {
+        label: '영업현금흐름',
+        data: [6.0, 7.2, 7.3, 8.06, 10.4, 10.5],
+        borderColor: '#e8432a', backgroundColor: 'rgba(232,67,42,0.1)',
+        tension: 0.4, fill: true, pointRadius: 4
+      },
+      {
+        label: '잉여현금흐름',
+        data: [5.8, 7.0, 7.05, 7.9, 9.9, 10.28],
+        borderColor: '#3ecf8e', backgroundColor: 'rgba(62,207,142,0.05)',
+        tension: 0.4, fill: false, pointRadius: 4, borderDash: [4,4]
+      }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { labels: { color: '#8888a0', font:{size:11}, boxWidth:10 } } },
+    scales: {
+      x: { ticks: { color: '#8888a0', font:{size:11} }, grid: { color: 'rgba(42,42,50,0.8)' } },
+      y: { ticks: { color: '#8888a0', font:{size:11}, callback: v => '$'+v+'B' }, grid: { color: 'rgba(42,42,50,0.8)' } }
+    }
+  }
+});
+
+// Segment Chart (horizontal bar)
+new Chart(document.getElementById('segmentChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Creative Cloud', 'Document Cloud', 'Digital Experience', 'AI & 기타'],
+    datasets: [{
+      label: '매출 비중',
+      data: [54, 13, 25, 8],
+      backgroundColor: ['rgba(79,158,255,0.7)','rgba(167,139,250,0.7)','rgba(245,200,66,0.7)','rgba(232,67,42,0.7)'],
+      borderRadius: 4, borderWidth: 0
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { ticks: { color: '#8888a0', font:{size:11}, callback: v => v+'%' }, grid: { color: 'rgba(42,42,50,0.8)' }, max: 70 },
+      y: { ticks: { color: '#e8e8ec', font:{size:12} }, grid: { display: false } }
+    }
+  }
+});
+
+// Valuation Chart
+new Chart(document.getElementById('valuationChart'), {
+  type: 'bar',
+  data: {
+    labels: ['현재 주가', 'Bear ($245)', '컨센서스 ($282)', 'Base ($350)', 'Bull ($524)', '역사 평균 P/E 기준'],
+    datasets: [{
+      label: '주가 ($)',
+      data: [197, 245, 282, 350, 524, 660],
+      backgroundColor: ['rgba(136,136,160,0.5)','rgba(245,200,66,0.6)','rgba(79,158,255,0.6)','rgba(62,207,142,0.6)','rgba(232,67,42,0.6)','rgba(167,139,250,0.6)'],
+      borderRadius: 4, borderWidth: 0
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { ticks: { color: '#8888a0', font:{size:11} }, grid: { color: 'rgba(42,42,50,0.8)' } },
+      y: { ticks: { color: '#8888a0', font:{size:11}, callback: v => '$'+v }, grid: { color: 'rgba(42,42,50,0.8)' } }
+    }
+  }
+});
+
+// EPS Chart
+new Chart(document.getElementById('epsChart'), {
+  type: 'line',
+  data: {
+    labels: ['FY2024','FY2025','FY2026E','FY2027E','FY2028E'],
+    datasets: [
+      { label: 'Bull EPS', data: [18.42, 22.04, 25.5, 32, 42], borderColor: '#3ecf8e', tension: 0.3, pointRadius: 4 },
+      { label: 'Base EPS', data: [18.42, 22.04, 24.4, 28, 33], borderColor: '#4f9eff', tension: 0.3, pointRadius: 4 },
+      { label: 'Bear EPS', data: [18.42, 22.04, 23.0, 22, 20], borderColor: '#e8432a', tension: 0.3, pointRadius: 4, borderDash: [4,4] }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { labels: { color: '#8888a0', font:{size:11}, boxWidth:10 } } },
+    scales: {
+      x: { ticks: { color: '#8888a0', font:{size:11} }, grid: { color: 'rgba(42,42,50,0.8)' } },
+      y: { ticks: { color: '#8888a0', font:{size:11}, callback: v => '$'+v }, grid: { color: 'rgba(42,42,50,0.8)' } }
+    }
+  }
+});
+
+// ARR Chart
+new Chart(document.getElementById('arrChart'), {
+  type: 'bar',
+  data: {
+    labels: ['FY2024','FY2025','FY2026E','FY2027E','FY2028E'],
+    datasets: [
+      { label: 'Bull ARR', data: [19.96, 24.0, 30.0, 38, 48], backgroundColor: 'rgba(62,207,142,0.6)', borderRadius: 4 },
+      { label: 'Base ARR', data: [19.96, 24.0, 27.5, 32, 37], backgroundColor: 'rgba(79,158,255,0.6)', borderRadius: 4 },
+      { label: 'Bear ARR', data: [19.96, 24.0, 25.5, 26, 26], backgroundColor: 'rgba(232,67,42,0.4)', borderRadius: 4 }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { labels: { color: '#8888a0', font:{size:11}, boxWidth:10 } } },
+    scales: {
+      x: { ticks: { color: '#8888a0', font:{size:11} }, grid: { color: 'rgba(42,42,50,0.8)' } },
+      y: { ticks: { color: '#8888a0', font:{size:11}, callback: v => '$'+v+'B' }, grid: { color: 'rgba(42,42,50,0.8)' } }
+    }
+  }
+});
+</script>
+</body>
+</html>
+HTMLEOF
+echo "Done"
+
+
