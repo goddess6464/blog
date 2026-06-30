@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>AppLovin Corporation (NASDAQ: APP) — M&A 인수 검토 브리핑</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root{
+    --bg:#0b0f17; --bg2:#11161f; --card:#141a25; --card2:#1a2230;
+    --line:#252e3d; --txt:#e7ecf3; --sub:#93a0b4; --mut:#5d6b80;
+    --accent:#5b8cff; --accent2:#34d3a7; --warn:#ffb454; --bad:#ff6b6b; --good:#34d3a7;
+  }
+  *{box-sizing:border-box;}
+  body{
+    background:linear-gradient(180deg,var(--bg),#0a0d13 60%);
+    color:var(--txt); font-family:'Pretendard','Apple SD Gothic Neo','Segoe UI',sans-serif;
+    margin:0; padding:0; line-height:1.7;
+  }
+  .wrap{max-width:980px; margin:0 auto; padding:48px 28px 100px;}
+  header.hero{
+    border-radius:18px; padding:42px 36px; margin-bottom:36px;
+    background:radial-gradient(120% 140% at 10% 0%, rgba(91,140,255,.18), transparent 60%), var(--bg2);
+    border:1px solid var(--line);
+  }
+  .tag{display:inline-block; font-size:12px; letter-spacing:.08em; color:var(--accent);
+    background:rgba(91,140,255,.12); border:1px solid rgba(91,140,255,.3); padding:4px 10px; border-radius:20px; margin-bottom:14px;}
+  h1{font-size:30px; margin:0 0 8px; letter-spacing:-.02em;}
+  .sub{color:var(--sub); font-size:15px; margin-bottom:18px;}
+  .meta-row{display:flex; gap:28px; flex-wrap:wrap; margin-top:18px;}
+  .meta-item .label{font-size:11px; color:var(--mut); text-transform:uppercase; letter-spacing:.06em;}
+  .meta-item .val{font-size:18px; font-weight:700; margin-top:2px;}
+  h2{font-size:22px; margin:48px 0 16px; padding-bottom:10px; border-bottom:1px solid var(--line); letter-spacing:-.01em;}
+  h2 .num{color:var(--accent); margin-right:8px;}
+  h3{font-size:17px; margin:28px 0 12px; color:#cfd8e6;}
+  p{color:#c7d0dd; font-size:15px;}
+  .card{background:var(--card); border:1px solid var(--line); border-radius:14px; padding:22px 24px; margin:16px 0;}
+  .grid2{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
+  .grid3{display:grid; grid-template-columns:repeat(3,1fr); gap:14px;}
+  @media (max-width:720px){.grid2,.grid3{grid-template-columns:1fr;}}
+  .kpi{background:var(--card2); border:1px solid var(--line); border-radius:12px; padding:16px 18px;}
+  .kpi .l{font-size:12px; color:var(--mut);}
+  .kpi .v{font-size:22px; font-weight:800; margin-top:4px;}
+  .kpi .d{font-size:12px; margin-top:4px;}
+  .pos{color:var(--good);} .neg{color:var(--bad);} .neu{color:var(--warn);}
+  .chart-box{background:var(--card); border:1px solid var(--line); border-radius:14px; padding:20px; margin:18px 0; height:340px;}
+  .verdict{background:linear-gradient(135deg, rgba(91,140,255,.14), rgba(52,211,167,.08)); border:1px solid rgba(91,140,255,.35); border-radius:14px; padding:24px; margin:18px 0;}
+  .verdict .vlabel{font-size:13px; color:var(--accent2); letter-spacing:.05em; text-transform:uppercase; font-weight:700;}
+  .verdict .vtitle{font-size:24px; font-weight:800; margin:6px 0 10px;}
+  table{width:100%; border-collapse:collapse; margin:14px 0; font-size:14px;}
+  th,td{padding:10px 12px; border-bottom:1px solid var(--line); text-align:left;}
+  th{color:var(--mut); font-weight:600; font-size:12px; text-transform:uppercase;}
+  .risk-table tr td:nth-child(3){font-weight:700;}
+  .sev-high{color:var(--bad);} .sev-mid{color:var(--warn);} .sev-low{color:var(--accent2);}
+  .badge{display:inline-block; padding:2px 9px; border-radius:8px; font-size:11px; font-weight:700;}
+  .badge.high{background:rgba(255,107,107,.15); color:var(--bad); border:1px solid rgba(255,107,107,.4);}
+  .badge.mid{background:rgba(255,180,84,.15); color:var(--warn); border:1px solid rgba(255,180,84,.4);}
+  .badge.low{background:rgba(52,211,167,.15); color:var(--accent2); border:1px solid rgba(52,211,167,.4);}
+  .bull-bear{display:grid; grid-template-columns:1fr 1fr; gap:18px;}
+  @media (max-width:720px){.bull-bear{grid-template-columns:1fr;}}
+  .bullbox{border-radius:14px; padding:20px; border:1px solid rgba(52,211,167,.3); background:rgba(52,211,167,.06);}
+  .bearbox{border-radius:14px; padding:20px; border:1px solid rgba(255,107,107,.3); background:rgba(255,107,107,.06);}
+  .bullbox h3, .bearbox h3{margin-top:0;}
+  ul{padding-left:20px; color:#c7d0dd; font-size:14.5px;}
+  li{margin:6px 0;}
+  .note{font-size:12px; color:var(--mut); border-left:3px solid var(--line); padding:10px 14px; margin:14px 0; background:rgba(255,255,255,.02);}
+  .timeline{border-left:2px solid var(--line); margin-left:8px; padding-left:24px;}
+  .tl-item{position:relative; margin-bottom:22px;}
+  .tl-item::before{content:''; position:absolute; left:-29px; top:4px; width:10px; height:10px; border-radius:50%; background:var(--accent);}
+  .tl-year{font-weight:800; color:var(--accent); font-size:13px;}
+  footer{margin-top:60px; padding-top:20px; border-top:1px solid var(--line); color:var(--mut); font-size:12px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <span class="tag">M&A 인수 검토 보고서 · CONFIDENTIAL</span>
+  <h1>AppLovin Corporation (NASDAQ: APP)</h1>
+  <div class="sub">AI 기반 퍼포먼스 광고 플랫폼 — 인수 타당성 종합 브리핑 · 작성기준일 2026년 6월 30일</div>
+  <div class="meta-row">
+    <div class="meta-item"><div class="label">시가총액</div><div class="val">≈ $160B</div></div>
+    <div class="meta-item"><div class="label">주가 (6/29)</div><div class="val">$477.08</div></div>
+    <div class="meta-item"><div class="label">52주 범위</div><div class="val">$326 – $746</div></div>
+    <div class="meta-item"><div class="label">2026 1Q 매출</div><div class="val">$1.84B (+59% YoY)</div></div>
+    <div class="meta-item"><div class="label">조정 EBITDA 마진</div><div class="val">85%</div></div>
+  </div>
+</header>
+
+<!-- 1. 결론 요약 -->
+<h2><span class="num">01</span>결론 요약</h2>
+<div class="verdict">
+  <div class="vlabel">M&A Verdict</div>
+  <div class="vtitle">조건부 강력매수 (Conditional Strong Buy) — 단, 단계적 접근 필수</div>
+  <p style="margin:0;">AppLovin은 14년간 비공개로 운영해온 AXON AI 광고 엔진을 2026년 6월 외부 광고주 전체에 개방하며 "닫힌 모바일 게임 광고 네트워크"에서 "범용 AI 퍼포먼스 마케팅 운영체제"로의 전환을 완성하는 변곡점에 서 있습니다. 85%의 조정 EBITDA 마진, 59% 매출 성장, 65% 순이익률은 동급 소프트웨어 기업 중에서도 이례적입니다. 그러나 이 보고서가 강조하고자 하는 핵심은, <b>같은 기간 동안 최소 5개 이상의 공매도 리서치 기관(Fuzzy Panda, Culper, Muddy Waters, CapitalWatch 등)이 데이터 수집 관행, 핑거프린팅, 자금세탁 연루 의혹을 제기했고, SEC가 데이터 수집 관행에 대한 조사를 진행 중</b>이라는 사실입니다. 인수자는 압도적인 재무 성과와 구조적 리스크(규제, 평판, 플랫폼 의존성, 핵심 인물 리스크)를 동시에 직시해야 하며, 본 보고서는 "왜 이 리스크를 감수할 가치가 있는가"에 대한 사실 기반 답을 제공하는 데 초점을 맞췄습니다.</p>
+</div>
+
+<div class="grid3">
+  <div class="kpi"><div class="l">FY2026E 매출 성장률</div><div class="v pos">약 50%+</div><div class="d">3개 분기 연속 가속</div></div>
+  <div class="kpi"><div class="l">SEC 조사 상태</div><div class="v neu">진행 중 (미확정)</div><div class="d">2025.10 Bloomberg 보도, 혐의 미확정</div></div>
+  <div class="kpi"><div class="l">Forward P/S (2026E)</div><div class="v neu">약 20배</div><div class="d">TTD(3.3배) 대비 프리미엄</div></div>
+</div>
+
+<!-- 2. 기업 개요 -->
+<h2><span class="num">02</span>기업 개요 및 현황</h2>
+
+<h3>2.1 기본 정보 및 핵심 지표</h3>
+<div class="grid3">
+  <div class="kpi"><div class="l">설립</div><div class="v">2011~2012년</div><div class="d">Palo Alto, California</div></div>
+  <div class="kpi"><div class="l">창업자</div><div class="v" style="font-size:16px;">Adam Foroughi</div><div class="d">John Krystynak, Andrew Karam 공동창업, 現 CEO</div></div>
+  <div class="kpi"><div class="l">상장</div><div class="v">2021.04.15</div><div class="d">IPO 당시 시총 약 $24B → 현재 $160B (약 6.7배)</div></div>
+  <div class="kpi"><div class="l">직원 수</div><div class="v">약 887명</div><div class="d">시총 대비 압도적 효율(1인당 시총 ≈ $1.8억)</div></div>
+  <div class="kpi"><div class="l">S&P500 편입</div><div class="v">2025.09.22</div><div class="d">MarketAxess 대체</div></div>
+  <div class="kpi"><div class="l">신용등급</div><div class="v pos">BBB+ (Fitch)</div><div class="d">2026년 상향 조정</div></div>
+</div>
+
+<div class="chart-box"><canvas id="revGrowth"></canvas></div>
+<p style="font-size:13px; color:var(--mut); text-align:center; margin-top:-10px;">분기별 매출 추이 (단위: $M) — Q1'25 $1,159M → Q1'26 $1,842M, 59% YoY 성장</p>
+
+<h3>2.2 혁신에서 시작된 역사 — 모바일 광고 네트워크에서 AI 운영체제로</h3>
+<p>AppLovin의 성장사는 "위기를 통한 재발명"의 전형적인 사례입니다. 2021년 4월 IPO 직후 Apple의 ATT(App Tracking Transparency) 정책이 모바일 광고 업계 전체의 타겟팅 기반을 붕괴시키면서 주가는 2022년 말까지 고점 대비 90% 이상 폭락했습니다. 이 위기가 오히려 AppLovin을 자체 강화 학습 기반 AI 엔진 AXON에 전사적 자원을 집중시키는 계기가 되었고, 2023년 AXON 2.0 출시 이후 주가는 약 1,683%(2023.5~2026.6) 상승했습니다.</p>
+
+<div class="timeline">
+  <div class="tl-item"><span class="tl-year">2011-2012</span><br>Adam Foroughi, John Krystynak, Andrew Karam이 모바일 앱 디스커버리/마케팅 문제 해결을 목표로 설립. VC 없이 부트스트랩 운영, 수익성 중심 문화 형성.</div>
+  <div class="tl-item"><span class="tl-year">2016</span><br>중국 사모펀드 Orient Hontai Capital의 $14.2억 인수 시도가 CFIUS(미국 외국인투자위원회) 반대로 무산, 부채 투자로 전환.</div>
+  <div class="tl-item"><span class="tl-year">2018</span><br>자체 게임 퍼블리싱 조직 Lion Studios 출범 — 광고 알고리즘을 위한 대규모 '데이터 실험실' 역할. 인앱 비딩 SSP MAX 인수.</div>
+  <div class="tl-item"><span class="tl-year">2021.02 / 2021.10</span><br>측정·분석 플랫폼 Adjust 인수(약 $10억), Twitter로부터 모네타이제이션 플랫폼 MoPub 인수($11억) — MAX와 결합해 1st-party 데이터 우위 확보.</div>
+  <div class="tl-item"><span class="tl-year">2021.04.15</span><br>나스닥 상장(시초가 $70~80, 시총 약 $240억). 직후 Apple ATT 충격으로 주가 90%+ 폭락.</div>
+  <div class="tl-item"><span class="tl-year">2022</span><br>Connected TV 플랫폼 Wurl 인수. Unity Technologies에 $175억 규모의 비우호적 인수 제안 — Unity 이사회가 거부, ironSource와의 합병 완료.</div>
+  <div class="tl-item"><span class="tl-year">2023</span><br>AXON 2.0 출시 — 강화학습 기반 광고 입찰 최적화 엔진. ATT 이후의 1st-party·문맥 신호 기반 ROAS 극대화로 업계 반등 주도.</div>
+  <div class="tl-item"><span class="tl-year">2025.02</span><br>전략적 분수령: 모바일 게임 개발 사업(Apps 부문)을 $9억에 매각(Lion Studios → Tripledot Studios에 $4억 현금 + 지분 20%). "게임 회사"에서 "순수 광고 소프트웨어 기업"으로 완전 전환.</div>
+  <div class="tl-item"><span class="tl-year">2025.04</span><br>美 정부의 TikTok 매각 명령에 따른 TikTok 美 법인 인수 입찰 참여(불발).</div>
+  <div class="tl-item"><span class="tl-year">2025.09</span><br>S&P500 지수 편입.</div>
+  <div class="tl-item"><span class="tl-year">2026.06</span><br>AXON 플랫폼을 14년 만에 전 세계 모든 광고주에게 셀프서브 방식으로 전면 개방 — "닫힌 플랫폼" 시대의 종료를 공식 선언.</div>
+</div>
+
+<h3>2.3 핵심 사업 포트폴리오</h3>
+<div class="grid2">
+  <div class="card">
+    <b>AppDiscovery</b><br><span style="color:var(--sub); font-size:14px;">AXON AI 엔진을 활용해 광고주 수요와 고가치 유저를 매칭하는 퍼포먼스 마케팅 솔루션. 매출의 핵심 축.</span>
+  </div>
+  <div class="card">
+    <b>MAX</b><br><span style="color:var(--sub); font-size:14px;">퍼블리셔의 광고 인벤토리를 실시간 경매로 최적화하는 인앱 비딩(헤더비딩) SSP. MoPub 통합으로 공급측 규모 대폭 확대.</span>
+  </div>
+  <div class="card">
+    <b>Adjust</b><br><span style="color:var(--sub); font-size:14px;">마케팅 성과 측정·귀속(attribution) 분석 플랫폼. ATT 이후 시대의 핵심 인프라.</span>
+  </div>
+  <div class="card">
+    <b>Wurl (CTV)</b><br><span style="color:var(--sub); font-size:14px;">커넥티드TV 스트리밍 유통/광고 플랫폼. 모바일에서 검증된 퍼포먼스 마케팅을 TV 광고로 확장하는 차세대 성장축.</span>
+  </div>
+</div>
+<p>2025년 2월 게임 개발 사업(Apps 부문) 매각 완료로 현재는 광고 소프트웨어(Software Platform) 단일 세그먼트 중심 구조이며, 이는 자본집약적이고 변동성 높은 게임 히트작 의존 비즈니스에서 벗어나 고마진 반복 매출 구조로 완전히 재편되었음을 의미합니다.</p>
+
+<!-- 3. 핵심 투자 논리 -->
+<h2><span class="num">03</span>핵심 투자 논리 및 가치 제안</h2>
+<div class="grid2">
+  <div class="card">
+    <h3 style="margin-top:0;">① AI 엔진의 자기강화 플라이휠</h3>
+    <p>AXON은 폐쇄형 강화학습 모델로, 광고주·전환 데이터가 늘어날수록 모델 성능이 개선되고, 이는 다시 더 많은 광고비 유입으로 이어지는 선순환 구조입니다. 경영진은 "지속적으로 스스로 강화되며 똑똑해지는 폐쇄루프 모델"이라 표현하며, Meta조차 단기간에 따라잡기 어려운 데이터 우위를 강조합니다.</p>
+  </div>
+  <div class="card">
+    <h3 style="margin-top:0;">② TAM(시장 규모) 확장 스토리</h3>
+    <p>경영진은 게임 외 e커머스 시장이 게임 시장의 5~10배 규모라고 언급했으며, 인앱 광고 시장은 2024년 약 $3,905억에서 2034년 $9,520억으로 연 9.2% 성장이 전망됩니다. CTV·리드제너레이션(핀테크, 보험) 신규 수직시장 진출이 추가 성장축입니다.</p>
+  </div>
+  <div class="card">
+    <h3 style="margin-top:0;">③ 압도적 운영 레버리지</h3>
+    <p>2026년 1분기 매출 증가분의 86%가 조정 EBITDA로 그대로 흘러갔습니다(flow-through). 인력 887명 규모로 분기 매출 $18억을 창출하는 자산경량형 구조는 동종업계에서 유례를 찾기 어렵습니다.</p>
+  </div>
+  <div class="card">
+    <h3 style="margin-top:0;">④ 순수 플레이 전환 완료</h3>
+    <p>변동성 높은 게임 퍼블리싱 사업을 매각하며 밸류에이션의 '게임 디스카운트'를 해소했습니다. 현재는 자본 배분 우선순위가 명확한 고마진 소프트웨어 기업이며, 1분기에만 $10억 규모 자사주 매입을 단행했습니다($23억 잔여 한도).</p>
+  </div>
+</div>
+
+<!-- 4. 재무 -->
+<h2><span class="num">04</span>재무 성과 및 가치 평가</h2>
+<h3>4.1 주요 재무 동향 분석</h3>
+<div class="chart-box"><canvas id="marginChart"></canvas></div>
+<div class="grid3">
+  <div class="kpi"><div class="l">2026 Q1 순이익률</div><div class="v pos">65.4%</div><div class="d">전년比 +9%p (순이익 109% 증가)</div></div>
+  <div class="kpi"><div class="l">2026 Q1 잉여현금흐름</div><div class="v pos">$1.29B</div><div class="d">매출의 70% 수준</div></div>
+  <div class="kpi"><div class="l">2026 Q2 가이던스</div><div class="v pos">$19.2~19.5억</div><div class="d">YoY +52~55%</div></div>
+</div>
+<p>2026년 1분기 매출은 $18.42억으로 전년 동기($11.59억) 대비 59% 성장했으며, 이는 가이던스 상단($17.55억)을 크게 상회했습니다. 조정 EBITDA는 $15.6억으로 66% 증가했고, 마진은 분기 기준 사상 최고치인 85%를 기록했습니다. 총자산은 2025년 말 $72.6억에서 2026년 1분기 $77.1억으로 증가했으며, 장기부채는 $35.1억 수준에서 안정적으로 유지되고 있습니다.</p>
+<div class="note">참고: 설치 건수(installation volume)는 18% 감소했음에도 매출이 59% 증가했다는 점은, 단순 트래픽 확보가 아니라 AXON의 가격결정력·전환 최적화가 성장의 핵심 동인임을 시사합니다. 이는 투자 논리의 핵심이자, 동시에 "블랙박스 AI 모델에 대한 과도한 의존" 리스크의 근거이기도 합니다.</div>
+
+<h3>4.2 경쟁사 비교분석</h3>
+<table>
+  <tr><th>지표</th><th>AppLovin (APP)</th><th>The Trade Desk (TTD)</th><th>비고</th></tr>
+  <tr><td>Forward P/S (2026E)</td><td>~20배</td><td>~3.3배</td><td>APP이 약 6배 프리미엄</td></tr>
+  <tr><td>Forward P/E</td><td>~36배</td><td>~30배</td><td></td></tr>
+  <tr><td>순이익률 (최근 분기)</td><td>~65%</td><td>~6%</td><td>구조적 격차 매우 큼</td></tr>
+  <tr><td>매출 성장률 (YoY)</td><td>+59%</td><td>+12%</td><td>TTD는 Kokai 전환 후유증</td></tr>
+  <tr><td>부채/자기자본</td><td>높음 (레버리지 활용)</td><td>0.11 (매우 낮음)</td><td>APP 재무유연성 리스크 요인</td></tr>
+  <tr><td>애널리스트 컨센서스</td><td>Strong Buy (28 Buy/0 Sell)</td><td>Buy 우위지만 비중 낮음</td><td></td></tr>
+</table>
+<p>경쟁 구도상 가장 중요한 변수는 Meta와 Google이라는 '빅테크 두 거인'입니다. 두 회사는 막대한 자체 데이터와 광고주 관계를 보유하고 있어, 만약 Meta가 인앱 비딩 시장에 본격 재진입할 경우 AppLovin의 핵심 해자가 시험대에 오를 수 있습니다. 현재까지는 이 위협이 실적에 가시화되지 않았다는 점이 긍정적이나, 지속 모니터링이 필요한 구조적 리스크입니다.</p>
+
+<h3>4.3 가치 평가 요약</h3>
+<div class="chart-box"><canvas id="valChart"></canvas></div>
+<p>월가 평균 목표주가는 $650.30(고점 $860, 저점 $406)로 현재가($477.08) 대비 약 36% 상승 여력을 시사합니다. 다만 동사 P/S 멀티플은 2025년 11월~2026년 6월 사이 -47% 조정되었는데, 이는 펀더멘털 훼손이 아니라 단기 변동성(공매도 리포트, SEC 조사 보도)에 따른 밸류에이션 디레이팅으로 해석됩니다. 즉 매출 성장(+12.5%, 2/28~6/25 기간)은 견조했지만 멀티플 축소가 주가 횡보를 만든 구조 — 이는 M&A 관점에서 "펀더멘털과 가격의 괴리"가 발생했을 가능성을 시사하지만, 동시에 시장이 반영하는 리스크 프리미엄이 정당한지 신중히 검증해야 합니다.</p>
+
+<!-- 5. 리스크 및 기회 -->
+<h2><span class="num">05</span>주요 리스크 및 기회</h2>
+<p><b>이 섹션이 본 보고서에서 가장 중요합니다.</b> AppLovin은 2025~2026년 사이 최소 5개 공매도/리서치 기관으로부터 연쇄적인 의혹 제기를 받았으며, 이는 단순 노이즈로 치부하기엔 빈도와 강도가 이례적입니다. 인수자는 아래 리스크를 개별적으로, 그리고 누적적으로 평가해야 합니다.</p>
+
+<table class="risk-table">
+  <tr><th>리스크</th><th>내용</th><th>심각도</th></tr>
+  <tr><td>SEC 데이터 수집 관행 조사</td><td>2025년 10월 Bloomberg 보도로 SEC가 앱스토어 파트너(Apple) 데이터 공유 계약 위반 여부 조사 중인 것으로 알려짐. 휘슬블로어 신고와 다수 공매도 리포트가 계기. 혐의는 미확정이나 조사 장기화 시 거버넌스/평판 리스크 지속.</td><td><span class="badge high">HIGH</span></td></tr>
+  <tr><td>연쇄적 공매도 리서치 공세</td><td>Fuzzy Panda(아동 대상 부적절 광고·광고사기 의혹), Culper(중국 광고테크 연계·국가안보 우려), Muddy Waters(Meta/Snap/Google ID 무단 추출 핑거프린팅 의혹), CapitalWatch(자금세탁 조직 연루 의혹 — 이후 일부 철회·사과). 단일 리포트는 반박되었으나 패턴 자체가 반복적 검증 필요성을 시사.</td><td><span class="badge high">HIGH</span></td></tr>
+  <tr><td>핑거프린팅·데이터 관행 적법성</td><td>Apple은 핑거프린팅을 앱스토어 정책상 명시적으로 금지. 위반이 확인될 경우 Apple과의 플랫폼 관계 자체가 손상될 수 있는 실존적 리스크.</td><td><span class="badge high">HIGH</span></td></tr>
+  <tr><td>플랫폼(Apple/Google) 정책 의존</td><td>Apple ATT, Google Privacy Sandbox 등 OS 사업자의 프라이버시 정책 변화가 비즈니스모델의 근간을 직접 좌우. 2021~2022년 ATT 충격이 선례.</td><td><span class="badge mid">MID-HIGH</span></td></tr>
+  <tr><td>빅테크 경쟁 재진입</td><td>Meta의 인앱 비딩 재진입 가능성, Google/Amazon의 퍼포먼스 광고 강화. 현재 실적엔 미반영이나 구조적 압박 요인.</td><td><span class="badge mid">MID</span></td></tr>
+  <tr><td>핵심인물(Key Man) 리스크</td><td>창업자 Foroughi가 차등의결권(Class B)으로 사실상 지배력 보유. 전략 연속성에 강점이나 동시에 지배구조 집중 리스크. CEO 및 이사진의 정기적 주식 매도 패턴도 모니터링 필요.</td><td><span class="badge mid">MID</span></td></tr>
+  <tr><td>밸류에이션 프리미엄</td><td>P/S 20배는 TTD(3.3배) 대비 약 6배 프리미엄. 성장 둔화 시 멀티플 압축 폭이 클 수 있음.</td><td><span class="badge mid">MID</span></td></tr>
+  <tr><td>레버리지·자사주매입 의존 자본배분</td><td>상대적으로 높은 부채비율 + 공격적 자사주매입($10억/분기). 금리 상승기 재무유연성 제약 가능.</td><td><span class="badge low">LOW-MID</span></td></tr>
+  <tr><td>CTV/이커머스 신사업 실행 리스크</td><td>Wurl 기반 CTV, 리드젠 신사업은 아직 재무적으로 유의미한 기여를 못하고 있어 '검증된 성장'이 아닌 '약속된 성장'.</td><td><span class="badge low">LOW-MID</span></td></tr>
+</table>
+
+<div class="note">균형 잡힌 시각: CapitalWatch의 자금세탁 의혹 리포트는 이후 핵심 주장(주요 주주와 범죄조직 연계)을 공식 철회·사과했으며, 단일 거래일에 주가가 14% 반등한 사례가 있습니다. 이는 일부 공매도 리포트의 신뢰성에 의문을 제기하지만, 동시에 SEC의 공식 조사와 핑거프린팅 관련 기술적 의혹은 별개 사안으로 여전히 미해소 상태임을 인수자는 구분해서 인식해야 합니다.</div>
+
+<h3>리스크 대비 기회 요인</h3>
+<ul>
+  <li><b>SEC 조사 종결 시 디레이팅 해소 가능성</b> — 무혐의 또는 경미한 조치로 종결될 경우 현재 디스카운트된 멀티플의 즉각적 재평가(re-rating) 트리거가 될 수 있음.</li>
+  <li><b>AXON 전면 개방(2026.6)의 검증 구간 진입</b> — 셀프서브 모델이 기존 폐쇄형 영업 대비 마진 희석 없이 광고주 기반을 확장할 수 있는지가 향후 2~3분기의 핵심 관전 포인트.</li>
+  <li><b>CTV·이커머스가 실질 매출에 기여 시작</b> — 현재 거의 반영되지 않은 옵션가치가 현실화될 잠재력.</li>
+</ul>
+
+<!-- 6. Bull/Bear -->
+<h2><span class="num">06</span>Bull Case / Bear Case</h2>
+<div class="bull-bear">
+  <div class="bullbox">
+    <h3>🐂 Bull Case</h3>
+    <ul>
+      <li>AXON의 자기강화 데이터 플라이휠은 진입장벽이 매우 높은 해자(moat)이며, 분기당 86% 플로우스루는 추가 매출의 거의 전부가 이익으로 전환됨을 의미</li>
+      <li>2026.6 플랫폼 전면 개방은 14년간 닫혀있던 시장(자영업자, 중소 e커머스 브랜드)을 처음으로 여는 구조적 매출원 확대 이벤트</li>
+      <li>SEC 조사가 '혐의 미확정' 상태이며, 과거 다수의 공매도 주장(자금세탁 등)이 철회·반박된 전례로 미루어 리스크가 과도하게 가격에 반영됐을 가능성</li>
+      <li>순수 광고 소프트웨어 기업 전환 완료로 밸류에이션 디스카운트 요인 제거, 게임업 변동성에서 완전 분리</li>
+      <li>CTV는 "거대하지만 저활용된" 시장이라는 경영진 판단이 맞다면, TTD·Disney·Netflix와 경쟁할 두 번째 성장축 확보</li>
+    </ul>
+  </div>
+  <div class="bearbox">
+    <h3>🐻 Bear Case</h3>
+    <ul>
+      <li>SEC 조사가 실제 앱스토어 계약 위반으로 확인될 경우, Apple과의 플랫폼 관계 자체가 손상되며 비즈니스모델 근간이 흔들릴 수 있음</li>
+      <li>5개 이상 독립 리서치 기관이 유사한 데이터 수집·핑거프린팅 의혹을 반복 제기한 패턴은 "노이즈"로 일축하기에는 누적 증거가 상당함</li>
+      <li>18% 설치량 감소를 가격 상승으로 상쇄한 구조는 지속가능성에 의문 — 광고주가 ROI 한계를 인식하면 가격결정력이 급격히 약화될 수 있음</li>
+      <li>P/S 20배는 TTD 대비 6배 프리미엄으로, 성장률이 둔화되는 순간(50%대→20%대) 급격한 멀티플 압축 가능성</li>
+      <li>Meta·Google의 인앱 비딩 재진입은 시점의 문제일 뿐, 빅테크가 본격 경쟁에 나설 경우 AppLovin의 데이터 우위가 빠르게 침식될 수 있음</li>
+      <li>창업자 집중 지배구조(차등의결권) + 핵심 경영진의 지속적 주식 매도는 인수 협상력 및 거버넌스 측면에서 복잡성을 가중</li>
+    </ul>
+  </div>
+</div>
+
+<!-- 7. 본질과 시대적 부합성 -->
+<h2><span class="num">07</span>기업의 본질·목표, 그리고 시대와의 정합성</h2>
+<div class="card">
+  <h3 style="margin-top:0;">본질: "성과를 약속하는 광고 운영체제"</h3>
+  <p>AppLovin의 본질은 단순한 광고 네트워크가 아니라, <b>광고비 지출의 결과(전환, 매출 증대)를 AI가 직접 책임지고 최적화하는 '폐쇄루프 의사결정 엔진'</b>입니다. The Trade Desk가 "광고주의 의사결정을 돕는 도구"를 지향한다면, AppLovin은 "AI가 광고주를 대신해 의사결정을 내리는" 모델입니다. 창업자 Foroughi는 이를 "지속적으로 스스로를 강화하며 똑똑해지는 폐쇄루프 모델"이라 표현했으며, 이는 Meta의 블랙박스형 광고 최적화와 유사한 철학을 공유합니다. 회사의 비전은 모바일 게임이라는 좁은 시장에서 검증된 이 '성과 보장형 AI 광고' 모델을, e커머스·핀테크·보험·커넥티드TV 등 사실상 모든 디지털 광고 영역으로 수평 확장하는 것입니다. 경영진이 표현한 "TV 광고의 성배"라는 비전 — 빅스크린 광고가 실제 매출 증대를 견인했음을 광고주에게 증명하는 것 — 은 이 본질의 가장 야심찬 확장판입니다.</p>
+</div>
+<div class="card">
+  <h3 style="margin-top:0;">시대 정합성 평가</h3>
+  <p><b>현재와 부합하는 지점:</b> 글로벌 광고 산업은 ① 프라이버시 규제 강화로 인한 1st-party 데이터 가치 상승, ② 생성형 AI를 통한 광고 제작·집행의 자동화, ③ 중소상공인의 셀프서브 마케팅 도구 수요 증가라는 세 가지 거대 흐름 위에 있습니다. AppLovin의 AXON 3.0이 광고 배치뿐 아니라 생성형 AI로 광고 소재 자체를 실시간 제작하는 방향으로 진화하고 있다는 점은 이 흐름과 정확히 일치합니다. 또한 셀프서브 플랫폼 개방은 '소수 대형 광고주' 의존을 줄이고 롱테일 중소사업자 시장을 포착하려는 시도로, 현재 디지털 마케팅 시장의 구조 변화(중소사업자의 AI 도구 채택 가속)와 부합합니다.</p>
+  <p><b>긴장이 존재하는 지점:</b> 동시에 이 모델은 '사용자 동의 없는 데이터 수집'이라는 프라이버시 시대정신과 정면으로 충돌할 위험을 내포합니다. EU의 GDPR, 美 각 주의 프라이버시법, Apple/Google의 플랫폼 정책은 모두 '투명하고 동의 기반인 데이터 처리'를 요구하는 방향으로 수렴하고 있으며, AppLovin의 핵심 경쟁력(정교한 사용자 식별·매칭)이 바로 이 규제의 표적이 되는 영역입니다. 즉 AppLovin의 비즈니스 모델은 "AI 자동화"라는 시대적 순풍과 "데이터 프라이버시 강화"라는 시대적 역풍을 동시에 맞고 있는 독특한 위치에 있습니다. 향후 5~10년간 이 정합성이 유지되려면, 회사가 1st-party·동의 기반 데이터로의 전환을 실제로 완수하고, 규제 당국과의 관계를 정상화하는 것이 핵심 과제가 될 것입니다.</p>
+</div>
+
+<!-- 결론 종합 -->
+<h2><span class="num">08</span>종합 인수 권고</h2>
+<div class="verdict">
+  <div class="vlabel">권고안</div>
+  <div class="vtitle">단계적(Staged) 접근 — 우선 SEC 조사 결과 확인 후 본계약</div>
+  <p style="margin:0 0 12px;">① <b>1단계 (즉시)</b>: 정밀실사(Confirmatory DD)를 통해 SEC 조사의 구체적 범위·예상 종결 시점을 파악하고, 외부 법률자문을 통해 Apple/Google과의 플랫폼 계약 위반 가능성을 독립적으로 검증합니다. ② <b>2단계</b>: 핑거프린팅 관련 기술 감사(코드 레벨 실사)를 실시해 공매도 리포트의 핵심 주장(ID 무단 추출)의 사실관계를 직접 확인합니다. ③ <b>3단계</b>: 위 리스크가 관리 가능한 수준으로 확인될 경우, 현재의 밸류에이션 프리미엄에도 불구하고 AXON의 데이터 플라이휠과 85% EBITDA 마진이라는 구조적 우위는 장기 보유 가치를 정당화합니다. 다만 규제 리스크가 현실화될 경우를 대비한 가격 조정 조항(MAC clause, earn-out 구조)을 계약에 반드시 포함시킬 것을 권고합니다.</p>
+</div>
+
+<footer>
+  본 보고서는 공개된 뉴스, 기업 발표자료, 애널리스트 리포트를 기반으로 작성된 M&A 의사결정 지원 자료이며 투자 자문이 아닙니다. 모든 수치는 2026년 6월 30일 기준 공개 정보를 반영했으며, SEC 조사 등 진행 중인 사안은 추가 확인이 필요합니다.
+</footer>
+
+</div>
+
+<script>
+const gridColor = 'rgba(255,255,255,0.06)';
+const txtColor = '#93a0b4';
+Chart.defaults.color = txtColor;
+Chart.defaults.font.family = "'Pretendard','Segoe UI',sans-serif";
+
+new Chart(document.getElementById('revGrowth'), {
+  type:'bar',
+  data:{
+    labels:['Q1 25','Q2 25','Q3 25','Q4 25','Q1 26'],
+    datasets:[
+      {label:'분기 매출 ($M)', data:[1159,1255,1410,1655,1842], backgroundColor:'#5b8cff', borderRadius:6, order:2},
+      {label:'YoY 성장률 (%)', data:[48,66,68,62,59], type:'line', borderColor:'#34d3a7', backgroundColor:'#34d3a7', yAxisID:'y1', tension:.35, order:1}
+    ]
+  },
+  options:{
+    responsive:true, maintainAspectRatio:false,
+    scales:{
+      y:{grid:{color:gridColor}, ticks:{callback:v=>'$'+v}},
+      y1:{position:'right', grid:{display:false}, ticks:{callback:v=>v+'%'}, min:0, max:80}
+    },
+    plugins:{legend:{labels:{boxWidth:12}}}
+  }
+});
+
+new Chart(document.getElementById('marginChart'), {
+  type:'line',
+  data:{
+    labels:['Q1 25','Q2 25','Q3 25','Q4 25','Q1 26'],
+    datasets:[
+      {label:'조정 EBITDA 마진(%)', data:[77,79,80,84,85], borderColor:'#5b8cff', backgroundColor:'rgba(91,140,255,.15)', fill:true, tension:.35},
+      {label:'순이익률(%)', data:[49.7,55,58,61,65.4], borderColor:'#34d3a7', backgroundColor:'rgba(52,211,167,.1)', fill:true, tension:.35}
+    ]
+  },
+  options:{
+    responsive:true, maintainAspectRatio:false,
+    scales:{y:{grid:{color:gridColor}, min:40, max:90, ticks:{callback:v=>v+'%'}}},
+    plugins:{legend:{labels:{boxWidth:12}}}
+  }
+});
+
+new Chart(document.getElementById('valChart'), {
+  type:'bar',
+  data:{
+    labels:['Forward P/S','Forward P/E','순이익률'],
+    datasets:[
+      {label:'AppLovin (APP)', data:[20,36,65], backgroundColor:'#5b8cff', borderRadius:6},
+      {label:'The Trade Desk (TTD)', data:[3.3,30,6], backgroundColor:'#ffb454', borderRadius:6}
+    ]
+  },
+  options:{
+    indexAxis:'y',
+    responsive:true, maintainAspectRatio:false,
+    scales:{x:{grid:{color:gridColor}}},
+    plugins:{legend:{labels:{boxWidth:12}}}
+  }
+});
+</script>
+</body>
+</html>
