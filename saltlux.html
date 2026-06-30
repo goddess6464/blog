@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>솔트룩스(304100) M&A 인수 브리핑</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<style>
+:root{
+  --bg:#0b0f14; --panel:#121823; --panel2:#161e2b; --border:#243044;
+  --text:#e6edf3; --sub:#93a4bd; --accent:#4fd1c5; --accent2:#7c9eff;
+  --red:#ff6b6b; --orange:#ffb454; --green:#4fd17e; --yellow:#ffd166;
+}
+*{box-sizing:border-box;}
+body{
+  background:var(--bg); color:var(--text);
+  font-family:'Pretendard','Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+  margin:0; padding:0; line-height:1.7;
+}
+.wrap{max-width:1080px; margin:0 auto; padding:40px 24px 100px;}
+.cover{
+  background:linear-gradient(135deg,#101826 0%, #0b0f14 100%);
+  border:1px solid var(--border); border-radius:16px; padding:40px;
+  margin-bottom:36px;
+}
+.tag{display:inline-block; background:rgba(79,209,197,0.12); color:var(--accent);
+  border:1px solid rgba(79,209,197,0.4); padding:4px 12px; border-radius:20px;
+  font-size:12px; font-weight:600; letter-spacing:0.5px; margin-bottom:14px;}
+h1{font-size:30px; margin:6px 0 8px; color:#fff;}
+.sub-title{color:var(--sub); font-size:15px; margin-bottom:24px;}
+.kpi-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-top:20px;}
+.kpi{background:var(--panel); border:1px solid var(--border); border-radius:10px; padding:14px 16px;}
+.kpi .label{font-size:12px; color:var(--sub); margin-bottom:6px;}
+.kpi .value{font-size:19px; font-weight:700; color:#fff;}
+.kpi .delta{font-size:12px; margin-top:4px;}
+.delta.red{color:var(--red);} .delta.green{color:var(--green);} .delta.yellow{color:var(--yellow);}
+
+.verdict-box{
+  margin-top:24px; padding:18px 20px; border-radius:12px;
+  background:rgba(255,180,84,0.08); border:1px solid rgba(255,180,84,0.35);
+  display:flex; align-items:center; gap:16px;
+}
+.verdict-badge{
+  background:var(--orange); color:#1a1206; font-weight:800; font-size:13px;
+  padding:8px 14px; border-radius:8px; white-space:nowrap;
+}
+.verdict-text{font-size:14px; color:#dfe6ee;}
+
+section{margin-bottom:44px;}
+.sec-title{
+  font-size:22px; font-weight:800; color:#fff; margin:0 0 4px;
+  padding-bottom:10px; border-bottom:2px solid var(--accent);
+  display:flex; align-items:center; gap:10px;
+}
+.sec-num{color:var(--accent); font-size:16px;}
+.sub-sec{font-size:17px; font-weight:700; color:#fff; margin:28px 0 10px;}
+p{color:#cdd8e3; font-size:14.5px;}
+.card{background:var(--panel); border:1px solid var(--border); border-radius:12px; padding:20px 22px; margin:14px 0;}
+.grid2{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
+.grid3{display:grid; grid-template-columns:repeat(3,1fr); gap:14px;}
+@media(max-width:700px){.grid2,.grid3,.kpi-grid{grid-template-columns:1fr 1fr;}}
+
+table{width:100%; border-collapse:collapse; font-size:13.5px; margin:14px 0;}
+th{background:var(--panel2); color:var(--sub); font-weight:600; text-align:left; padding:10px 12px; border-bottom:1px solid var(--border);}
+td{padding:10px 12px; border-bottom:1px solid var(--border); color:#dbe3ec;}
+tr:hover td{background:rgba(255,255,255,0.02);}
+
+.badge{display:inline-block; padding:3px 10px; border-radius:6px; font-size:12px; font-weight:700;}
+.badge.high{background:rgba(255,107,107,0.15); color:var(--red); border:1px solid rgba(255,107,107,0.4);}
+.badge.mid{background:rgba(255,209,102,0.15); color:var(--yellow); border:1px solid rgba(255,209,102,0.4);}
+.badge.low{background:rgba(79,209,126,0.15); color:var(--green); border:1px solid rgba(79,209,126,0.4);}
+
+.chart-box{background:var(--panel); border:1px solid var(--border); border-radius:12px; padding:18px; margin:16px 0;}
+.chart-title{font-size:14px; color:var(--sub); margin-bottom:10px; font-weight:600;}
+canvas{max-height:320px;}
+
+ul{padding-left:20px; color:#cdd8e3; font-size:14.5px;}
+li{margin-bottom:6px;}
+
+.timeline{border-left:2px solid var(--border); margin-left:8px; padding-left:24px;}
+.t-item{position:relative; margin-bottom:18px;}
+.t-item::before{content:''; position:absolute; left:-31px; top:4px; width:10px; height:10px; border-radius:50%; background:var(--accent);}
+.t-year{color:var(--accent); font-weight:700; font-size:13px;}
+.t-desc{color:#cdd8e3; font-size:14px; margin-top:2px;}
+
+.scenario-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-top:16px;}
+.scen{border-radius:12px; padding:18px; border:1px solid var(--border);}
+.scen.bull{background:rgba(79,209,126,0.07); border-color:rgba(79,209,126,0.35);}
+.scen.base{background:rgba(124,158,255,0.07); border-color:rgba(124,158,255,0.35);}
+.scen.bear{background:rgba(255,107,107,0.07); border-color:rgba(255,107,107,0.35);}
+.scen h4{margin:0 0 8px; font-size:15px;}
+.scen .price{font-size:20px; font-weight:800; color:#fff; margin-bottom:8px;}
+
+.footer-note{margin-top:50px; padding:18px; border-radius:10px; background:var(--panel2); border:1px solid var(--border); font-size:12.5px; color:var(--sub);}
+
+.final-verdict{
+  background:linear-gradient(135deg,#171019,#0b0f14); border:1px solid rgba(255,180,84,0.4);
+  border-radius:16px; padding:30px;
+}
+.final-verdict h2{color:#fff; margin-top:0;}
+.cond-list{margin-top:14px;}
+.cond-list li{margin-bottom:10px;}
+strong{color:#fff;}
+.pos{color:var(--green); font-weight:700;}
+.neg{color:var(--red); font-weight:700;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="cover">
+  <span class="tag">M&A ACQUISITION BRIEFING · CONFIDENTIAL</span>
+  <h1>솔트룩스 (Saltlux Inc.) — 인수 타당성 분석 보고서</h1>
+  <div class="sub-title">KOSDAQ 304100 · AI/빅데이터 솔루션 · 작성기준일 2026년 상반기 최신 공시·뉴스 기준</div>
+
+  <div class="kpi-grid">
+    <div class="kpi"><div class="label">현재가 (2026.05.22 기준)</div><div class="value">20,600원</div><div class="delta red">전일比 +12.6% (변동성 매우 큼)</div></div>
+    <div class="kpi"><div class="label">52주 범위</div><div class="value">17,240 ~ 58,900원</div><div class="delta red">고점 대비 -65%</div></div>
+    <div class="kpi"><div class="label">시가총액</div><div class="value">약 2,500~2,900억원</div><div class="delta yellow">주가 변동에 따라 유동적</div></div>
+    <div class="kpi"><div class="label">PBR / ROE</div><div class="value">4.11배 / -15.4%</div><div class="delta red">적자 기업 치고 고밸류</div></div>
+    <div class="kpi"><div class="label">2025년 매출</div><div class="value">416억원</div><div class="delta red">전년比 -9.3%</div></div>
+    <div class="kpi"><div class="label">2025년 영업손실</div><div class="value">-80억원</div><div class="delta red">5년 연속 적자</div></div>
+    <div class="kpi"><div class="label">2025년 순손실</div><div class="value">-120억원</div><div class="delta red">전년比 약 2배 확대</div></div>
+    <div class="kpi"><div class="label">부채비율</div><div class="value">44.4%</div><div class="delta green">재무 안정성은 양호</div></div>
+  </div>
+
+  <div class="verdict-box">
+    <div class="verdict-badge">조건부 보류 (CONDITIONAL HOLD)</div>
+    <div class="verdict-text">현재 밸류에이션 및 펀더멘털 기준으로는 전략적 인수 정당화 어려움. 단, 현금·기술자산 가치 대비 할인된 가격(주가 1.5만원대 이하 / PBR 2배 이하)에서의 <b>디스트레스드 자산·기술 인수(acqui-tech)</b> 관점이라면 제한적 타당성 존재. 상세 근거는 7개 섹션 참조.</div>
+  </div>
+</div>
+
+<!-- 1. 결론 요약 -->
+<section>
+  <div class="sec-title"><span class="sec-num">1.</span> 결론 요약</div>
+  <div class="card">
+    <p><strong>솔트룩스는 2020년 코스닥 기술특례상장 이후 5년 연속(2021~2025) 적자를 기록 중인 국내 1세대 AI/자연어처리(NLP) 기업</strong>입니다. 자체 거대언어모델(LLM) '루시아(Luxia)'를 보유하고 국내 최초로 AI 고객응대 서비스를 제1금융권에 공급한 기술력은 인정받지만, 본업 매출은 2022년 233억원을 정점으로 계속 감소(2025년 171억원, 별도기준)하고 있고, 2023년 NHN다이퀘스트 인수로 만든 외형 성장 효과도 1년 만에 소멸됐습니다.</p>
+    <p>2025년 연결 기준 매출 416억원(-9.3%), 영업손실 80억원(적자 확대), 순손실 120억원(전년比 2배 이상 확대)을 기록했고, 누적 결손금은 401억원에 달합니다. 같은 기간 경쟁사인 코난테크놀로지는 매출 +29.1% 성장, 와이즈넛은 흑자를 유지해 <strong>업황 탓만으로 설명하기 어려운 솔트룩스만의 실행력 문제</strong>가 부각됩니다.</p>
+    <p>다만 ① 정부 공공AI 예산이 966억원→2,849억원으로 3배 가까이 급증하는 정책 모멘텀, ② 자회사 다이퀘스트의 분할 상장 추진 및 152억원 투자유치 완료, ③ 루시아 모델의 빠른 업그레이드 속도(1.0→3.5)와 비용효율성(GPT-4o 대비 1/20 운영비)은 분명한 옵션가치입니다. <strong>현재 시장 밸류에이션(PBR 4배 내외)으로는 리스크 대비 보상이 충분치 않으나, 주가가 현금성자산+핵심기술 가치 수준까지 하락할 경우 기술·인력·정부 레퍼런스를 노린 전략적 인수 후보로 재검토할 가치는 있습니다.</strong></p>
+  </div>
+</section>
+
+<!-- 2. 기업 개요 -->
+<section>
+  <div class="sec-title"><span class="sec-num">2.</span> 기업 개요 및 현황</div>
+
+  <div class="sub-sec">2.1 기본 정보 및 핵심 지표</div>
+  <div class="card">
+    <table>
+      <tr><th>항목</th><th>내용</th></tr>
+      <tr><td>회사명</td><td>(주)솔트룩스 (Saltlux Inc.)</td></tr>
+      <tr><td>종목코드</td><td>KOSDAQ 304100 (코스닥 IT서비스)</td></tr>
+      <tr><td>상장일</td><td>2020년 7월 23일 (기술특례상장)</td></tr>
+      <tr><td>대표이사</td><td>이경일 (창업자, 최대주주, 지분율 약 10~12%)</td></tr>
+      <tr><td>주요 주주</td><td>이경일 대표 및 특수관계인 약 12.65%, 정문선 및 특별관계자 약 9.19%, NHN 약 5.7%, 다수 재무적투자자(FI)의 RCPS 보유</td></tr>
+      <tr><td>주요 종속회사</td><td>Goover, 다이퀘스트(DiQuest), 플루닛(Plunit), 솔트룩스 베트남 법인, 솔트룩스이노베이션, 솔트룩스벤처스</td></tr>
+      <tr><td>핵심 기술</td><td>자체 LLM '루시아(Luxia)', 멀티모달 AI 'LUXIA-On', AI 에이전트 플랫폼 'Goover'</td></tr>
+      <tr><td>본사</td><td>서울 (R&D 및 영업 조직 보유, 북미·동남아 SaaS 수출 추진)</td></tr>
+    </table>
+  </div>
+
+  <div class="sub-sec">2.2 혁신에서 시작된 역사</div>
+  <p>솔트룩스는 단발성 AI 붐 기업이 아니라 <strong>2000년대 초반부터 자연어처리(NLP)와 빅데이터 한 우물을 파온 국내 1세대 AI 기업</strong>입니다. 창업자 이경일 대표는 LG중앙연구소·현대전자 연구개발자 출신으로, 기술 기반 창업 스토리를 가지고 있습니다.</p>
+  <div class="timeline">
+    <div class="t-item"><div class="t-year">2000년</div><div class="t-desc">시스메타 법인 설립 (전신), 자연어처리 기술 개발 착수</div></div>
+    <div class="t-item"><div class="t-year">2005~2006년</div><div class="t-desc">법인명을 '솔트룩스'로 변경, AI·빅데이터 전문기업으로 정체성 확립</div></div>
+    <div class="t-item"><div class="t-year">2017년</div><div class="t-desc">국내 최초 'AI 고객응대 서비스'를 NH농협은행·NH농협카드·한국투자증권·키움증권 등 1금융권에 공급 — 핵심 레퍼런스 확보</div></div>
+    <div class="t-item"><div class="t-year">2020년 7월</div><div class="t-desc">코스닥 기술특례상장 — AI SW 기업 최초 자본시장 입성</div></div>
+    <div class="t-item"><div class="t-year">2023년 3월</div><div class="t-desc">자체 초거대언어모델(LLM) '루시아 1.0' 최초 공개</div></div>
+    <div class="t-item"><div class="t-year">2023년 11월</div><div class="t-desc">NHN으로부터 자연어처리 전문기업 'NHN다이퀘스트' 지분 94.95% 인수(256억원, 현금 100억+신주 156억). NHN은 솔트룩스 지분 5.69% 확보하며 'AI 얼라이언스' 구축. 업계 매출 1위(통합 점유율 35%) 표방</div></div>
+    <div class="t-item"><div class="t-year">2024년 3월</div><div class="t-desc">하드웨어 일체형 생성형 AI 기기 '루시아온(LUXIA-On)' 출시</div></div>
+    <div class="t-item"><div class="t-year">2025년 2~5월</div><div class="t-desc">루시아 2.5, 3.0 잇따라 출시 — 운영비용 GPT-4o 대비 1/20 수준의 비용효율성 확보</div></div>
+    <div class="t-item"><div class="t-year">2025년~2026년</div><div class="t-desc">AI 에이전트 서비스 'Goover'에 MCP(Model Context Protocol) 기반 PPT·리포트 자동생성 기능 탑재. 다이퀘스트 분할 상장(IPO) 추진 및 152억원 투자유치 완료</div></div>
+  </div>
+
+  <div class="sub-sec">2.3 핵심 사업 포트폴리오</div>
+  <div class="grid3">
+    <div class="card">
+      <h4 style="color:#fff;margin-top:0;">AI 에이전트 / LLM</h4>
+      <p style="font-size:13.5px;">자체 LLM '루시아' 기반 에이전트형 AI. AI 검색·투자분석 서비스 'Goover'로 B2C·B2B 확장 중이나, 최근 3년 누적 매출 4억원에 손실 71억원으로 수익화 초기 단계</p>
+    </div>
+    <div class="card">
+      <h4 style="color:#fff;margin-top:0;">Big Data Suite</h4>
+      <p style="font-size:13.5px;">지능형 빅데이터 분석 플랫폼. 매출 비중 약 11% 수준이나 최근 부진이 실적 악화의 한 요인으로 지목됨</p>
+    </div>
+    <div class="card">
+      <h4 style="color:#fff;margin-top:0;">B2G(공공) SI/SaaS</h4>
+      <p style="font-size:13.5px;">별도기준 매출의 64.6%가 정부·공공기관向. 지자체 AI 빅데이터 플랫폼 구축 등 다수 레퍼런스. 공공 IT 예산에 실적이 크게 좌우되는 구조</p>
+    </div>
+    <div class="card">
+      <h4 style="color:#fff;margin-top:0;">다이퀘스트 (전자상거래 NLP)</h4>
+      <p style="font-size:13.5px;">전자상거래 검색·챗봇 국내 1위. AI 사업화 인력 약 150명. 분할 상장(IPO) 추진 중이며 152억원 외부 투자유치 완료</p>
+    </div>
+    <div class="card">
+      <h4 style="color:#fff;margin-top:0;">금융권 AICC</h4>
+      <p style="font-size:13.5px;">2017년부터 NH농협·한국투자증권·키움증권 등 1금융권 AI 고객센터(AICC) 구축. 가장 검증된 캐시카우 영역이나 신규 대형계약 둔화</p>
+    </div>
+    <div class="card">
+      <h4 style="color:#fff;margin-top:0;">LUXIA-On (하드웨어)</h4>
+      <p style="font-size:13.5px;">멀티모달 생성형 AI 일체형 기기. 스마트팩토리·고객응대 적용 목표하나 아직 매출 기여 미미</p>
+    </div>
+  </div>
+</section>
+
+<!-- 3. 핵심 투자 논리 -->
+<section>
+  <div class="sec-title"><span class="sec-num">3.</span> 핵심 투자 논리 및 가치 제안</div>
+  <div class="card">
+    <ul>
+      <li><strong>국가 AI 정책 수혜 가능성:</strong> 공공AI 구축 사업 예산이 966억원(작년)→2,849억원(올해)으로 약 3배 증가했고, 정부는 공공AI 도입률을 2025년 23.7%에서 2030년 95%까지 끌어올릴 계획. 솔트룩스는 정부 사업 레퍼런스가 압도적(별도매출의 64.6%)으로, SI 중심에서 SaaS·로열티 모델로 전환 성공 시 이익 레버리지 기대</li>
+      <li><strong>독자 LLM 보유 기업이라는 희소성:</strong> 오픈AI·구글 등 빅테크에 종속되지 않은 자체 파운데이션 모델 '루시아'를 빠르게 고도화(2023.9~2025.5, 1.0→3.0)하며 운영비를 GPT-4o 대비 1/20 수준까지 낮춤 — 인수 시 기술·인력 동시 확보 가능</li>
+      <li><strong>다이퀘스트 분리상장을 통한 자금 회수 옵션:</strong> 인수가(256억원) 대비 이미 152억원 외부 투자유치에 성공, IPO 성사 시 모회사 솔트룩스의 현금 확보 및 지분가치 재평가 가능</li>
+      <li><strong>검증된 1금융권 레퍼런스:</strong> NH농협·한국투자증권·키움증권 등 보수적인 금융권에 2017년부터 AI 서비스를 공급해온 트랙레코드는 경쟁사 대비 진입장벽 역할</li>
+      <li><strong>경영진의 수익성 전환 공식 선언:</strong> 구독형·서비스형(SaaS) 매출 비중 확대, 영업이익률 개선, 주주환원 정책 검토를 공식 발표 — 다만 실행 신뢰도는 아직 미검증(섹션 5 참조)</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 4. 재무 성과 및 가치평가 -->
+<section>
+  <div class="sec-title"><span class="sec-num">4.</span> 재무 성과 및 가치 평가</div>
+
+  <div class="sub-sec">4.1 주요 재무 동향 분석</div>
+  <div class="chart-box">
+    <div class="chart-title">연결 기준 실적 추이 (2024 vs 2025, 단위: 억원)</div>
+    <canvas id="financeChart"></canvas>
+  </div>
+  <div class="grid2">
+    <div class="chart-box">
+      <div class="chart-title">별도기준 본업 매출: 정점(2022) vs 최근(2025), 단위: 억원</div>
+      <canvas id="coreRevChart"></canvas>
+    </div>
+    <div class="chart-box">
+      <div class="chart-title">현금성자산 추이 (단위: 억원)</div>
+      <canvas id="cashChart"></canvas>
+    </div>
+  </div>
+  <div class="card">
+    <p><strong>핵심 관찰:</strong> 2024년 연결 매출 459억원은 다이퀘스트 편입에 따른 일회성 외형 효과(전년比 +49%)였으나, 2025년에는 이 효과가 소멸되며 매출이 다시 416억원으로 감소했습니다. 더 우려스러운 점은 본업(솔트룩스 별도기준) 매출이 2022년 233억원 정점 이후 구조적으로 감소해 2025년 171억원까지 떨어졌다는 사실입니다 — <strong>이는 M&A로 만든 외형 성장 뒤에 본업 경쟁력 약화가 가려져 있었음을 시사</strong>합니다.</p>
+    <p>현금성자산은 2024년말 231억원→2025년 9월 110억원으로 급감했다가 2025년말 354억원으로 회복됐는데, 이는 영업 현금흐름 개선이 아니라 <strong>전환사채(CB)·신주인수권부사채(BW) 전환 및 신규 자금조달에 따른 결과로 추정</strong>되어 질적으로 우려스러운 패턴입니다. 2025년 1분기에도 영업손실 49억원, 순손실 51억원을 이어가며 적자 기조가 멈추지 않고 있습니다.</p>
+  </div>
+
+  <div class="sub-sec">4.2 경쟁사 비교분석</div>
+  <div class="chart-box">
+    <div class="chart-title">2025년 매출 성장률 비교 (YoY, %)</div>
+    <canvas id="peerChart"></canvas>
+  </div>
+  <table>
+    <tr><th>기업</th><th>2025년 매출 성장률</th><th>수익성</th><th>비고</th></tr>
+    <tr><td>솔트룩스</td><td style="color:var(--red);">-9.3%</td><td>영업손실 80억(적자 확대)</td><td>5년 연속 적자, 신규사업(Goover) 수익화 지연</td></tr>
+    <tr><td>코난테크놀로지</td><td style="color:var(--green);">+29.1%</td><td>적자폭 축소</td><td>동일 업황에서 차별화된 성장 시현</td></tr>
+    <tr><td>와이즈넛</td><td style="color:var(--yellow);">-0.5%(보합)</td><td>영업흑자 유지</td><td>비상장(K-OTC), 시총이 솔트룩스의 1.5~3배라는 시장 평가도 존재</td></tr>
+  </table>
+  <p style="font-size:13px;color:var(--sub);">※ 동일한 공공 IT예산 축소라는 업황 변수를 공유함에도 경쟁사 대비 솔트룩스의 실적 부진이 두드러진다는 점에서, 부진의 원인을 업황 탓으로만 돌리기 어렵습니다.</p>
+
+  <div class="sub-sec">4.3 가치 평가 요약</div>
+  <div class="card">
+    <ul>
+      <li><strong>PBR 4.11배:</strong> 적자가 5년째 지속되는 기업치고는 높은 자산가치 프리미엄 — AI 테마성 수급이 펀더멘털 대비 과도하게 반영된 정황</li>
+      <li><strong>PER 산출 불가:</strong> 당기순손실 지속으로 이익 기준 밸류에이션 자체가 무의미한 상태</li>
+      <li><strong>자본총계 738억원 vs 시가총액 약 2,500~2,900억원:</strong> 시장은 장부가의 3.5~4배에 가까운 무형의 기술·성장 프리미엄을 부여하고 있음</li>
+      <li><strong>경쟁사 와이즈넛(비상장) 대비:</strong> 일부 투자자 사이에서는 흑자기업인 와이즈넛의 적정가치가 솔트룩스의 1.5~3배에 달한다는 평가도 제기되는 등, 솔트룩스의 코스닥 상장 프리미엄이 펀더멘털 대비 후하다는 시각이 존재</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 5. 리스크 및 기회 -->
+<section>
+  <div class="sec-title"><span class="sec-num">5.</span> 주요 리스크 및 기회</div>
+
+  <div class="sub-sec">5.1 리스크 매트릭스 (심층 분석)</div>
+  <table>
+    <tr><th>구분</th><th>리스크 내용</th><th>심각도</th><th>발생가능성</th></tr>
+    <tr><td>재무</td><td>5년 연속 적자, 누적 결손금 401억원. 2025년 순손실이 전년比 2배 이상 확대되며 적자 폭이 줄지 않고 오히려 가속</td><td><span class="badge high">상</span></td><td><span class="badge high">확정(과거실적)</span></td></tr>
+    <tr><td>사업</td><td>본업(별도기준) 매출이 2022년 정점(233억) 이후 구조적 감소세, 2025년 171억원까지 하락 — M&A 외형효과를 걷어내면 본업 경쟁력 자체가 훼손되고 있음</td><td><span class="badge high">상</span></td><td><span class="badge high">진행중</span></td></tr>
+    <tr><td>신사업 실행력</td><td>자회사 Goover는 3년간 누적매출 4억원에 손실 71억원 — 신규 AI 에이전트 사업의 수익모델 미검증</td><td><span class="badge high">상</span></td><td><span class="badge mid">중</span></td></tr>
+    <tr><td>경쟁구도</td><td>오픈소스 LLM 및 삼성SDS·LG CNS 등 대기업의 AI 시장 진입으로 입지 약화. 정부 주도 '독자 AI 파운데이션 모델(독파모)' 사업에 KT 컨소시엄으로 참여했으나 탈락</td><td><span class="badge high">상</span></td><td><span class="badge high">확정(탈락)</span></td></tr>
+    <tr><td>매출 구조</td><td>별도기준 매출의 64.6%가 정부·공공 의존 — 예산 정책 변화에 실적이 직접 노출되는 단일 리스크 집중도</td><td><span class="badge mid">중</span></td><td><span class="badge mid">중</span></td></tr>
+    <tr><td>현금흐름</td><td>2024년말 231억원→2025.9월 110억원으로 급감 후 연말 354억원으로 회복 — 영업 현금창출력이 아닌 자본성 조달(CB/BW 전환)에 의존하는 질적으로 불안정한 패턴</td><td><span class="badge mid">중</span></td><td><span class="badge mid">중</span></td></tr>
+    <tr><td>지배구조/주주환원</td><td>적자 지속 상황에서 스톡옵션 행사요건 완화 및 이사 책임 감경을 동시 추진 — 실적과 보상의 연동 신뢰성에 대한 주주 반발 가능성</td><td><span class="badge mid">중</span></td><td><span class="badge mid">중</span></td></tr>
+    <tr><td>R&D 투자 위축</td><td>2026년 1분기 R&D비용이 전년比 5.4% 감소, 매출 대비 비중도 35.5%→21.6%로 급감 — 향후 기술경쟁력 유지에 대한 의문</td><td><span class="badge mid">중</span></td><td><span class="badge mid">중</span></td></tr>
+    <tr><td>FI 엑시트 압박</td><td>다수의 재무적투자자(한국투자 Re-UP, KB프라임디지털플랫폼펀드, 삼성셀렉트 등)가 RCPS(상환전환우선주) 보유. 실적 부진 장기화 시 상환권 행사로 유동성 부담 확대 가능. 파생상품부채 33억원도 주가 변동성에 따른 손익 변동 요인</td><td><span class="badge mid">중</span></td><td><span class="badge low">하~중</span></td></tr>
+    <tr><td>상장유지 요건</td><td>기술특례상장 기업으로서 장기 영업손실 지속 시 향후 관리종목 지정 요건 모니터링 필요 (정확한 유예기간·요건은 최신 거래소 규정 별도 확인 필요)</td><td><span class="badge mid">중</span></td><td><span class="badge low">하</span></td></tr>
+  </table>
+
+  <div class="sub-sec">5.2 주요 기회 요인</div>
+  <div class="card">
+    <ul>
+      <li><strong>정책 모멘텀:</strong> 공공AI 예산 3배 증가(966억→2,849억원), 2030년 공공AI 도입률 95% 목표 — 정부 레퍼런스 다수 보유 기업으로서 직접 수혜 가능</li>
+      <li><strong>기술 경쟁력의 비용효율성:</strong> 루시아 2.5 기준 운영비가 GPT-4o 대비 1/20, 국내 경쟁 모델 대비 1/10 — 저비용 구조의 자체 LLM은 외산 모델 종속을 꺼리는 공공·금융 고객에게 매력적</li>
+      <li><strong>다이퀘스트 분할상장(IPO):</strong> 인수가 256억원 대비 이미 152억원 투자유치 성공 — IPO 성사 시 모회사 가치 재평가 및 현금 유입 가능</li>
+      <li><strong>민간 신규 고객 확보 시작:</strong> 카카오뱅크, 이씨에스텔레콤 등 공공 일변도에서 민간으로 영업 다변화 초기 신호</li>
+      <li><strong>경영진의 수익성 전환 선언:</strong> 구독형·SaaS 매출 비중 확대 계획, 주주환원 정책 검토 — 다만 실행 검증은 향후 분기 실적으로 확인 필요</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 6. Bull/Bear/Base -->
+<section>
+  <div class="sec-title"><span class="sec-num">6.</span> Bull Case · Bear Case · Base Case</div>
+  <div class="scenario-grid">
+    <div class="scen bear">
+      <h4 style="color:var(--red);">🔴 Bear Case</h4>
+      <div class="price">12,000~15,000원대</div>
+      <p style="font-size:13px;">공공 예산 집행 지연, Goover 등 신사업 추가 손실 지속, FI 상환권 행사로 유동성 경색 발생 시. 6년 연속 적자 시 관리종목 지정 우려 부각, PBR 2배 이하로 디레이팅</p>
+    </div>
+    <div class="scen base">
+      <h4 style="color:var(--accent2);">🔵 Base Case</h4>
+      <div class="price">18,000~25,000원대</div>
+      <p style="font-size:13px;">공공AI 예산 확대 효과가 점진적으로 반영되나 적자 기조는 2026년에도 일부 잔존. 다이퀘스트 IPO는 진행되나 시점 지연. 현재 거래 범위 내에서 등락 지속</p>
+    </div>
+    <div class="scen bull">
+      <h4 style="color:var(--green);">🟢 Bull Case</h4>
+      <div class="price">35,000~45,000원대</div>
+      <p style="font-size:13px;">2026년 경영진 공언대로 분기 흑자전환 달성, 다이퀘스트 IPO 성공적 완료로 현금 유입, 공공AI 국가대표 사업 선정 등 정책 수혜 본격화 시 — 단, 현재까지 가시성은 낮음</p>
+    </div>
+  </div>
+  <div class="chart-box" style="margin-top:18px;">
+    <div class="chart-title">시나리오별 목표주가 범위 (Claude 자체 분석 프레임워크, 단위: 원) — 공인 애널리스트 컨센서스 아님</div>
+    <canvas id="scenarioChart"></canvas>
+  </div>
+  <p style="font-size:12.5px;color:var(--sub);">※ 위 시나리오 가격대는 PBR 밴드, 현금성자산/주당가치, 동종업계 비교를 토대로 한 분석적 프레임워크이며 투자 자문이 아닙니다. 실제 투자 결정 시 공인 증권사 리서치 및 본인의 판단이 필요합니다.</p>
+</section>
+
+<!-- 7. 본질과 목표 -->
+<section>
+  <div class="sec-title"><span class="sec-num">7.</span> 기업의 본질과 목표, 시대 적합성</div>
+  <div class="card">
+    <p><strong>본질:</strong> 솔트룩스의 본질은 "빅테크에 종속되지 않는 독자 한국어 AI 파운데이션 모델을 만들겠다"는 기술 주권 지향의 1세대 AI 기업입니다. 2025년 자체 컨퍼런스 주제 '에이전트형 AI, 세상을 집어삼키다'가 보여주듯, 회사는 단순 SI 솔루션 업체에서 'AI 에이전트 플랫폼' 기업으로 정체성을 전환하려는 야심을 갖고 있습니다.</p>
+    <p><strong>목표:</strong> 이경일 대표는 NHN다이퀘스트 인수 당시 "MS-오픈AI, AWS-앤트로픽처럼 AI 클라우드와 생성형 AI가 결합한 국내 최초 사례"를 만들겠다고 공언했습니다. 단기적으로는 흑자전환과 연결매출 600억원, 장기적으로는 정부 주도 '독자 AI 파운데이션 모델' 생태계의 핵심 플레이어가 되는 것이 목표입니다.</p>
+    <p><strong>시대 적합성 — 방향은 맞지만 자원은 부족:</strong> 에이전트형 AI, 정부의 AI 주권 정책, 저비용 sLLM(소형 특화 모델) 트렌드는 모두 현재 글로벌 AI 산업의 핵심 흐름과 일치합니다. 한국 정부의 공공AI 예산 급증과 AI 주권 담론은 솔트룩스의 비전과 정확히 맞물려 있어 <strong>방향성 자체는 시대와 부합</strong>합니다.</p>
+    <p>그러나 문제는 <strong>실행 자원의 격차</strong>입니다. 파운데이션 모델 경쟁은 막대한 컴퓨팅 인프라 투자가 요구되는 게임인데, 솔트룩스는 연간 R&D 예산이 수십억원 단위에 불과하고 최근에는 오히려 R&D 투자를 줄이고 있습니다(2026년 1분기 R&D비용 5.4% 감소). 네이버·KT 등 국내 빅테크는 물론, 삼성SDS·LG CNS 같은 대기업까지 AI 사업에 본격 진입하면서 솔트룩스가 표방하는 '국가대표 AI 기업' 포지션은 KT 컨소시엄 '독파모' 탈락 사례에서 보듯 현실적으로 위협받고 있습니다.</p>
+    <p><strong>결론적으로, 솔트룩스의 비전은 "옳은 방향에서 자원이 부족한 추격자(underfunded first-mover)"의 전형</strong>입니다. 이는 단독 생존보다 더 큰 자본력을 가진 전략적 파트너(대기업, PE, 통신사 등)와의 결합을 통해서만 비전이 완성될 가능성이 높다는 의미이며, 역설적으로 이 지점이 M&A 관점에서 솔트룩스를 흥미롭게 만드는 요인이기도 합니다.</p>
+  </div>
+</section>
+
+<!-- Final Verdict -->
+<section>
+  <div class="final-verdict">
+    <h2>📋 최종 M&A 자문 의견</h2>
+    <p><strong>결론: 조건부 보류 (Conditional Hold) — 현재가 기준 전략적 인수 비추천, 단 디스트레스드 가격대에서는 acqui-tech 관점으로 재검토 가능</strong></p>
+    <p>솔트룩스는 "AI 테마"라는 이름으로 시장에서 PBR 4배의 프리미엄을 받고 있지만, 펀더멘털은 <span class="neg">5년 연속 적자, 본업 매출 구조적 감소, 신사업 수익화 실패, 정부사업 의존 집중도</span>라는 명백한 경고 신호를 보내고 있습니다. 귀하가 명시하신 대로 "리스크를 테이킹하면서까지 인수할 이유"를 찾는다면, 현재 시가총액 수준(2,500~2,900억원)에서는 그 이유를 찾기 어렵습니다 — <span class="pos">자본총계(738억원)와 비교해도 3배 이상의 프리미엄</span>이 붙어있어 다운사이드 보호장치가 거의 없습니다.</p>
+    <div class="cond-list">
+      <p><strong>다만 인수가 정당화될 수 있는 조건은 다음과 같습니다:</strong></p>
+      <ul>
+        <li><strong>가격 조건:</strong> 주가가 자본총계(주당 BPS) 근접 수준, 즉 PBR 1.5~2배 이하(대략 1만원대 초중반)로 하락 시 — 현금 354억원 + 핵심 LLM 기술 + 정부/금융권 레퍼런스만으로도 인수가를 정당화 가능</li>
+        <li><strong>인수 목적의 재정의:</strong> '성장 기업 인수'가 아니라 '기술·인력·라이선스 확보형 acqui-tech' 거래로 프레이밍 — 루시아 LLM 기술팀과 1금융권 AICC 레퍼런스만 분리 평가해도 전략적 가치 존재</li>
+        <li><strong>지배구조 개선 선결:</strong> 적자 중 스톡옵션 완화·이사 책임 감경 안건이 통과된 배경과 동기를 실사 단계에서 반드시 검증 — 인수 후 거버넌스 리스크 사전 차단 필요</li>
+        <li><strong>다이퀘스트 IPO 진행 상황 확인:</strong> 분리 상장이 무산되거나 지연될 경우 모회사 인수가에 미반영된 숨은 비용(소수주주 보호 등)이 발생할 수 있어 별도 실사 필요</li>
+        <li><strong>거래 구조:</strong> 100% 현금 인수보다는 <strong>경영진 잔류 + 단계적 지분 인수 + 마일스톤(흑자전환, 공공AI 사업 수주) 연동 콜옵션</strong> 구조를 통해 다운사이드를 매도자와 분담하는 방식이 합리적</li>
+      </ul>
+    </div>
+    <p style="margin-top:16px;"><strong>요약하면:</strong> 솔트룩스는 "사고 싶은 기업"이라기보다 "주워올 수 있다면 매력적인 자산"에 가깝습니다. 현재 가격에서는 패스하시되, 정책 모멘텀과 실적 발표(특히 2026년 2분기 이후 흑자전환 공언 이행 여부)를 지켜보며 밸류에이션 디레이팅 시점을 모니터링하는 것을 권고드립니다.</p>
+  </div>
+</section>
+
+<div class="footer-note">
+  본 보고서는 공개된 뉴스, 공시자료(DART), FnGuide 등의 정보를 종합해 작성된 분석 자료이며, 투자 자문이나 인수 실사를 대체하지 않습니다. 일부 수치(시가총액, 주가 등)는 조회 시점에 따라 변동될 수 있으며, 시나리오별 목표주가는 Claude의 자체 분석 프레임워크로 공인 증권사 리서치가 아닙니다. 실제 M&A 추진 시에는 정밀실사(Financial/Legal/Technical DD)와 전문 자문사 검토가 필수입니다.
+</div>
+
+</div>
+
+<script>
+const textColor = '#cdd8e3';
+const gridColor = 'rgba(255,255,255,0.06)';
+Chart.defaults.color = textColor;
+Chart.defaults.font.family = "'Pretendard','Malgun Gothic',sans-serif";
+
+new Chart(document.getElementById('financeChart'), {
+  type:'bar',
+  data:{
+    labels:['매출액','영업손실','순손실'],
+    datasets:[
+      {label:'2024년', data:[459,-66,-58], backgroundColor:'#4fd1c5'},
+      {label:'2025년', data:[416,-80,-120], backgroundColor:'#ff6b6b'}
+    ]
+  },
+  options:{responsive:true, plugins:{legend:{labels:{color:textColor}}},
+    scales:{x:{grid:{color:gridColor}}, y:{grid:{color:gridColor}}}}
+});
+
+new Chart(document.getElementById('coreRevChart'), {
+  type:'bar',
+  data:{
+    labels:['2022년(정점)','2025년(최근)'],
+    datasets:[{label:'별도기준 매출(억원)', data:[233,171], backgroundColor:['#7c9eff','#ffb454']}]
+  },
+  options:{responsive:true, plugins:{legend:{display:false}},
+    scales:{x:{grid:{color:gridColor}}, y:{grid:{color:gridColor}}}}
+});
+
+new Chart(document.getElementById('cashChart'), {
+  type:'line',
+  data:{
+    labels:['2024년말','2025년 9월','2025년말'],
+    datasets:[{label:'현금성자산(억원)', data:[231,110,354], borderColor:'#4fd1c5', backgroundColor:'rgba(79,209,197,0.15)', fill:true, tension:0.3}]
+  },
+  options:{responsive:true, plugins:{legend:{labels:{color:textColor}}},
+    scales:{x:{grid:{color:gridColor}}, y:{grid:{color:gridColor}}}}
+});
+
+new Chart(document.getElementById('peerChart'), {
+  type:'bar',
+  data:{
+    labels:['솔트룩스','코난테크놀로지','와이즈넛'],
+    datasets:[{label:'2025년 매출 성장률(%)', data:[-9.3,29.1,-0.5],
+      backgroundColor:['#ff6b6b','#4fd17e','#ffd166']}]
+  },
+  options:{responsive:true, plugins:{legend:{display:false}},
+    scales:{x:{grid:{color:gridColor}}, y:{grid:{color:gridColor}}}}
+});
+
+new Chart(document.getElementById('scenarioChart'), {
+  type:'bar',
+  data:{
+    labels:['Bear Case','Base Case','Bull Case'],
+    datasets:[
+      {label:'하단(원)', data:[12000,18000,35000], backgroundColor:'#243044'},
+      {label:'상단(원)', data:[15000,25000,45000], backgroundColor:['#ff6b6b','#7c9eff','#4fd17e']}
+    ]
+  },
+  options:{responsive:true, plugins:{legend:{labels:{color:textColor}}},
+    scales:{x:{grid:{color:gridColor}}, y:{grid:{color:gridColor}}}}
+});
+</script>
+</body>
+</html>
