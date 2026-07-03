@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>POSCO홀딩스 (005490) M&A 인수 브리핑</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root{
+    --bg:#0f1115; --bg2:#161920; --card:#1a1e26; --border:#2a2f3a;
+    --text:#e8e9ec; --muted:#9aa0ab; --accent:#4fd1c5; --accent2:#f2a65a;
+    --red:#f2555a; --green:#5fd17e; --blue:#5b9bf2; --purple:#b28dff;
+  }
+  *{box-sizing:border-box;}
+  body{
+    background:var(--bg); color:var(--text);
+    font-family:'Pretendard','Apple SD Gothic Neo','Malgun Gothic',-apple-system,BlinkMacSystemFont,sans-serif;
+    line-height:1.7; margin:0; padding:0;
+  }
+  .wrap{max-width:920px; margin:0 auto; padding:48px 28px 100px;}
+  .cover{
+    background:linear-gradient(135deg,#1a2130 0%,#141822 60%,#0f1115 100%);
+    border:1px solid var(--border); border-radius:16px; padding:44px 36px; margin-bottom:40px;
+  }
+  .tag{display:inline-block; background:rgba(79,209,197,0.12); color:var(--accent); font-size:12.5px; font-weight:600; padding:5px 12px; border-radius:20px; letter-spacing:0.3px; margin-bottom:16px;}
+  .cover h1{font-size:32px; margin:0 0 8px; letter-spacing:-0.5px;}
+  .cover .sub{color:var(--muted); font-size:15px; margin-bottom:22px;}
+  .cover-meta{display:flex; flex-wrap:wrap; gap:10px; margin-top:20px;}
+  .meta-chip{background:var(--bg2); border:1px solid var(--border); border-radius:10px; padding:10px 14px; font-size:13px; color:var(--muted); flex:1; min-width:130px;}
+  .meta-chip b{display:block; color:var(--text); font-size:15px; margin-top:2px;}
+  h2{
+    font-size:22px; margin:56px 0 18px; padding-bottom:12px; border-bottom:2px solid var(--accent);
+    display:flex; align-items:center; gap:10px;
+  }
+  h2 .num{color:var(--accent); font-weight:800;}
+  h3{font-size:17px; margin:32px 0 12px; color:var(--text); border-left:3px solid var(--accent2); padding-left:10px;}
+  p{color:#cfd3da; font-size:15px;}
+  .card{background:var(--card); border:1px solid var(--border); border-radius:12px; padding:22px 24px; margin:16px 0;}
+  .verdict-box{
+    background:linear-gradient(135deg, rgba(79,209,197,0.10), rgba(79,209,197,0.02));
+    border:1px solid rgba(79,209,197,0.35); border-radius:14px; padding:26px; margin:18px 0;
+  }
+  .verdict-title{font-size:13px; color:var(--accent); font-weight:700; letter-spacing:0.5px; text-transform:uppercase;}
+  .verdict-main{font-size:24px; font-weight:800; margin:8px 0 12px;}
+  table{width:100%; border-collapse:collapse; margin:14px 0; font-size:14px;}
+  th,td{padding:10px 12px; border-bottom:1px solid var(--border); text-align:left;}
+  th{color:var(--muted); font-weight:600; font-size:12.5px; text-transform:uppercase; letter-spacing:0.3px;}
+  td{color:var(--text);}
+  tr:hover td{background:rgba(255,255,255,0.02);}
+  .pos{color:var(--green); font-weight:600;}
+  .neg{color:var(--red); font-weight:600;}
+  .neu{color:var(--accent2); font-weight:600;}
+  ul, ol{color:#cfd3da; font-size:15px; padding-left:20px;}
+  li{margin-bottom:8px;}
+  .grid2{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
+  .grid3{display:grid; grid-template-columns:repeat(3,1fr); gap:14px;}
+  @media(max-width:700px){.grid2,.grid3{grid-template-columns:1fr;}}
+  .stat{background:var(--bg2); border:1px solid var(--border); border-radius:10px; padding:16px;}
+  .stat .label{font-size:12px; color:var(--muted); margin-bottom:6px;}
+  .stat .val{font-size:20px; font-weight:700;}
+  .chart-box{background:var(--card); border:1px solid var(--border); border-radius:12px; padding:20px; margin:20px 0; height:340px;}
+  .risk-item{border-left:3px solid var(--red); background:rgba(242,85,90,0.06); border-radius:0 10px 10px 0; padding:14px 18px; margin:12px 0;}
+  .risk-item h4{margin:0 0 6px; font-size:15px; color:var(--red);}
+  .risk-sev{display:inline-block; font-size:11px; padding:2px 8px; border-radius:8px; margin-left:8px; vertical-align:middle;}
+  .sev-high{background:rgba(242,85,90,0.18); color:var(--red);}
+  .sev-mid{background:rgba(242,166,90,0.18); color:var(--accent2);}
+  .opp-item{border-left:3px solid var(--green); background:rgba(95,209,126,0.06); border-radius:0 10px 10px 0; padding:14px 18px; margin:12px 0;}
+  .opp-item h4{margin:0 0 6px; font-size:15px; color:var(--green);}
+  .bull{border:1px solid rgba(95,209,126,0.35); background:rgba(95,209,126,0.05); border-radius:12px; padding:20px;}
+  .bear{border:1px solid rgba(242,85,90,0.35); background:rgba(242,85,90,0.05); border-radius:12px; padding:20px;}
+  .base{border:1px solid rgba(91,155,242,0.35); background:rgba(91,155,242,0.05); border-radius:12px; padding:20px;}
+  .case-title{font-weight:800; font-size:16px; margin-bottom:4px;}
+  .case-price{font-size:22px; font-weight:800; margin-bottom:10px;}
+  .quote{border-left:3px solid var(--purple); padding:14px 18px; background:rgba(178,141,255,0.06); border-radius:0 10px 10px 0; font-style:italic; color:#d8d5e8; margin:16px 0;}
+  .footnote{color:var(--muted); font-size:12.5px; margin-top:8px;}
+  .divider{height:1px; background:var(--border); margin:40px 0;}
+  .badge-row{display:flex; gap:8px; flex-wrap:wrap; margin:10px 0;}
+  .badge{background:var(--bg2); border:1px solid var(--border); padding:4px 10px; border-radius:8px; font-size:12px; color:var(--muted);}
+  .toc{background:var(--bg2); border:1px solid var(--border); border-radius:12px; padding:20px 24px;}
+  .toc a{color:var(--text); text-decoration:none; font-size:14px;}
+  .toc a:hover{color:var(--accent);}
+  .toc li{margin-bottom:7px;}
+  .disclaimer{background:var(--bg2); border:1px solid var(--border); border-radius:10px; padding:16px 20px; font-size:12.5px; color:var(--muted); margin-top:50px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="cover">
+    <span class="tag">M&A ACQUISITION BRIEFING · CONFIDENTIAL</span>
+    <h1>POSCO홀딩스 (KRX: 005490)</h1>
+    <div class="sub">철강 · 이차전지소재 · 에너지·인프라 통합 지주사 — 인수 타당성 정밀 진단</div>
+    <div class="cover-meta">
+      <div class="meta-chip">현재가 (2026.05 기준)<b>약 500,000원대</b></div>
+      <div class="meta-chip">52주 최고/최저<b>542,000 / 249,500원</b></div>
+      <div class="meta-chip">시가총액<b>약 29.9조원</b></div>
+      <div class="meta-chip">PER / PBR<b>41.2배 / 0.49배</b></div>
+    </div>
+  </div>
+
+  <div class="toc">
+    <b style="font-size:14px;">목차</b>
+    <ol>
+      <li><a href="#s1">결론 요약</a></li>
+      <li><a href="#s2">기업 개요 및 현황</a> — 2.1 기본 정보 및 핵심 지표 / 2.2 혁신에서 시작된 역사 / 2.3 핵심 사업 포트폴리오</li>
+      <li><a href="#s3">핵심 투자 논리 및 가치 제안</a></li>
+      <li><a href="#s4">재무 성과 및 가치 평가</a> — 4.1 주요 재무 동향 / 4.2 경쟁사 비교분석 / 4.3 가치 평가 요약</li>
+      <li><a href="#s5">주요 리스크 및 기회</a></li>
+      <li><a href="#s6">Bull Case / Bear Case / Base Case</a></li>
+      <li><a href="#s7">기업의 본질과 목표 — 시대 적합성 진단</a></li>
+    </ol>
+  </div>
+
+  <!-- 1. 결론 요약 -->
+  <h2 id="s1"><span class="num">1.</span> 결론 요약</h2>
+
+  <div class="verdict-box">
+    <div class="verdict-title">Acquisition Verdict</div>
+    <div class="verdict-main">⚠️ Conditional Hold — "구조적 전환기의 저평가 자산, 그러나 인수 타이밍은 아직"</div>
+    <p style="margin:0;">포스코홀딩스는 <b>철강(캐시카우) + 이차전지소재(고성장·고변동성) + 에너지·인프라(안정적 완충)</b>의 3중 포트폴리오를 가진 국내 유일의 종합 소재기업입니다. 현재 PBR 0.49배는 역사적 저평가 구간이며, 중국발 공급과잉 완화와 반덤핑 관세 효과로 철강 업황 바닥을 통과하는 신호가 뚜렷합니다. 다만 <b>이차전지소재 부문의 수익화 지연, 지배구조 리스크(호화 이사회 수사 이력), 조 단위 CAPEX 부담</b>이 여전히 해소되지 않아, 지금 시점의 전면 인수보다는 <b>철강 사이클 반등 확인 + 배터리소재 흑자전환 가시화</b>를 트리거로 한 단계적 접근이 합리적입니다.</p>
+  </div>
+
+  <div class="grid3">
+    <div class="stat"><div class="label">투자 매력도</div><div class="val pos">★★★★☆</div></div>
+    <div class="stat"><div class="label">리스크 수준</div><div class="val neg">높음 (사이클·전환기)</div></div>
+    <div class="stat"><div class="label">권고 액션</div><div class="val neu">단계적 관찰 매수</div></div>
+  </div>
+
+  <h3>핵심 요지 3줄</h3>
+  <ul>
+    <li><b>왜 지금인가:</b> 중국 조강 감산·반덤핑 관세로 열연강판 가격이 연초 대비 20% 이상 반등, 2026년 1분기 영업이익이 전년 대비 24.3% 증가하며 실적 저점 통과 신호가 확인됨.</li>
+    <li><b>무엇이 발목을 잡는가:</b> 배터리소재 자회사(포스코퓨처엠)가 전기차 캐즘(수요 둔화)으로 3년 연속 수익성 압박, 대규모 유상증자로 재무부담이 확대됨.</li>
+    <li><b>인수자가 감내해야 할 것:</b> 지배구조 리스크(경찰 수사 이력), 73조원 규모 중장기 투자계획에 따른 자본지출 부담, 탄소규제(CBAM) 및 관세 정책 변동성.</li>
+  </ul>
+
+  <!-- 2. 기업 개요 -->
+  <h2 id="s2"><span class="num">2.</span> 기업 개요 및 현황</h2>
+
+  <h3>2.1 기본 정보 및 핵심 지표</h3>
+  <div class="card">
+    <table>
+      <tr><th>항목</th><th>내용</th></tr>
+      <tr><td>정식 명칭</td><td>포스코홀딩스 주식회사 (POSCO Holdings Inc.)</td></tr>
+      <tr><td>설립 / 지주사 전환</td><td>1968년 포항종합제철 설립 → 2022년 3월 물적분할을 통해 지주회사 체제 전환</td></tr>
+      <tr><td>상장 시장</td><td>KOSPI (005490), NYSE ADR (PKX)</td></tr>
+      <tr><td>대표이사 회장</td><td>장인화 (2024년 3월 취임)</td></tr>
+      <tr><td>본사 소재</td><td>서울 강남구 (경북 포항 이전 논의 지속 중)</td></tr>
+      <tr><td>주요 자회사</td><td>포스코(철강), 포스코퓨처엠(이차전지소재), 포스코인터내셔널(에너지·트레이딩), 포스코이앤씨(건설), 포스코DX 등</td></tr>
+      <tr><td>2026년 1분기 매출</td><td>17조 8,760억원 (전분기 대비 +1조원)</td></tr>
+      <tr><td>2026년 1분기 영업이익</td><td>7,070억원 (전년 동기 대비 +24.3%)</td></tr>
+      <tr><td>2026년 1분기 순이익</td><td>5,430억원</td></tr>
+      <tr><td>시가총액</td><td>약 29조 8,741억원 (코스피 시총 30위권)</td></tr>
+      <tr><td>PER / PBR / EPS / BPS</td><td>41.16배 / 0.49배 / 8,697원 / 736,969원</td></tr>
+      <tr><td>외국인 지분율</td><td>약 31.6%</td></tr>
+      <tr><td>최대주주</td><td>국민연금공단 (약 6.71%) — 특정 지배주주 없는 전문경영인 체제</td></tr>
+    </table>
+  </div>
+
+  <div class="chart-box"><canvas id="chartRevOI"></canvas></div>
+  <p class="footnote">※ 2021~2025년은 연결 실적 기준 추정치이며, 2026년은 1분기 실적 기반 연환산 및 증권가 컨센서스를 반영한 전망치입니다. 철강 업황 변동에 따라 실제 수치는 달라질 수 있습니다.</p>
+
+  <h3>2.2 혁신에서 시작된 역사 — "제철보국"에서 "친환경 미래소재"로</h3>
+  <p>포스코의 역사는 대한민국 산업화의 역사와 정확히 겹칩니다. 1968년 故 박태준 초대회장이 이끈 포항종합제철은 자본도 기술도 없던 상태에서 대일청구권자금을 기반으로 출범했으며, 1973년 6월 9일 포항제철소에서 첫 출선(쇳물 생산)에 성공한 날은 훗날 '철의 날'로 지정될 만큼 상징적인 사건이었습니다. 창업 정신인 <b>'제철보국(製鐵報國)'</b> — 철강으로 나라에 보답한다 — 은 지금도 그룹 경영진의 기념사에서 반복적으로 인용되는 정체성의 핵심입니다.</p>
+
+  <div class="quote">"철강과 이차전지 소재, 에너지 사업을 통해 대한민국의 산업화를 넘어 글로벌 공급망의 핵심축으로서 더 큰 꿈을 성취해 나갈 것" — 장인화 포스코그룹 회장, 창립 58주년 기념사</div>
+
+  <p>기술적으로 포스코는 두 차례의 결정적 혁신을 이뤄냈습니다. 첫째는 1992년부터 개발해 2007년 상용화한 <b>파이넥스(FINEX)</b> 공법으로, 기존 고로 방식과 달리 철광석과 유연탄을 사전 가공 없이 그대로 사용하는 독자 기술이었습니다. 둘째는 이 파이넥스의 유동환원로 기술을 계승해 개발 중인 <b>하이렉스(HyREX, Hydrogen Reduction Ironmaking)</b>로, 석탄 대신 수소를 환원제로 사용해 탄소 배출을 획기적으로 낮추는 차세대 제철 기술입니다. 2022년 지주회사 체제 전환은 철강 중심의 전통적 사업구조에서 이차전지소재·수소·에너지를 아우르는 포트폴리오 기업으로의 전환을 상징하는 조직적 혁신이었습니다.</p>
+
+  <h3>2.3 핵심 사업 포트폴리오</h3>
+  <div class="grid2">
+    <div class="chart-box"><canvas id="chartSegment"></canvas></div>
+    <div class="card">
+      <table>
+        <tr><th>부문</th><th>핵심 내용</th></tr>
+        <tr><td>철강</td><td>포항·광양제철소, 조강 생산능력 약 3,800만톤. 자동차강판·후판·전기강판 등 고부가 제품 중심 재편 중</td></tr>
+        <tr><td>이차전지소재</td><td>포스코퓨처엠(양·음극재), 아르헨티나 염호 리튬, 필바라 리튬솔루션, HY클린메탈(리사이클링)</td></tr>
+        <tr><td>에너지·인프라</td><td>포스코인터내셔널(LNG·에너지 트레이딩), 포스코이앤씨(건설)</td></tr>
+        <tr><td>미래기술</td><td>수소환원제철(HyREX), 이산화탄소 포집·저장(CCUS), AI·디지털전환(포스코DX)</td></tr>
+      </table>
+    </div>
+  </div>
+  <p>2026년 1분기 실적에서 주목할 대목은 <b>포트폴리오 분산 효과</b>가 실제로 작동하기 시작했다는 점입니다. 철강 부문은 환율 상승에 따른 원료비 부담으로 이익이 다소 감소했지만, 아르헨티나 리튬 법인이 3월 최초로 월 단위 흑자를 기록하며 이차전지소재 부문 적자가 크게 줄었고, 포스코인터내셔널(에너지)과 포스코이앤씨(건설)는 견조한 이익 또는 흑자전환을 기록했습니다. 이는 단일 철강 회사가 아닌 소재·에너지 복합기업으로서의 리스크 분산 구조가 실적으로 증명되기 시작한 사례입니다.</p>
+
+  <!-- 3. 투자논리 -->
+  <h2 id="s3"><span class="num">3.</span> 핵심 투자 논리 및 가치 제안</h2>
+
+  <div class="grid2">
+    <div class="card">
+      <h4 style="margin-top:0; color:var(--accent);">① 역사적 저평가 + 정책 순풍</h4>
+      <p style="margin-bottom:0;">PBR 0.49배는 장부가치 이하 거래를 의미하며, 국내 철강업종 평균 대비도 낮은 수준입니다. 정부의 중국산·일본산 철강 반덤핑 관세(27.9~38.0%) 부과와 중국의 구조적 감산 기조가 맞물리며 2026년 들어 열연강판 가격이 연초 대비 20% 이상 반등, '고착화된 저평가 해소'의 초기 신호가 나타나고 있습니다.</p>
+    </div>
+    <div class="card">
+      <h4 style="margin-top:0; color:var(--accent);">② 수직계열화된 배터리소재 밸류체인</h4>
+      <p style="margin-bottom:0;">리튬(아르헨티나 염호·호주 광산) → 전구체 → 양·음극재 → 리사이클링으로 이어지는 업스트림 통합은 국내 경쟁사 대비 독보적입니다. 2018년 3,600톤에 불과했던 양극재 생산능력은 2030년 61만톤(전기차 약 640만대분)까지 확대될 계획으로, 전기차 캐즘이 해소될 경우 재평가 여력이 큽니다.</p>
+    </div>
+    <div class="card">
+      <h4 style="margin-top:0; color:var(--accent);">③ 강화된 주주환원 정책</h4>
+      <p style="margin-bottom:0;">2026~2028년 중기 주주환원정책을 통해 연결 기준 조정 지배지분순이익의 35~40%를 배당과 자사주 소각에 투입하기로 하고, 자사주 6% 소각 계획을 발표했습니다. 이는 기존 잉여현금흐름 기준에서 이익 기준 성과연동형으로 전환한 것으로 주주가치 제고 의지를 시사합니다.</p>
+    </div>
+    <div class="card">
+      <h4 style="margin-top:0; color:var(--accent);">④ 기술 리더십과 정책 지원</h4>
+      <p style="margin-bottom:0;">HyREX는 정부의 국가전략기술로 지정되었으며, 정부는 포스코그룹의 2030년까지 73조원 규모 투자 계획을 적극 지원하기로 했습니다. 인도 JSW스틸과의 합작(조강 600만톤), 미국 클리블랜드 클리프스와의 협력 등 '완결형 현지화' 전략도 관세 장벽을 우회하는 구조적 대응으로 평가됩니다.</p>
+    </div>
+  </div>
+
+  <!-- 4. 재무 -->
+  <h2 id="s4"><span class="num">4.</span> 재무 성과 및 가치 평가</h2>
+
+  <h3>4.1 주요 재무 동향 분석</h3>
+  <p>2025년까지 3개년 누적 기준 연결 매출은 글로벌 경기 둔화와 중국 부동산 침체 여파로 감소세를 보였으며, 특히 2025년 3분기 누적 기준 전년 동기 대비 매출 4.8%, 영업이익 12.7%, 순이익 42.0% 감소라는 뚜렷한 하강 사이클을 겪었습니다. 그러나 2026년 1분기를 기점으로 반등 조짐이 뚜렷합니다. 국내 철강업계 평균 영업이익률은 2021년 13.9%에서 2024년 2.8%까지 급감했으나, 2026년 들어 반덤핑 관세 효과와 중국 감산으로 열연강판·후판·철근 가격이 8.8~21.8% 상승하며 마진 회복 국면에 진입했습니다.</p>
+
+  <div class="chart-box"><canvas id="chartMargin"></canvas></div>
+
+  <h3>4.2 경쟁사 비교분석</h3>
+  <div class="chart-box"><canvas id="chartPeer"></canvas></div>
+  <div class="card">
+    <table>
+      <tr><th>기업</th><th>포지셔닝</th><th>PBR 특성</th><th>비교 포인트</th></tr>
+      <tr><td>현대제철</td><td>국내 2위 철강사, 자동차강판 특화</td><td>초저평가</td><td>미국 루이지애나 제철소 투자로 현지화 경쟁 중, 2026년 1분기 흑자전환</td></tr>
+      <tr><td>일본제철(Nippon Steel)</td><td>글로벌 조강 생산 상위권</td><td>상대적 고평가</td><td>US Steel 인수로 미국 시장 직접 진출, 탈탄소 기술 투자 병행</td></tr>
+      <tr><td>ArcelorMittal</td><td>글로벌 2위 조강 생산</td><td>업황 연동</td><td>수소 인프라 부족·정책 불확실성으로 수소환원제철 투자 잠정 보류 — 포스코 대비 탈탄소 전환 속도 열위</td></tr>
+      <tr><td>POSCO홀딩스</td><td>철강+배터리소재+에너지 복합기업</td><td>PBR 0.49배 (업종 내 최저평가권)</td><td>포트폴리오 다각화로 리스크 분산, 단 밸류에이션 정당화는 배터리소재 흑자전환에 좌우</td></tr>
+    </table>
+  </div>
+
+  <h3>4.3 가치 평가 요약</h3>
+  <div class="grid3">
+    <div class="stat"><div class="label">현재 PBR</div><div class="val">0.49배</div></div>
+    <div class="stat"><div class="label">하나증권 목표주가</div><div class="val pos">740,000원</div></div>
+    <div class="stat"><div class="label">메리츠증권 적정주가</div><div class="val neu">470,000원</div></div>
+  </div>
+  <p>증권가 목표주가는 47만원(메리츠, 4월 기준)에서 74만원(하나증권, 리튬 사업 가치 재평가 반영)까지 폭넓게 분포합니다. 이 편차 자체가 핵심 시사점입니다 — <b>철강 사업만 놓고 보면 이미 상당 부분 정상 밸류에이션에 도달했지만, 리튬·배터리소재 사업의 가치를 얼마나 인정하느냐에 따라 목표주가가 최대 60% 이상 벌어집니다.</b> 즉 현재 주가는 사실상 배터리소재 사업의 미래가치에 대한 옵션 가격이 반영되지 않은 상태이며, 인수자 입장에서는 이 옵션가치를 얼마나 신뢰할 수 있는지가 밸류에이션의 핵심 변수입니다.</p>
+
+  <!-- 5. 리스크 -->
+  <h2 id="s5"><span class="num">5.</span> 주요 리스크 및 기회</h2>
+
+  <h3 style="border-left-color:var(--red);">🔴 주요 리스크</h3>
+
+  <div class="risk-item">
+    <h4>중국발 공급과잉 재발 가능성 <span class="risk-sev sev-high">HIGH</span></h4>
+    <p style="margin:0;">글로벌 철강 과잉 생산능력은 2024년 약 6억톤에서 2027년 7.2억톤까지 증가할 전망입니다. 2026년 들어 반덤핑 관세와 중국 감산으로 일시적 반등이 나타났지만, 중국의 구조조정이 실제로 완결될지는 불확실하며 부동산 경기 회복이 지연될 경우 공급과잉이 재발할 수 있습니다.</p>
+  </div>
+
+  <div class="risk-item">
+    <h4>미국 보호무역 및 관세 리스크 <span class="risk-sev sev-high">HIGH</span></h4>
+    <p style="margin:0;">미국은 무역확장법 232조를 근거로 모든 수입 철강·알루미늄 제품 및 2차 제품에 예외 없이 25% 관세를 부과하고 있습니다. EU의 탄소국경조정제도(CBAM) 본격 시행도 수출 비용을 구조적으로 높이는 요인입니다.</p>
+  </div>
+
+  <div class="risk-item">
+    <h4>이차전지소재 부문의 장기 수익화 지연 <span class="risk-sev sev-high">HIGH</span></h4>
+    <p style="margin:0;">포스코퓨처엠은 전기차 캐즘 장기화로 2024~2025년 연속 배터리소재 부문 적자를 기록했고, 2025년 매출은 전년 대비 22.3% 감소했습니다. 이를 만회하기 위해 1조 1,000억원 규모 유상증자를 단행했으며, 신용평가사 한국기업평가는 "실적 회복 여력은 제한적"이라고 평가했습니다. 순차입금은 2조 9,000억원대로 확대된 상태입니다.</p>
+  </div>
+
+  <div class="risk-item">
+    <h4>지배구조 리스크 — 호화 이사회 수사 이력 <span class="risk-sev sev-high">HIGH</span></h4>
+    <p style="margin:0;">2023년 캐나다 이사회 출장 비용(약 6.8억원)을 자회사에 분산 집행했다는 의혹으로 전·현직 회장 포함 이사회 멤버 16명이 업무상 배임 혐의로 경찰 수사를 받았으며, 이는 서울경찰청 금융범죄수사대로 이첩되어 진행된 바 있습니다. 최대주주인 국민연금이 이사회 공정성에 공개적으로 문제를 제기한 전례가 있어, 거버넌스 리스크가 완전히 해소되었는지 인수 실사 단계에서 반드시 재확인이 필요합니다.</p>
+  </div>
+
+  <div class="risk-item">
+    <h4>대규모 CAPEX 부담과 재무 레버리지 <span class="risk-sev sev-high">HIGH</span></h4>
+    <p style="margin:0;">2030년까지 계획된 73조원 규모 투자(전기로 전환, HyREX 실증설비, 배터리소재 증설)는 철강 업황이 둔화 국면으로 재진입할 경우 현금흐름에 큰 부담으로 작용할 수 있습니다. 광양 250만톤 전기로(약 6,000억원), 포항 HyREX 시험설비 등 단일 프로젝트 규모도 상당합니다.</p>
+  </div>
+
+  <div class="risk-item">
+    <h4>원자재·환율 변동성 <span class="risk-sev sev-mid">MID</span></h4>
+    <p style="margin:0;">환율 상승에 따른 원료비 부담이 2026년 1분기 철강 부문 이익 감소의 직접적 원인으로 작용했습니다. 철광석·원료탄 가격 급등 시 판가 전가가 지연되면 마진이 빠르게 악화될 수 있는 구조입니다.</p>
+  </div>
+
+  <h3 style="border-left-color:var(--green);">🟢 주요 기회 요인</h3>
+
+  <div class="opp-item">
+    <h4>중국 구조조정의 실질화</h4>
+    <p style="margin:0;">중국 정부의 노후설비 폐쇄, 생산능력 치환 규정 강화, 탄소배출 할당제 시행이 실제 생산 감소로 이어질 경우, 국내 철강사의 가격 협상력과 밸류에이션 재평가(리레이팅) 여지가 커집니다.</p>
+  </div>
+
+  <div class="opp-item">
+    <h4>리튬 가격 반등 사이클</h4>
+    <p style="margin:0;">2026년 5월 기준 리튬 가격이 한 달 새 24.5% 상승했으며, ESS 수요 확대와 공급 부족 우려가 가격 상승 압력을 지속시키고 있습니다. 아르헨티나 염호 2단계, 광양 2공장 상업생산이 예정대로 진행되면 리튬 사업 가치 재평가가 본격화될 수 있습니다.</p>
+  </div>
+
+  <div class="opp-item">
+    <h4>미국 현지화 전략의 관세 우회 효과</h4>
+    <p style="margin:0;">현대차그룹 루이지애나 제철소 프로젝트 참여, 클리블랜드 클리프스와의 협력은 관세 장벽을 물리적으로 우회하는 전략으로, 한미 산업동맹(MASGA 프로젝트) 프레임 안에서 정책적 우호 환경을 확보할 가능성이 있습니다.</p>
+  </div>
+
+  <div class="opp-item">
+    <h4>ESS·비모빌리티向 수요 다변화</h4>
+    <p style="margin:0;">전기차 수요 둔화에도 불구하고 ESS(에너지저장장치) 수요가 급증하고 있어, LFP·LMFP 양극재 포트폴리오 확대를 통한 수요처 다변화가 배터리소재 부문의 하방 리스크를 완화할 수 있습니다.</p>
+  </div>
+
+  <!-- 6. Bull/Bear -->
+  <h2 id="s6"><span class="num">6.</span> Bull Case / Bear Case / Base Case</h2>
+
+  <div class="chart-box"><canvas id="chartScenario"></canvas></div>
+
+  <div class="grid3" style="margin-top:24px;">
+    <div class="bull">
+      <div class="case-title" style="color:var(--green);">🐂 Bull Case</div>
+      <div class="case-price">~740,000원 (+~40~50%)</div>
+      <ul style="padding-left:18px; font-size:14px;">
+        <li>중국 구조조정 완결 + 반덤핑 관세 효과 지속으로 철강 스프레드 정상화</li>
+        <li>아르헨티나·필바라 리튬 사업 완전 흑자전환, 배터리소재 가치 재평가</li>
+        <li>HyREX 데모플랜트 성공적 검증, 정책 지원 확대</li>
+        <li>지배구조 리스크 해소 및 자사주 소각 지속으로 PBR 1배 근접</li>
+      </ul>
+    </div>
+    <div class="base">
+      <div class="case-title" style="color:var(--blue);">⚖️ Base Case</div>
+      <div class="case-price">~470,000~500,000원 (±10%)</div>
+      <ul style="padding-left:18px; font-size:14px;">
+        <li>철강 업황 완만한 회복, 중국 리스크는 부분적으로만 해소</li>
+        <li>배터리소재 부문 적자 축소는 지속되나 완전 흑자전환은 2027년 이후</li>
+        <li>CAPEX 부담과 이익 개선이 균형을 이루며 현재 밸류에이션 수준 유지</li>
+      </ul>
+    </div>
+    <div class="bear">
+      <div class="case-title" style="color:var(--red);">🐻 Bear Case</div>
+      <div class="case-price">~300,000원대 (-30~40%)</div>
+      <ul style="padding-left:18px; font-size:14px;">
+        <li>중국 부동산 침체 장기화로 공급과잉 재발, 반덤핑 관세 실효성 저하</li>
+        <li>전기차 캐즘 장기화로 포스코퓨처엠 추가 유상증자 및 신용등급 하방압력</li>
+        <li>73조원 투자계획 부담이 현금흐름을 압박, 배당여력 축소</li>
+        <li>거버넌스 리스크 재점화 시 밸류에이션 디스카운트 확대</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 7. 본질과 목표 -->
+  <h2 id="s7"><span class="num">7.</span> 이 기업의 본질과 목표 — 시대 적합성 진단</h2>
+
+  <p>포스코의 본질은 창업 이래 한 문장으로 요약됩니다 — <b>"국가 기간산업으로서의 소재 공급자"</b>. 1968년 설립 당시의 목표가 '산업화에 필요한 철을 국내에서 자급한다'였다면, 2026년 현재의 목표는 <b>'탈탄소 시대에도 대체 불가능한 핵심 소재(그린 철강, 배터리 소재)를 공급하는 글로벌 공급망의 축이 된다'</b>로 진화했습니다. 장인화 회장이 창립 기념사에서 반복적으로 언급하는 '제철보국'이라는 표현은 단순한 수사가 아니라, 이 회사가 여전히 스스로를 민간기업이자 동시에 국가 산업안보 자산으로 규정하고 있음을 보여줍니다.</p>
+
+  <h3>이 본질은 지금 시대와 맞는가?</h3>
+  <div class="grid2">
+    <div class="card">
+      <h4 style="margin-top:0; color:var(--green);">✅ 시대와 부합하는 지점</h4>
+      <ul style="font-size:14px; padding-left:18px;">
+        <li>탈탄소 규제(CBAM, 배출권거래제 4기)가 전 세계적으로 강화되는 국면에서 HyREX 같은 저탄소 제철 기술을 자체 개발 중인 기업은 소수이며, 선점 시 기술 표준을 주도할 잠재력이 있음</li>
+        <li>전기차·ESS·재생에너지 확산은 구조적으로 배터리소재·특수강 수요를 늘리는 방향이며, 포스코의 수직계열화 전략과 정합성이 높음</li>
+        <li>보호무역주의 확산 속에서 '완결형 현지화'(미국·인도 합작) 전략은 관세 리스크를 구조적으로 회피하는 시의적절한 대응</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4 style="margin-top:0; color:var(--accent2);">⚠️ 시대와 긴장 관계에 있는 지점</h4>
+      <ul style="font-size:14px; padding-left:18px;">
+        <li>여전히 고로(용광로) 중심의 전통적 생산 방식이 매출의 절대 비중을 차지하며, HyREX 상용화는 2030년 목표로 아직 6년 이상 남은 미래형 기술 — '그린 전환 기업'이라는 이미지와 실제 탄소배출 구조 사이에 간극이 존재</li>
+        <li>전기차 캐즘이 보여주듯, 이차전지소재로의 사업 다각화는 '국가 기간산업'이라는 전통적 정체성과는 성격이 다른 소비재·기술 사이클 리스크에 그대로 노출됨</li>
+        <li>공기업적 지배구조 유산(전문경영인 체제, 정부·정치 영향력)이 호화 이사회 논란 같은 거버넌스 이슈로 이어지며, 민간 자본시장이 요구하는 투명성 기준과 완전히 정합하지 못하는 모습을 보임</li>
+      </ul>
+    </div>
+  </div>
+
+  <p>결론적으로 포스코홀딩스의 본질과 목표는 <b>"방향은 맞으나 속도가 시험대에 오른 기업"</b>으로 요약할 수 있습니다. 탈탄소·공급망 재편이라는 거대한 시대적 흐름 위에 정확히 올라타 있지만, 실제 수익 창출은 여전히 전통적 철강 사이클에 크게 의존하고 있으며, 신성장동력(배터리소재)의 수익화 속도가 시장의 기대에 못 미치고 있는 것이 현재의 갭입니다. 이 갭이 좁혀지는 속도 — 즉 HyREX 실증 성과, 배터리소재 흑자전환 시점, 거버넌스 개선 여부 — 가 향후 3~5년간 이 기업이 시대에 부합하는 기업으로 완전히 자리매김할지, 아니면 전환기의 구조적 저평가에 머무를지를 가르는 핵심 변수가 될 것입니다.</p>
+
+  <div class="divider"></div>
+
+  <h2 style="border:none; margin-top:20px;">📌 인수자를 위한 최종 코멘트</h2>
+  <div class="card">
+    <p style="margin:0;">인수를 정당화할 수 있는 논리는 명확합니다 — <b>PBR 0.5배 이하에서 국가급 소재 공급망 자산을 확보</b>한다는 것은 리스크를 감내할 이유가 될 수 있습니다. 그러나 리스크 테이킹의 대상이 '철강 사이클 변동성'인지 '거버넌스 불투명성'인지는 구분해야 합니다. 전자는 시장이 이미 가격에 반영한 리스크(따라서 저평가 매력의 원천)이지만, 후자는 아직 시장이 완전히 가격에 반영했는지 불확실한 리스크입니다. 실사 단계에서는 반드시 ① 호화 이사회 수사의 최종 처분 결과, ② 포스코퓨처엠 유상증자 이후 재무구조 안정화 여부, ③ HyREX 실증설비 진척도, 세 가지를 확인 항목으로 우선순위에 두시길 권고드립니다.</p>
+  </div>
+
+  <div class="disclaimer">
+    본 브리핑은 2026년 7월 기준 공개된 뉴스·증권사 리포트·기업 공시자료를 바탕으로 작성되었으며, 투자 판단을 위한 참고 자료입니다. 저는 재무자문사·변호사가 아니며 본 문서는 법률적·재무적 자문을 대체하지 않습니다. 실제 인수 의사결정 전에는 반드시 실사(Due Diligence), 공인 회계·법률 자문, 최신 공시자료 재확인을 거치시기 바랍니다. 주가 및 재무 수치는 출처마다 시점 차이로 소폭 상이할 수 있어 최종 확정치는 DART 전자공시 및 IR 자료로 교차 검증이 필요합니다.
+  </div>
+
+</div>
+
+<script>
+const gridColor = 'rgba(255,255,255,0.06)';
+const textColor = '#9aa0ab';
+Chart.defaults.color = textColor;
+Chart.defaults.borderColor = gridColor;
+Chart.defaults.font.family = "'Pretendard','Malgun Gothic',sans-serif";
+
+// 1. Revenue / OI trend
+new Chart(document.getElementById('chartRevOI'), {
+  type:'bar',
+  data:{
+    labels:['2021','2022','2023','2024','2025','2026E'],
+    datasets:[
+      {type:'bar', label:'매출액(조원)', data:[76.3,84.8,77.1,72.6,69.5,73.2], backgroundColor:'rgba(91,155,242,0.55)', yAxisID:'y', borderRadius:4},
+      {type:'line', label:'영업이익(조원)', data:[9.2,4.9,3.6,2.1,1.8,2.9], borderColor:'#4fd1c5', backgroundColor:'#4fd1c5', yAxisID:'y1', tension:0.35, pointRadius:4}
+    ]
+  },
+  options:{
+    responsive:true, maintainAspectRatio:false,
+    plugins:{ title:{display:true, text:'연결 매출 · 영업이익 추이 (조원, 2026E는 컨센서스 기반 추정)', color:'#e8e9ec', font:{size:13}}, legend:{position:'bottom'} },
+    scales:{
+      y:{ position:'left', grid:{color:gridColor}, title:{display:true,text:'매출(조원)'} },
+      y1:{ position:'right', grid:{display:false}, title:{display:true,text:'영업이익(조원)'} },
+      x:{ grid:{display:false} }
+    }
+  }
+});
+
+// 2. Segment breakdown
+new Chart(document.getElementById('chartSegment'), {
+  type:'doughnut',
+  data:{
+    labels:['철강','이차전지소재','에너지·인프라','기타/미래기술'],
+    datasets:[{ data:[52,18,26,4], backgroundColor:['#5b9bf2','#f2a65a','#4fd1c5','#b28dff'], borderColor:'#1a1e26', borderWidth:3 }]
+  },
+  options:{
+    responsive:true, maintainAspectRatio:false,
+    plugins:{ title:{display:true, text:'2026년 1분기 매출 비중 추정(%)', color:'#e8e9ec', font:{size:13}}, legend:{position:'bottom'} }
+  }
+});
+
+// 3. Margin trend (steel industry OP margin)
+new Chart(document.getElementById('chartMargin'), {
+  type:'line',
+  data:{
+    labels:['2021','2023','2024','2026 1Q(연환산)'],
+    datasets:[{ label:'국내 철강업 평균 영업이익률(%)', data:[13.9,5.0,2.8,6.5], borderColor:'#f2555a', backgroundColor:'rgba(242,85,90,0.15)', fill:true, tension:0.3, pointRadius:5 }]
+  },
+  options:{
+    responsive:true, maintainAspectRatio:false,
+    plugins:{ title:{display:true, text:'국내 철강업계 평균 영업이익률 추이(%) — 바닥 통과 신호', color:'#e8e9ec', font:{size:13}}, legend:{display:false} },
+    scales:{ y:{ grid:{color:gridColor}, title:{display:true,text:'%'} }, x:{ grid:{display:false} } }
+  }
+});
+
+// 4. Peer comparison PBR
+new Chart(document.getElementById('chartPeer'), {
+  type:'bar',
+  data:{
+    labels:['POSCO홀딩스','현대제철','일본제철','ArcelorMittal'],
+    datasets:[{ label:'PBR (배)', data:[0.49,0.35,0.75,0.55], backgroundColor:['#4fd1c5','#5b9bf2','#f2a65a','#b28dff'], borderRadius:6 }]
+  },
+  options:{
+    responsive:true, maintainAspectRatio:false,
+    plugins:{ title:{display:true, text:'글로벌 철강 경쟁사 PBR 비교(배, 참고용 추정치)', color:'#e8e9ec', font:{size:13}}, legend:{display:false} },
+    scales:{ y:{ grid:{color:gridColor}, title:{display:true,text:'PBR(배)'} }, x:{ grid:{display:false} } }
+  }
+});
+
+// 5. Scenario prices
+new Chart(document.getElementById('chartScenario'), {
+  type:'bar',
+  data:{
+    labels:['Bear Case','Base Case','현재가','Bull Case'],
+    datasets:[{ label:'목표주가(원)', data:[320000,480000,500000,740000], backgroundColor:['#f2555a','#5b9bf2','#9aa0ab','#5fd17e'], borderRadius:6 }]
+  },
+  options:{
+    indexAxis:'y',
+    responsive:true, maintainAspectRatio:false,
+    plugins:{ title:{display:true, text:'시나리오별 목표주가 밴드(원)', color:'#e8e9ec', font:{size:13}}, legend:{display:false} },
+    scales:{ x:{ grid:{color:gridColor} }, y:{ grid:{display:false} } }
+  }
+});
+</script>
+</body>
+</html>
