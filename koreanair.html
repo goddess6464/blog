@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>대한항공(003490) M&A 인수 브리핑</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.4/chart.umd.min.js"></script>
+<style>
+  :root{
+    --bg:#0d1117; --bg2:#151b23; --card:#161b22; --border:#2a313c;
+    --text:#e6edf3; --sub:#9aa7b5; --accent:#3b82f6; --accent2:#22c55e;
+    --warn:#f59e0b; --danger:#ef4444; --purple:#a78bfa;
+  }
+  *{box-sizing:border-box;}
+  body{
+    background:var(--bg); color:var(--text);
+    font-family:'Pretendard','Apple SD Gothic Neo','Malgun Gothic',-apple-system,sans-serif;
+    line-height:1.7; margin:0; padding:0;
+  }
+  .wrap{max-width:920px; margin:0 auto; padding:40px 24px 80px;}
+  h1{font-size:28px; font-weight:800; margin-bottom:4px; letter-spacing:-0.5px;}
+  .subtitle{color:var(--sub); font-size:14px; margin-bottom:28px;}
+  .meta-row{display:flex; gap:10px; flex-wrap:wrap; margin-bottom:36px;}
+  .badge{background:var(--bg2); border:1px solid var(--border); padding:6px 12px; border-radius:20px; font-size:12px; color:var(--sub);}
+  .badge b{color:var(--text);}
+  h2{
+    font-size:21px; font-weight:800; margin-top:56px; margin-bottom:16px;
+    padding-bottom:10px; border-bottom:2px solid var(--accent);
+    display:flex; align-items:center; gap:8px;
+  }
+  h3{font-size:16px; font-weight:700; margin-top:28px; margin-bottom:12px; color:var(--accent);}
+  p{color:#c9d1d9; font-size:15px;}
+  .card{
+    background:var(--card); border:1px solid var(--border); border-radius:12px;
+    padding:20px; margin:16px 0;
+  }
+  .grid2{display:grid; grid-template-columns:1fr 1fr; gap:14px;}
+  .grid3{display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px;}
+  @media(max-width:640px){.grid2,.grid3{grid-template-columns:1fr;}}
+  .stat{background:var(--bg2); border:1px solid var(--border); border-radius:10px; padding:14px 16px;}
+  .stat .label{font-size:12px; color:var(--sub); margin-bottom:4px;}
+  .stat .value{font-size:20px; font-weight:800;}
+  .stat .delta-up{color:var(--accent2); font-size:12px;}
+  .stat .delta-down{color:var(--danger); font-size:12px;}
+  table{width:100%; border-collapse:collapse; margin:14px 0; font-size:13.5px;}
+  th,td{padding:10px 12px; border-bottom:1px solid var(--border); text-align:left;}
+  th{background:var(--bg2); color:var(--sub); font-weight:700; font-size:12px; text-transform:uppercase; letter-spacing:0.3px;}
+  tr:hover{background:rgba(255,255,255,0.02);}
+  .tag{display:inline-block; padding:2px 9px; border-radius:6px; font-size:11.5px; font-weight:700;}
+  .tag-green{background:rgba(34,197,94,0.15); color:var(--accent2);}
+  .tag-red{background:rgba(239,68,68,0.15); color:var(--danger);}
+  .tag-amber{background:rgba(245,158,11,0.15); color:var(--warn);}
+  .tag-blue{background:rgba(59,130,246,0.15); color:var(--accent);}
+  .chart-box{background:var(--bg2); border:1px solid var(--border); border-radius:12px; padding:20px; margin:18px 0;}
+  .chart-title{font-size:13px; color:var(--sub); margin-bottom:14px; font-weight:600;}
+  .callout{border-left:4px solid var(--accent); background:rgba(59,130,246,0.08); padding:14px 18px; border-radius:0 8px 8px 0; margin:16px 0;}
+  .callout.risk{border-left-color:var(--danger); background:rgba(239,68,68,0.08);}
+  .callout.bull{border-left-color:var(--accent2); background:rgba(34,197,94,0.08);}
+  .callout.bear{border-left-color:var(--danger); background:rgba(239,68,68,0.08);}
+  ul{padding-left:20px; color:#c9d1d9; font-size:15px;}
+  li{margin-bottom:8px;}
+  .toc{background:var(--bg2); border:1px solid var(--border); border-radius:12px; padding:20px 24px;}
+  .toc a{color:var(--accent); text-decoration:none; font-size:14px;}
+  .toc li{margin-bottom:6px;}
+  .divider{height:1px; background:var(--border); margin:40px 0;}
+  .source-note{font-size:12px; color:var(--sub); font-style:italic; margin-top:6px;}
+  .verdict-box{
+    background:linear-gradient(135deg, rgba(59,130,246,0.12), rgba(167,139,250,0.08));
+    border:1px solid var(--accent); border-radius:14px; padding:24px; margin:20px 0;
+  }
+  .verdict-title{font-size:13px; color:var(--accent); font-weight:800; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;}
+  .footer{margin-top:60px; padding-top:20px; border-top:1px solid var(--border); font-size:12px; color:var(--sub);}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <h1>✈️ 대한항공 (Korean Air, 003490)</h1>
+  <div class="subtitle">M&A 인수 검토 브리핑 — 메가캐리어 탄생과 그 대가</div>
+  <div class="meta-row">
+    <span class="badge">작성일 <b>2026.07.07</b></span>
+    <span class="badge">주가 <b>28,750원</b> (2026.07.06 종가)</span>
+    <span class="badge">시가총액 <b>약 10.6조원</b></span>
+    <span class="badge">컨센서스 <b>적극매수 (목표가 33,583원)</b></span>
+    <span class="badge">핵심 이벤트 <b>2026.12.17 통합 대한항공 출범</b></span>
+  </div>
+
+  <div class="toc">
+    <b style="color:#e6edf3;">목차</b>
+    <ol>
+      <li><a href="#s1">결론 요약</a></li>
+      <li><a href="#s2">기업 개요 및 현황</a></li>
+      <li><a href="#s3">핵심 투자 논리 및 가치 제안</a></li>
+      <li><a href="#s4">재무 성과 및 가치 평가</a></li>
+      <li><a href="#s5">주요 리스크 및 기회</a></li>
+      <li><a href="#s6">Bull Case / Bear Case</a></li>
+      <li><a href="#s7">본질과 목표 — 시대와의 정합성</a></li>
+    </ol>
+  </div>
+
+  <!-- ===================== 1. 결론 요약 ===================== -->
+  <h2 id="s1">1. 결론 요약</h2>
+
+  <div class="verdict-box">
+    <div class="verdict-title">One-line Verdict</div>
+    <p style="margin:0; font-size:16px; color:#fff;">대한항공은 2026년 12월 17일 아시아나항공과의 법인 합병으로 <b>인천공항 슬롯 37%, 아시아-북미 좌석공급력 세계 2위급의 '메가캐리어'</b>로 탈바꿈합니다. 다만 지금 이 순간의 재무제표는 그 미래를 아직 증명하지 못한 상태입니다 — 2025년 연결 매출은 41% 급증했지만 영업이익은 오히려 47% 급감했고, 총차입금은 22.4조원으로 불어났습니다. <b>이 기업의 투자 논리는 "지금의 실적"이 아니라 "2027~2029년 통합 시너지가 실현될 것이라는 베팅"</b>입니다.</p>
+  </div>
+
+  <p>결론부터 말씀드리면, 대한항공은 <b>세 개의 서로 다른 이야기가 동시에 진행 중인 기업</b>입니다.</p>
+  <ul>
+    <li><b>단기(2026년)</b>: 이란-이스라엘 전쟁 여파로 항공유가가 전쟁 이전 대비 2배(배럴당 200달러대)로 치솟았고, 원/달러 환율도 1,500원을 상회하며 4월부터 비상경영체제에 돌입한 상태. 그럼에도 1분기는 분기 기준 역대 최대 매출(4조 5,151억원)과 영업이익 47.3% 증가(5,169억원)라는 견조한 실적을 냈습니다.</li>
+    <li><b>중기(2026년 말~2027년)</b>: 아시아나항공 흡수합병이라는, 2020년 11월 시작해 6년 만에 마무리되는 초대형 이벤트가 완결됩니다. 통합 비용은 최대 1조원, 반면 연간 시너지는 3,000~4,000억원 수준으로 추정되며, 손익분기점은 2028년 말~2029년 초로 전망됩니다.</li>
+    <li><b>장기(2027년 이후)</b>: 항공우주(방산)·UAM(도심항공모빌리티) 등 신사업, 보잉·에어버스 총 70조원 규모의 기단 재편을 통한 5개 기종 표준화, 그리고 이를 뒷받침해야 할 <b>취약한 지배구조</b>(조원태 회장 개인 지분 0.2%, 지주사 한진칼 우호지분도 2대주주 호반그룹과 격차 1.5~1.8%p에 불과) 리스크가 함께 존재합니다.</li>
+  </ul>
+
+  <div class="callout">
+    <b>인수자로서 반드시 답해야 할 질문:</b> "나는 이 회사의 <u>독점적 지위(인천 허브 37% 슬롯)</u>에 베팅하는가, 아니면 <u>경영진의 통합 실행력(PMI)</u>에 베팅하는가?" 전자는 이미 상당 부분 주가에 반영되어 있고, 후자는 2028년까지 증명되지 않은 가정입니다.
+  </div>
+
+  <!-- ===================== 2. 기업 개요 및 현황 ===================== -->
+  <h2 id="s2">2. 기업 개요 및 현황</h2>
+
+  <h3>2.1 기본 정보 및 핵심 지표</h3>
+  <div class="grid3">
+    <div class="stat"><div class="label">현재주가 / 52주 범위</div><div class="value">28,750원</div><div class="delta-up">21,000 ~ 31,200원</div></div>
+    <div class="stat"><div class="label">시가총액</div><div class="value">약 10.6조원</div><div class="delta-up">발행주식 3.69억주</div></div>
+    <div class="stat"><div class="label">PER (TTM)</div><div class="value">17.6배</div></div>
+    <div class="stat"><div class="label">EV/EBITDA</div><div class="value">6.79배</div></div>
+    <div class="stat"><div class="label">배당수익률</div><div class="value">2.63%</div><div class="delta-up">750원/주</div></div>
+    <div class="stat"><div class="label">애널리스트 컨센서스</div><div class="value">적극매수</div><div class="delta-up">12명 중 11 매수·1 보유</div></div>
+    <div class="stat"><div class="label">평균 목표주가</div><div class="value">33,583원</div><div class="delta-up">최고 40,000 / 최저 28,000</div></div>
+    <div class="stat"><div class="label">신용등급 전망</div><div class="value">A0 (긍정적)</div><div class="delta-up">3사 동반 상향, 2026.5</div></div>
+    <div class="stat"><div class="label">베타(변동성)</div><div class="value">0.82</div></div>
+  </div>
+  <p class="source-note">출처: Investing.com, 2026.7.6 기준. 목표주가는 합병 시너지 반영 전 추정치로 통합 대한항공 출범 이후 재산정 가능성 높음.</p>
+
+  <h3>2.2 혁신에서 시작된 역사</h3>
+  <p>대한항공은 1969년 한진그룹이 국영 대한항공공사를 인수하며 민영화된 이래, 반세기 넘게 <b>대한민국 유일의 국적 대형항공사(FSC)</b> 지위를 지켜왔습니다. 창업주 3세인 조원태 회장 체제 하에서 회사는 두 가지 큰 전환점을 지나고 있습니다.</p>
+  <ul>
+    <li><b>2019~2022년, 경영권 분쟁의 시기</b>: 조양호 전 회장 별세 이후 조현아 전 부사장이 사모펀드 KCGI, 반도건설과 '3자연합'을 결성해 경영권을 위협했고, 산업은행이 우호세력으로 참여하며 겨우 봉합되었습니다.</li>
+    <li><b>2020~2026년, 초대형 M&A의 시기</b>: 코로나19로 아시아나항공의 재무구조가 붕괴하자 정부·산업은행이 3.6조원의 정책자금을 투입했고, 대한항공이 이를 인수·합병하는 6년짜리 프로젝트가 시작되었습니다. 13개 해외 경쟁당국, 한국 공정거래위원회, 국토교통부의 인가를 모두 통과해 2026년 12월 17일 최종 결실을 맺습니다.</li>
+    <li><b>2025년, 브랜드 전환</b>: 기존 태극마크 로고를 새로운 CI로 교체하며 '메가캐리어'로의 정체성 전환을 상징적으로 완성했습니다.</li>
+  </ul>
+
+  <h3>2.3 핵심 사업 포트폴리오</h3>
+  <div class="chart-box">
+    <div class="chart-title">2025년 연결 매출 구성 (항공운송 94.7%)</div>
+    <canvas id="revenueMixChart" height="220"></canvas>
+  </div>
+  <ul>
+    <li><b>여객(旅客) 사업 — 매출의 핵심 축</b>: 2025년 별도 기준 매출 약 16.3조원. 장거리·프리미엄 노선(미주, 유럽) 비중이 높아 운임 전가력이 상대적으로 우수합니다. 2025년 미주 노선 여객 314만명, 평균 탑승률 86.1%.</li>
+    <li><b>화물 사업 — 안정적 캐시카우</b>: 2025년 매출 약 6.2조원. 전자상거래(이커머스) 물량, AI 관련 산업 수요, K-뷰티 수출 물량 등이 견조한 성장을 뒷받침합니다.</li>
+    <li><b>항공우주(방산) 사업 — 아직 작지만 빠르게 크는 신사업</b>: LIG넥스원과 손잡고 1.8조원 규모 방위산업 시장을 정조준. 6년 만에 재조명받는 사업부로, 글로벌 지정학적 긴장 고조의 수혜가 기대되는 영역.</li>
+    <li><b>기타(호텔 등)</b>: 아직 매출 비중은 미미한 수준.</li>
+  </ul>
+
+  <!-- ===================== 3. 핵심 투자 논리 ===================== -->
+  <h2 id="s3">3. 핵심 투자 논리 및 가치 제안</h2>
+
+  <div class="card">
+    <h3 style="margin-top:0;">① 규제가 만들어준 독점적 허브 — 인천공항 슬롯 37%</h3>
+    <p>통합 대한항공 출범 시 인천국제공항 슬롯 점유율이 약 37%까지 상승합니다. 이는 단순한 시장점유율이 아니라 <b>특정 시간대 이착륙권이라는, 신규 진입이 사실상 불가능한 물리적 자산</b>입니다. 이를 기반으로 인천공항 환승 수송객 70% 이상 증가, 아시아-북미 노선 좌석 공급력 세계 2위급이 전망됩니다.</p>
+  </div>
+  <div class="card">
+    <h3 style="margin-top:0;">② 규모의 경제를 통한 비용 전가력</h3>
+    <p>2025년에도 고환율 환경 속에서 1.5조원 이상의 별도 영업이익을 낸 것은 이미 규모의 경제가 작동하고 있다는 방증으로 평가됩니다. 항공기·리스·유류비 등 대부분이 달러 결제인 구조에서, 대한항공은 유가 헤지와 높은 외화 매출 비중으로 고유가·고환율 부담을 일부 상쇄할 수 있는 몇 안 되는 국내 항공사입니다.</p>
+  </div>
+  <div class="card">
+    <h3 style="margin-top:0;">③ 프리미엄 ASP 전략의 유일한 실행자</h3>
+    <p>국내 항공사 중 프리미엄 전략으로 평균판매단가(ASP)를 끌어올릴 수 있는 곳은 사실상 대한항공뿐이라는 것이 증권가의 평가입니다. 화물 사업이라는 캐시카우와 항공우주 사업부의 방산 수주 기반 고성장까지 더해지며 포트폴리오 다각화가 진행 중입니다.</p>
+  </div>
+  <div class="card">
+    <h3 style="margin-top:0;">④ 신용등급 상향 — 시장의 선제적 신뢰</h3>
+    <p>2026년 5월 정기평정에서 NICE신용평가, 한국신용평가, 한국기업평가 3사가 나란히 대한항공의 회사채 신용등급 전망을 'A0(안정적)'에서 'A0(긍정적)'으로 상향했습니다. 이는 합병 완료 이전 시점에 신용평가사들이 이미 통합 이후의 펀더멘털 개선을 선반영하고 있다는 신호입니다.</p>
+  </div>
+
+  <!-- ===================== 4. 재무 성과 및 가치 평가 ===================== -->
+  <h2 id="s4">4. 재무 성과 및 가치 평가</h2>
+
+  <h3>4.1 주요 재무 동향 분석</h3>
+  <div class="chart-box">
+    <div class="chart-title">연결 기준 매출 vs 영업이익 추이 (조원) — 2025년 아시아나 완전 연결 반영</div>
+    <canvas id="revOpChart" height="220"></canvas>
+  </div>
+
+  <table>
+    <tr><th>구분 (별도 기준)</th><th>2024</th><th>2025</th><th>YoY</th><th>2026 1Q</th></tr>
+    <tr><td>매출액</td><td>16.11조원</td><td>16.50조원</td><td><span class="tag tag-green">+2.4%</span></td><td>4.52조원 (역대 최대)</td></tr>
+    <tr><td>영업이익</td><td>1.90조원</td><td>1.54조원</td><td><span class="tag tag-red">-19.1%</span></td><td>0.52조원 <span class="tag tag-green">+47.3%</span></td></tr>
+    <tr><td>당기순이익</td><td>1.22조원</td><td>0.97조원</td><td><span class="tag tag-red">-21.1%</span></td><td>-</td></tr>
+  </table>
+
+  <table>
+    <tr><th>구분 (연결 기준, 아시아나 포함)</th><th>2024</th><th>2025</th><th>YoY</th></tr>
+    <tr><td>매출액</td><td>17.85조원</td><td>25.2조원</td><td><span class="tag tag-blue">+41.2%</span></td></tr>
+    <tr><td>영업이익</td><td>2.1조원(추정)</td><td>1.1조원</td><td><span class="tag tag-red">-47.2%</span></td></tr>
+    <tr><td>총차입금(리스포함)</td><td>-</td><td>22.4조원</td><td><span class="tag tag-amber">급증</span></td></tr>
+    <tr><td>영업활동현금흐름</td><td>-</td><td>4.1조원</td><td><span class="tag tag-green">장부이익 대비 견조</span></td></tr>
+  </table>
+
+  <div class="callout">
+    <b>왜 매출은 41% 늘었는데 이익은 47% 줄었나?</b> 아시아나 완전 연결로 덩치는 커졌지만, 연료비(5조→6.7조원)와 인건비(2.7조→4.2조원)가 동시에 급증했습니다. 이는 사업 악화가 아니라 <b>합병 초기 노선 중복, 기재 비효율 등 '통합의 진통'이 비용을 부풀린 결과</b>로 해석됩니다. 다만 장부상 이익보다 실제 현금흐름(4.1조원)이 훨씬 크다는 점은 긍정적 신호입니다.
+  </div>
+
+  <h3>4.2 경쟁사 비교분석</h3>
+  <p>2026년 12월 합병 완료 시 대한항공의 국내 직접 경쟁자는 사실상 소멸합니다(아시아나 브랜드 소멸). 그러나 이는 완전한 독점을 의미하지 않습니다.</p>
+  <table>
+    <tr><th>항공사</th><th>2025년 실적</th><th>2026년 주가 흐름 (YTD)</th><th>비고</th></tr>
+    <tr><td><b>대한항공</b></td><td>영업이익 1.54조원(별도)</td><td><span class="tag tag-green">+4.28%</span></td><td>합병 주체, 유일한 흑자 대형 FSC</td></tr>
+    <tr><td>아시아나항공</td><td>영업손실 3,425억원 (5년만에 적자전환)</td><td><span class="tag tag-red">-11.7%</span></td><td>2026.12.17 소멸 예정</td></tr>
+    <tr><td>제주항공</td><td>5분기만에 흑자전환, 연간은 적자</td><td><span class="tag tag-red">-6.67%</span></td><td>대형 LCC</td></tr>
+    <tr><td>진에어</td><td>영업·순이익 모두 적자전환</td><td><span class="tag tag-red">-11.29%</span></td><td>한진그룹 계열, 통합LCC 존속법인 후보</td></tr>
+    <tr><td>티웨이항공</td><td>-</td><td><span class="tag tag-red">-41.68%</span></td><td>대명소노그룹 인수 후 '트리니티항공' 리브랜딩 추진, 잠재적 견제 세력</td></tr>
+  </table>
+  <p>같은 기간 코스피는 +29.33% 상승한 반면 대한항공은 +4.28%에 그쳤지만, <b>다른 국내 항공주 대비로는 압도적으로 견조한 흐름</b>을 보이고 있습니다. 이는 시장이 대한항공을 '항공 대장주'로서 차별적으로 평가하고 있음을 시사합니다.</p>
+
+  <h3>4.3 가치 평가 요약</h3>
+  <div class="chart-box">
+    <div class="chart-title">주요 밸류에이션 지표</div>
+    <canvas id="valuationChart" height="200"></canvas>
+  </div>
+  <p>PER 17.6배는 항공업종 평균 대비 다소 높은 수준이나, 이는 시장이 <b>현재 이익이 아닌 2027~2028년 합병 시너지 실현 이후의 정상화된 이익</b>을 이미 일부 반영하고 있기 때문으로 해석됩니다. 목표주가 컨센서스(33,583원)는 현재가 대비 약 17%의 상승여력을 시사하지만, 이는 통합 비용과 유가 리스크가 아직 완전히 가격에 반영되지 않았을 가능성도 내포합니다.</p>
+
+  <!-- ===================== 5. 리스크 및 기회 ===================== -->
+  <h2 id="s5">5. 주요 리스크 및 기회</h2>
+
+  <h3 style="color:var(--danger);">🔴 리스크 — 절대 가볍게 넘어가면 안 되는 부분</h3>
+
+  <div class="card">
+    <b>① 지배구조 리스크 — "회장님이 사실 회사를 갖고 있지 않다"</b>
+    <p>조원태 회장의 대한항공 직접 지분은 <b>0.1%</b>에 불과합니다. 지주사 한진칼을 통해 지배하는 구조인데, 정작 한진칼 개인 지분율도 <b>5.78%</b>뿐입니다. 우호세력(델타항공 14.9%, 산업은행 10.58%, 특수관계인 등)을 합쳐야 45~47%로 방어가 가능한 구조입니다. 문제는 2대주주인 호반그룹이 2022년부터 지분을 꾸준히 늘려 현재 격차가 <b>1.5~1.8%포인트</b>까지 좁혀졌다는 점입니다. 산업은행은 아시아나 지원자금을 이미 전액 회수했고(2026.2), 통합 항공사 출범(2026.12) 이후에는 조 회장의 경영권을 방어해줄 명분도 약해집니다. 국민연금도 2026년 주총에서 조 회장의 사내이사 재선임에 반대표를 던진 바 있습니다.</p>
+    <span class="tag tag-red">인수자 관점: 최악의 시나리오는 통합 직후 경영권 분쟁이 재발해 PMI(합병 후 통합)가 지연되는 것</span>
+  </div>
+
+  <div class="card">
+    <b>② 유가·환율 이중 부담 — 이란전쟁발 직격탄</b>
+    <p>2026년 4월 이후 중동 정세 불안(이란전쟁)으로 항공유가가 전쟁 이전 대비 <b>2배 수준(배럴당 200달러대)</b>까지 급등했고, 원/달러 환율도 1,500원을 상회했습니다. 회사는 4월부로 비상경영체제에 돌입했습니다. 연료비는 항공사 영업비용의 약 30%를 차지하는 항목으로, 갈등 장기화 시 2분기 이후 비용 부담이 본격적으로 가중될 것으로 예상됩니다.</p>
+    <span class="tag tag-amber">주의: 유가 상승분의 비용 반영은 약 1개월 시차가 있어, 1분기 실적에는 아직 충격이 크게 반영되지 않았음</span>
+  </div>
+
+  <div class="card">
+    <b>③ PMI(합병 후 통합) 실행 리스크</b>
+    <p>법인 합병은 2026년 12월 16일 자정에 완료되지만, 이는 "끝이 아니라 진짜 시작"이라는 것이 업계 평가입니다. 합병 후 6개월 내 마일리지 통합 방안을 마련해야 하고, <b>향후 10년간 정부가 부과한 경쟁 제한 조건(운임·공급 관리)</b>을 준수해야 합니다. 조직문화·노사관계·예약시스템·브랜드 운영·안전관리체계까지 전부 하나로 융합해야 하는 과제가 남아있습니다. 해외 사례(2013년 아메리칸항공-US에어웨이즈 합병)에서는 조종사 노조 갈등, 예약시스템 통합 과정의 전산 장애 등으로 초기 수년간 상당한 진통을 겪었습니다.</p>
+    <span class="tag tag-amber">통합 비용 최대 1조원 vs 연간 시너지 3,000~4,000억원 — 손익분기점 2028말~2029초 전망</span>
+  </div>
+
+  <div class="card">
+    <b>④ 규제당국의 견제 — 이미 내준 것들</b>
+    <p>EU 경쟁당국은 합병 승인 조건으로 일부 유럽 노선의 경쟁 제한 우려를 이유로 시정조치를 요구했고, 그 결과 <b>아시아나항공의 글로벌 화물기 사업 부문 전체를 에어인천에 매각</b>했습니다(2025.8). 알래스카항공과의 코드셰어 확대 등 경쟁사 이익을 보전해주는 조건도 부과되었습니다. 국토교통부 역시 "조건부 인가"를 내리며 통합 계획 이행 여부를 지속 점검하겠다고 명시했습니다.</p>
+  </div>
+
+  <div class="card">
+    <b>⑤ 법적·재무적 우발 리스크</b>
+    <p>합병 관련 다수의 소송이 계류 중이며, 아시아나 측 반대주주는 주당 7,030원에 주식매수청구권을 행사할 수 있습니다. <b>이 매수대금 합계가 1조원을 넘으면 이사회 결의로 합병계약 자체를 해제할 수 있는 조항</b>이 걸려 있어, 합병 완결성에 대한 잔여 불확실성이 존재합니다. 합병으로 승계하는 부채와 우발채무도 통합 회사 재무에 부담 요인입니다.</p>
+  </div>
+
+  <div class="card">
+    <b>⑥ 보잉 공급망 지연 리스크</b>
+    <p>2019년 계약한 B787 시리즈 30대 중 2025년 1분기 기준 인도율이 <b>36%</b>에 그치는 등 제작사 지연 이력이 있습니다. 최근 703대 규모(약 70조원)의 추가 대미 투자를 발표했지만, 관세·공급망 이슈에 따라 인도 일정이 다시 지연될 가능성을 배제할 수 없습니다.</p>
+  </div>
+
+  <div class="card">
+    <b>⑦ LCC 통합 미확정 리스크</b>
+    <p>본체(FSC) 합병은 일정과 비율이 확정됐지만, 진에어·에어부산·에어서울로 구성된 LCC 3사 통합은 <b>대상·방식·일정이 전혀 확정되지 않은 상태</b>입니다. 노선, 브랜드, 고용 문제가 얽혀 있어 시간이 더 걸릴 전망이며, 부산/울산/경남 지역의 LCC 본사 유치 요구 등 지역 반발 변수도 있습니다.</p>
+  </div>
+
+  <h3 style="color:var(--accent2); margin-top:36px;">🟢 기회 요인</h3>
+  <ul>
+    <li><b>인천공항 메가허브 전략</b>: 아시아-북미 환승 수요를 장악할 수 있는 지정학적/지리적 위치 우위</li>
+    <li><b>항공우주·방산 사업 고성장</b>: 지정학적 긴장 고조 시대의 구조적 수혜, LIG넥스원과의 협력 확대</li>
+    <li><b>UAM(도심항공모빌리티) 신사업</b>: 미국 아처(Archer)와 AAM 개발 협력 MOU 체결로 차세대 모빌리티 선점 시도</li>
+    <li><b>유가 정상화 시 주가 리레이팅</b>: 호르무즈 해협 통항 재개 등 중동 정세 안정화 시그널만으로도 주가가 즉각 반응하는 패턴 확인(2026.6 종전 기대감에 유가 11% 급락, 항공주 일제 반등)</li>
+  </ul>
+
+  <!-- ===================== 6. Bull / Bear ===================== -->
+  <h2 id="s6">6. Bull Case, Bear Case</h2>
+
+  <div class="chart-box">
+    <div class="chart-title">시나리오별 12개월 목표주가 (원)</div>
+    <canvas id="scenarioChart" height="220"></canvas>
+  </div>
+
+  <div class="grid2">
+    <div class="callout bull">
+      <b>🐂 Bull Case — 목표주가 40,000원+ (컨센서스 최고치)</b>
+      <ul style="margin-top:10px;">
+        <li>중동 정세가 조기 안정화되며 유가가 팬데믹 이전 수준으로 회귀</li>
+        <li>2026년 12월 합병이 계획대로 완료되고, PMI가 예상보다 빠르게 안정화되어 2027년부터 시너지 조기 실현</li>
+        <li>인천 허브 효과로 환승 탑승률 개선이 실적에 즉각 반영, 미주 노선 좌석공급력 확대 성과 가시화</li>
+        <li>항공우주(방산) 사업부 신규 수주로 포트폴리오 다각화 스토리 강화</li>
+        <li>지배구조 이슈가 우호세력(델타항공, 국민연금 등)의 안정적 지지로 봉합되며 경영권 불확실성 해소</li>
+      </ul>
+    </div>
+    <div class="callout bear">
+      <b>🐻 Bear Case — 목표주가 21,000원대 (52주 저점 재테스트)</b>
+      <ul style="margin-top:10px;">
+        <li>중동 분쟁 장기화로 고유가·고환율이 2026년 하반기 내내 지속, 비상경영체제 장기화</li>
+        <li>PMI 과정에서 노사 갈등·예약시스템 오류 등 아메리칸-US에어웨이즈 사례와 유사한 초기 혼란 발생</li>
+        <li>호반그룹의 지분 추가 매집으로 한진칼 경영권 분쟁이 재점화되며 대한항공 의사결정 마비</li>
+        <li>아시아나 반대주주 주식매수청구 금액이 예상보다 커지며 재무 부담 가중, 최악의 경우 합병 계약 해제 조항 발동 우려 부각</li>
+        <li>보잉 항공기 인도 추가 지연으로 기단 재편 전략 차질</li>
+      </ul>
+    </div>
+  </div>
+  <p style="margin-top:20px;"><b>Base Case</b>: 유가 변동성은 있으나 극단적 장기화는 피하고, 합병은 계획대로 2026년 12월 완료되며 2028~2029년경 시너지가 서서히 가시화되는 시나리오. 컨센서스 목표주가(33,583원) 부근에서 형성될 가능성이 가장 높습니다.</p>
+
+  <!-- ===================== 7. 본질과 목표 ===================== -->
+  <h2 id="s7">7. 이 기업의 본질과 목표 — 지금 시대와 맞는가</h2>
+
+  <h3>본질: "국적 항공사"에서 "동북아 메가캐리어"로</h3>
+  <p>대한항공의 본질적 정체성은 오랫동안 <b>대한민국의 유일한 대형 국적항공사(Flag Carrier)</b>였습니다. 그러나 2020~2026년의 아시아나 인수·합병 과정을 거치며 회사가 스스로 규정하는 목표는 분명히 바뀌었습니다: <b>"국가 항공산업 경쟁력 보존, 인천국제공항 허브 기능 강화, 글로벌 항공 네트워크 확대"</b>. 즉, 단순히 국내 1위 항공사가 아니라 <b>델타항공, 루프트한자그룹, 아메리칸항공과 같은 글로벌 메가캐리어 반열에 오르는 것</b>이 지금 회사가 스스로 설정한 목표입니다.</p>
+
+  <h3>이 목표는 지금 시대와 정합적인가?</h3>
+  <div class="grid2">
+    <div class="card">
+      <b style="color:var(--accent2);">✔ 시대와 맞는 지점</b>
+      <ul>
+        <li><b>글로벌 항공산업의 통합 흐름</b>: 델타-노스웨스트, 아메리칸-US에어웨이즈, 루프트한자그룹의 다국적 항공사 인수 등 "규모의 경제 없이는 장거리 노선에서 생존하기 어렵다"는 것이 2010년대 이후 전 세계 항공업의 지배적 흐름입니다. 대한항공의 메가캐리어 전략은 이 흐름에 정확히 부합합니다.</li>
+        <li><b>지정학적 긴장 시대의 방산 다각화</b>: 세계가 지정학적 파편화·재무장 국면에 접어든 지금, 항공우주·방산 사업 확대는 시의적절한 포트폴리오 다각화로 평가됩니다.</li>
+        <li><b>공급망 재편(한미 협력) 트렌드 부합</b>: 70조원 규모의 보잉·GE 투자는 한미 제조업 협력 강화라는 최근의 정책 기조와도 맞물려 있어, 단순한 상업적 결정을 넘어선 전략적 포지셔닝입니다.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <b style="color:var(--warn);">⚠ 시대와 어긋날 수 있는 지점</b>
+      <ul>
+        <li><b>"국가대표 독점" 서사와 소비자 후생의 긴장</b>: 정부가 10년간 운임·공급을 관리·감독하겠다고 명시한 것 자체가, 이 메가캐리어 모델이 소비자 선택권 축소 우려를 안고 출발한다는 방증입니다. 저비용항공사(LCC)가 촉발한 '가격 투명성·선택의 다양성'이라는 지난 20년간의 항공 소비 트렌드와는 다소 배치되는 방향입니다.</li>
+        <li><b>취약한 지배구조는 시대착오적 리스크</b>: 총수 일가가 회사 지분을 거의 갖지 않고 지주사를 통해 우호지분 연합으로 경영권을 방어하는 구조는, ESG·주주환원 강화가 요구되는 현재의 자본시장 트렌드와 충돌합니다. 국민연금의 반대표 행사가 이를 보여주는 신호입니다.</li>
+        <li><b>"국적기" 정체성의 지속가능성</b>: 완전경쟁이 아닌 정부 인가·규제 기반의 성장 모델은 장기적으로 글로벌 항공동맹(스카이팀) 파트너들과의 관계, 그리고 자국 LCC 생태계(트리니티항공 등 잠재적 신규 경쟁자)와의 마찰 요인을 내포하고 있습니다.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="callout" style="margin-top:24px;">
+    <b>종합 판단</b>: 대한항공의 "메가캐리어" 비전은 <b>글로벌 항공산업의 구조적 트렌드와는 정합적</b>이지만, 그 실현 방식(정부 주도 독점적 합병 + 취약한 오너 지배구조)은 <b>현재의 자본시장·소비자 후생 트렌드와는 긴장 관계</b>에 있습니다. 인수자로서 이 기업에 베팅한다는 것은, "비전 자체"가 아니라 "그 비전을 실행할 조직과 지배구조가 향후 10년간 안정적으로 작동할 것"이라는, 더 좁고 더 리스크가 큰 명제에 베팅하는 것에 가깝습니다.
+  </div>
+
+  <div class="footer">
+    본 보고서는 2026년 7월 7일 기준 공개된 뉴스, 기업 공시, 증권사 리서치를 바탕으로 작성되었으며, 투자 판단의 참고 자료일 뿐 투자 권유가 아닙니다. 모든 수치는 원 자료 발표 시점 기준이며 이후 정정·수정될 수 있습니다.
+  </div>
+
+</div>
+
+<script>
+Chart.defaults.color = '#9aa7b5';
+Chart.defaults.borderColor = '#2a313c';
+Chart.defaults.font.family = "'Pretendard','Apple SD Gothic Neo',sans-serif";
+
+// 1. Revenue mix donut
+new Chart(document.getElementById('revenueMixChart'), {
+  type:'doughnut',
+  data:{
+    labels:['여객 사업 (16.3조원)','화물 사업 (6.2조원)','항공우주/기타 (2.7조원)'],
+    datasets:[{
+      data:[16.3,6.2,2.7],
+      backgroundColor:['#3b82f6','#22c55e','#a78bfa'],
+      borderColor:'#161b22', borderWidth:3
+    }]
+  },
+  options:{
+    plugins:{legend:{position:'bottom', labels:{boxWidth:12,padding:16,font:{size:12}}}},
+    cutout:'62%'
+  }
+});
+
+// 2. Revenue/OP trend
+new Chart(document.getElementById('revOpChart'), {
+  type:'bar',
+  data:{
+    labels:['2023 (연결)','2024 (연결)','2025 (연결)'],
+    datasets:[
+      {type:'bar', label:'매출액(조원)', data:[16.5,17.85,25.2], backgroundColor:'#3b82f680', borderColor:'#3b82f6', borderWidth:1.5, yAxisID:'y'},
+      {type:'line', label:'영업이익(조원)', data:[2.3,2.1,1.1], borderColor:'#f59e0b', backgroundColor:'#f59e0b', tension:0.3, yAxisID:'y1', pointRadius:5}
+    ]
+  },
+  options:{
+    scales:{
+      y:{position:'left', title:{display:true,text:'매출액(조원)'}, grid:{color:'#2a313c'}},
+      y1:{position:'right', title:{display:true,text:'영업이익(조원)'}, grid:{display:false}}
+    },
+    plugins:{legend:{position:'bottom'}}
+  }
+});
+
+// 3. Valuation bar
+new Chart(document.getElementById('valuationChart'), {
+  type:'bar',
+  data:{
+    labels:['PER','EV/EBITDA','배당수익률(%)','ROE(%)'],
+    datasets:[{
+      label:'대한항공 현재 지표',
+      data:[17.6,6.79,2.63,5.7],
+      backgroundColor:['#3b82f6','#22c55e','#a78bfa','#f59e0b']
+    }]
+  },
+  options:{
+    indexAxis:'y',
+    plugins:{legend:{display:false}},
+    scales:{x:{grid:{color:'#2a313c'}}, y:{grid:{display:false}}}
+  }
+});
+
+// 4. Scenario chart
+new Chart(document.getElementById('scenarioChart'), {
+  type:'bar',
+  data:{
+    labels:['Bear Case','Base Case (컨센서스)','Bull Case'],
+    datasets:[{
+      label:'12개월 목표주가(원)',
+      data:[21000,33583,40000],
+      backgroundColor:['#ef4444','#3b82f6','#22c55e']
+    }]
+  },
+  options:{
+    plugins:{
+      legend:{display:false},
+      annotation:{}
+    },
+    scales:{y:{beginAtZero:false, min:15000, grid:{color:'#2a313c'}}}
+  }
+});
+</script>
+</body>
+</html>
