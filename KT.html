@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>KT(030200) M&A 인수 브리핑</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.4/chart.umd.min.js"></script>
+<style>
+  :root{
+    --bg:#0b0d12; --bg2:#12151c; --card:#161a23; --card2:#1c202b;
+    --border:#262b38; --text:#e8eaf0; --sub:#9aa3b5; --muted:#6b7385;
+    --gold:#d4af6a; --teal:#4fc3b0; --red:#e8697a; --green:#6bcf9e; --blue:#6ea8fe;
+    --amber:#e8b04f;
+  }
+  *{box-sizing:border-box;}
+  body{
+    background:var(--bg); color:var(--text);
+    font-family:'Pretendard','Apple SD Gothic Neo','Malgun Gothic',-apple-system,BlinkMacSystemFont,sans-serif;
+    line-height:1.7; margin:0; padding:0;
+  }
+  .wrap{max-width:920px; margin:0 auto; padding:48px 28px 100px;}
+  .cover{
+    background:linear-gradient(135deg,#161a23 0%, #10131a 100%);
+    border:1px solid var(--border); border-radius:16px; padding:44px 36px; margin-bottom:36px;
+    position:relative; overflow:hidden;
+  }
+  .cover::before{
+    content:""; position:absolute; top:-60px; right:-60px; width:220px; height:220px;
+    background:radial-gradient(circle,rgba(212,175,106,0.18),transparent 70%);
+  }
+  .tag{display:inline-block; font-size:12px; letter-spacing:1.5px; color:var(--gold); border:1px solid rgba(212,175,106,0.4); padding:4px 10px; border-radius:20px; margin-bottom:16px;}
+  h1.title{font-size:30px; margin:0 0 8px; letter-spacing:-0.5px;}
+  .subtitle{color:var(--sub); font-size:15px; margin-bottom:22px;}
+  .meta-row{display:flex; flex-wrap:wrap; gap:10px; margin-top:18px;}
+  .meta-chip{background:var(--card2); border:1px solid var(--border); border-radius:10px; padding:10px 14px; font-size:13px; color:var(--sub);}
+  .meta-chip b{color:var(--text); display:block; font-size:16px; margin-top:2px;}
+  .verdict-box{
+    margin-top:22px; padding:18px 20px; border-radius:12px;
+    background:linear-gradient(90deg, rgba(232,105,122,0.12), rgba(232,176,79,0.08));
+    border:1px solid rgba(232,105,122,0.35);
+  }
+  .verdict-box .vlabel{color:var(--red); font-weight:700; font-size:13px; letter-spacing:1px;}
+  .verdict-box p{margin:8px 0 0; color:var(--text); font-size:14.5px;}
+
+  h2{font-size:22px; margin-top:56px; padding-bottom:12px; border-bottom:1px solid var(--border); display:flex; align-items:center; gap:10px;}
+  h2 .num{color:var(--gold); font-size:15px; font-weight:600;}
+  h3{font-size:17px; color:var(--gold); margin-top:30px; margin-bottom:12px;}
+  h4{font-size:15px; color:var(--teal); margin-top:22px; margin-bottom:8px;}
+  p{color:#c8ccd8; font-size:14.5px;}
+  ul,ol{color:#c8ccd8; font-size:14.5px; padding-left:20px;}
+  li{margin-bottom:6px;}
+  strong{color:var(--text);}
+  a{color:var(--blue);}
+
+  .card{background:var(--card); border:1px solid var(--border); border-radius:14px; padding:22px 24px; margin:18px 0;}
+  .grid2{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
+  .grid3{display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px;}
+  @media(max-width:640px){.grid2,.grid3{grid-template-columns:1fr;}}
+
+  .stat{background:var(--card2); border:1px solid var(--border); border-radius:12px; padding:16px 18px;}
+  .stat .label{font-size:12.5px; color:var(--muted);}
+  .stat .value{font-size:22px; font-weight:700; margin-top:4px;}
+  .stat .sub{font-size:12px; color:var(--sub); margin-top:4px;}
+  .pos{color:var(--green);} .neg{color:var(--red);} .flat{color:var(--sub);}
+
+  table{width:100%; border-collapse:collapse; margin:16px 0; font-size:13.5px;}
+  th,td{padding:10px 12px; border-bottom:1px solid var(--border); text-align:left;}
+  th{color:var(--gold); font-weight:600; background:var(--card2);}
+  td{color:#c8ccd8;}
+  tr:last-child td{border-bottom:none;}
+
+  .badge{display:inline-block; padding:3px 10px; border-radius:20px; font-size:12px; font-weight:600;}
+  .badge.buy{background:rgba(107,207,158,0.15); color:var(--green); border:1px solid rgba(107,207,158,0.4);}
+  .badge.risk{background:rgba(232,105,122,0.15); color:var(--red); border:1px solid rgba(232,105,122,0.4);}
+  .badge.watch{background:rgba(232,176,79,0.15); color:var(--amber); border:1px solid rgba(232,176,79,0.4);}
+  .badge.neutral{background:rgba(110,168,254,0.15); color:var(--blue); border:1px solid rgba(110,168,254,0.4);}
+
+  .risk-card{border-left:3px solid var(--red); background:var(--card); border-radius:0 12px 12px 0; padding:18px 20px; margin:14px 0;}
+  .risk-card h4{margin-top:0; color:var(--red);}
+  .risk-card .impact{font-size:12px; color:var(--muted); margin-top:8px;}
+
+  .opp-card{border-left:3px solid var(--green); background:var(--card); border-radius:0 12px 12px 0; padding:18px 20px; margin:14px 0;}
+  .opp-card h4{margin-top:0; color:var(--green);}
+
+  .timeline{border-left:2px solid var(--border); margin-left:8px; padding-left:22px;}
+  .tl-item{position:relative; margin-bottom:22px;}
+  .tl-item::before{content:""; position:absolute; left:-28px; top:4px; width:10px; height:10px; border-radius:50%; background:var(--gold);}
+  .tl-year{color:var(--gold); font-weight:700; font-size:13px;}
+
+  .chart-box{background:var(--card2); border:1px solid var(--border); border-radius:12px; padding:20px; margin:18px 0;}
+  .chart-title{font-size:13px; color:var(--sub); margin-bottom:14px; font-weight:600;}
+  canvas{max-height:320px;}
+
+  .quote{border-left:3px solid var(--gold); padding:12px 18px; background:var(--card2); border-radius:0 10px 10px 0; font-style:italic; color:var(--sub); margin:16px 0; font-size:13.5px;}
+
+  .bull{border:1px solid rgba(107,207,158,0.35); background:rgba(107,207,158,0.05); border-radius:14px; padding:20px;}
+  .bear{border:1px solid rgba(232,105,122,0.35); background:rgba(232,105,122,0.05); border-radius:14px; padding:20px;}
+  .bull h3, .bear h3{margin-top:0;}
+  .bull h3{color:var(--green);} .bear h3{color:var(--red);}
+
+  .toc{background:var(--card); border:1px solid var(--border); border-radius:14px; padding:22px 26px;}
+  .toc ol{counter-reset:item; list-style:none; padding-left:0;}
+  .toc li{margin-bottom:8px; font-size:14px;}
+  .toc a{color:var(--sub); text-decoration:none;}
+  .toc a:hover{color:var(--gold);}
+
+  .footnote{font-size:12px; color:var(--muted); margin-top:6px;}
+  .divider{height:1px; background:var(--border); margin:36px 0;}
+  .highlight{background:rgba(212,175,106,0.12); padding:1px 6px; border-radius:4px; color:var(--gold);}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- COVER -->
+  <div class="cover">
+    <span class="tag">M&A ACQUISITION BRIEFING</span>
+    <h1 class="title">KT 주식회사 (030200 · KOSPI)</h1>
+    <div class="subtitle">국가 기간통신사업자에서 AICT 컴퍼니로 — 통신 3사 중 밸류업 선두주자의 인수 타당성 심층 분석</div>
+    <div class="meta-row">
+      <div class="meta-chip">현재가 (2026.7.1 종가 기준)<b>53,700원</b></div>
+      <div class="meta-chip">52주 범위<b>48,100 ~ 69,400원</b></div>
+      <div class="meta-chip">시가총액<b>약 12.75조원</b></div>
+      <div class="meta-chip">배당수익률(TTM)<b>4.5%</b></div>
+      <div class="meta-chip">PBR<b>0.59배</b></div>
+      <div class="meta-chip">작성 기준일<b>2026년 7월 13일</b></div>
+    </div>
+    <div class="verdict-box">
+      <div class="vlabel">⚠ 핵심 결론 선(先) 공지</div>
+      <p>KT는 <strong>기간통신사업자</strong>로서 전기통신사업법상 최대주주 변경 시 과학기술정보통신부의 <strong>공익성 심사·인가</strong>가 필수이며, <strong>외국인 지분 한도(49%)가 이미 소진</strong>된 상태입니다. 즉 통상적 의미의 '경영권 인수(M&A)'는 국내 대기업이라 해도 매우 제한적이며, 해외 자본에는 사실상 봉쇄되어 있습니다. 이 리포트는 이 구조적 제약을 전제로, 그럼에도 KT가 왜 리스크 테이킹의 대상이 될 수 있는지(지분투자·전략적 제휴·2대주주 확보 관점 포함)를 다룹니다.</p>
+    </div>
+  </div>
+
+  <div class="toc">
+    <strong style="color:var(--gold);">목차</strong>
+    <ol>
+      <li>1. 결론 요약</li>
+      <li>2. 기업 개요 및 현황<br>&nbsp;&nbsp;2.1 기본 정보 및 핵심 지표 · 2.2 혁신에서 시작된 역사 · 2.3 핵심 사업 포트폴리오</li>
+      <li>3. 핵심 투자 논리 및 가치 제안</li>
+      <li>4. 재무 성과 및 가치 평가<br>&nbsp;&nbsp;4.1 주요 재무 동향 · 4.2 경쟁사 비교 · 4.3 가치평가 요약</li>
+      <li>5. 주요 리스크 및 기회</li>
+      <li>6. Bull Case / Bear Case</li>
+      <li>7. 지배구조와 인수 가능성 — KT를 인수한다는 것의 진짜 의미</li>
+      <li>8. 기업의 본질과 목표: AICT 비전은 시대와 맞는가</li>
+    </ol>
+  </div>
+
+  <!-- 1. 결론 요약 -->
+  <h2><span class="num">01</span> 결론 요약</h2>
+  <div class="card">
+    <p><strong>KT는 "인수"보다 "전략적 지분 참여"로 접근해야 하는 자산입니다.</strong> 국내 3대 통신사 중 유일하게 명확한 지배주주가 없는 <span class="highlight">'주인 없는 회사'</span> 구조이며, 현재 최대주주인 현대자동차그룹(8.07%)조차 "경영 참여 의사 없음"을 전제로 정부 인가를 받은 단순·비자발적 투자자입니다. 2대주주 자리는 국민연금(7.5%대)에서 외국계 자산운용사 웰링턴매니지먼트(7.58%)로 넘어가는 등 지분이 유동적입니다.</p>
+    <p>재무적으로는 2025년 연결 영업이익이 전년 대비 205%, 순이익이 340% 급증하며 매력적으로 보이지만, <strong>이 중 상당 부분은 강북본부 부동산 개발 이익이라는 일회성 요인</strong>이며, 통신 본업(무선·유선)의 구조적 성장은 완만한 수준입니다. 동시에 2025년 한 해 동안 벌어진 <strong>대규모 해킹·개인정보 유출 사고와 그 은폐 정황</strong>은 단순 리스크가 아니라 CEO 교체(김영섭→박윤영)와 임원 절반 이상 물갈이로 이어진 <strong>경영 연속성의 근본적 단절</strong>을 야기했습니다. 여기에 2.4조원 규모 마이크로소프트 파트너십이 신임 경영진 체제에서 재검토 대상에 오르며 AICT 전략의 향방도 불투명합니다.</p>
+    <p>그럼에도 불구하고 KT는 <strong>PBR 0.59배의 저평가, 4%대 후반의 안정적 배당수익률, 3년 연속 20% 배당 성장, 데이터센터·클라우드·케이뱅크 등 성장 자산</strong>을 보유한 대형 인프라 기업입니다. 리스크를 인지하고도 접근할 이유가 있다면, 그것은 "지배권 인수"가 아니라 <strong>"저평가된 배당·인프라 자산에 대한 대규모 지분 투자 + 신사업(모빌리티·AI인프라·금융) 전략적 제휴"</strong>의 관점입니다.</p>
+    <div style="margin-top:14px;">
+      <span class="badge risk">지배권 인수: 사실상 불가</span>
+      <span class="badge watch">전략적 소수지분 투자: 검토 가능</span>
+      <span class="badge neutral">배당·밸류업 트레이드: 매력적</span>
+    </div>
+  </div>
+
+  <!-- 2. 기업 개요 -->
+  <h2><span class="num">02</span> 기업 개요 및 현황</h2>
+
+  <h3>2.1 기본 정보 및 핵심 지표</h3>
+  <div class="grid3">
+    <div class="stat"><div class="label">종목코드 / 시장</div><div class="value" style="font-size:18px;">030200 · KOSPI</div></div>
+    <div class="stat"><div class="label">현재가 (2026.7.1)</div><div class="value">53,700원</div><div class="sub">전일 대비 +0.57%</div></div>
+    <div class="stat"><div class="label">시가총액</div><div class="value">약 12.75조원</div></div>
+    <div class="stat"><div class="label">52주 최고/최저</div><div class="value" style="font-size:18px;">69,400 / 48,100원</div></div>
+    <div class="stat"><div class="label">애널리스트 평균 목표주가</div><div class="value">73,433원</div><div class="sub pos">현재가 대비 +36.7%</div></div>
+    <div class="stat"><div class="label">투자의견 분포</div><div class="value" style="font-size:18px;">매수 19 · 매도 0</div></div>
+    <div class="stat"><div class="label">배당수익률 (TTM)</div><div class="value">4.5%</div><div class="sub">2025 DPS 2,400원</div></div>
+    <div class="stat"><div class="label">PBR / PER</div><div class="value" style="font-size:18px;">0.59배 / 8.4배 내외</div></div>
+    <div class="stat"><div class="label">직원 수</div><div class="value">약 14,700명</div></div>
+  </div>
+
+  <p class="footnote">※ 목표주가·투자의견은 다수 증권사 컨센서스 평균이며, 개별 리포트 목표가는 SK텔레콤 9.7만~11.8만원, LG유플러스 2.1만원, KT 7.3~7.4만원 수준으로 형성되어 있습니다(대신증권·유안타 등 2026년 상반기 리포트 기준).</p>
+
+  <h3>2.2 혁신에서 시작된 역사</h3>
+  <p>KT의 역사는 한국 통신 산업의 역사 그 자체입니다. 국영기업에서 출발해 완전 민영화를 거쳐, 두 차례의 정체성 전환(디지코 → AICT)을 겪은 44년의 궤적을 보면 이 회사가 왜 지금도 '변신 중'인지 이해할 수 있습니다.</p>
+
+  <div class="timeline">
+    <div class="tl-item"><div class="tl-year">1981.12</div><strong>한국전기통신공사 설립.</strong> 체신부에서 분리되어 국영기업으로 출범. 전화 보급률 10% 미만이던 시절, 1가구 1전화 시대를 실현하는 국가 인프라 사업의 주역이 됩니다.</div>
+    <div class="tl-item"><div class="tl-year">1994~1997</div><strong>이동통신 자회사 분리와 민영화 착수.</strong> 한국이동통신(현 SK텔레콤)의 경영권을 선경그룹에 이관하고, 데이터통신주식회사(현 LG유플러스의 뿌리)를 산하에 설립. 아이러니하게도 오늘날의 경쟁사 두 곳 모두 KT에서 갈라져 나온 '한뿌리'입니다.</div>
+    <div class="tl-item"><div class="tl-year">1998~2002</div><strong>단계적 민영화 완료.</strong> 1998년 유가증권시장 상장, 1999년 뉴욕증권거래소 DR 발행(당시 한국 기업 최대 규모), 2002년 8월 정부 지분 완전 매각으로 '한국통신'에서 '(주)케이티'로 새출발.</div>
+    <div class="tl-item"><div class="tl-year">2009</div><strong>KTF 합병.</strong> 유·무선 통신 조직을 통합하며 종합 통신사업자 체제 완성.</div>
+    <div class="tl-item"><div class="tl-year">2020~2023</div><strong>'디지코(DIGICO)' 전략.</strong> 구현모 전 대표 체제에서 탈(脫)통신을 내걸고 디지털 플랫폼 기업으로의 전환을 시도했으나, 경영 공백과 각종 사법 리스크로 임기 중 사퇴.</div>
+    <div class="tl-item"><div class="tl-year">2023.08</div><strong>김영섭 대표 취임 · 'AICT 컴퍼니' 비전 선언.</strong> LG CNS 출신 김영섭 대표가 취임, 2024년 2월 MWC에서 통신(CT) 역량에 AI를 결합한 'AICT' 비전을 제시.</div>
+    <div class="tl-item"><div class="tl-year">2024.09</div><strong>마이크로소프트와 5년·2.4조원 규모 전략적 파트너십 체결.</strong> 사티아 나델라 CEO와 만나 한국형 AI·소버린 클라우드 공동개발을 선언.</div>
+    <div class="tl-item"><div class="tl-year">2025.08~12</div><strong>대규모 해킹·개인정보 유출 사고 및 은폐 정황 발각.</strong> 이 시기가 사실상 KT 현대사의 최대 변곡점입니다(5장에서 상세 분석).</div>
+    <div class="tl-item"><div class="tl-year">2026.03</div><strong>박윤영 대표 취임.</strong> '정통 KT맨'이자 30년 B2B 전문가가 신임 대표로 선임되며 임원 절반 이상을 교체하는 대규모 인적 쇄신 단행. 임기는 2029년까지 3년.</div>
+  </div>
+
+  <h3>2.3 핵심 사업 포트폴리오</h3>
+  <div class="grid2">
+    <div class="card">
+      <h4 style="margin-top:0;">📡 통신 본업 (Core Telco)</h4>
+      <p>무선(5G 가입자 비중 81.8%), 유선 초고속인터넷(GiGA), IPTV, 위성방송(스카이라이프). 2025년 이동전화 서비스 매출 6.85조원(+3.3%), 유선 매출 2.53조원(+1.9%)로 안정적이지만 성숙 산업 특유의 저성장 국면.</p>
+    </div>
+    <div class="card">
+      <h4 style="margin-top:0;">🤖 AICT / AX 사업 (성장동력)</h4>
+      <p>기업용 AI 전환(AX) 솔루션, 클라우드(+27.4% 성장), 자체 초거대 AI '믿음(Mi:dm)', MS Phi/GPT 계열 활용 한국형 AI. 2025년 클라우드 매출이 두드러진 성장을 기록했습니다.</p>
+    </div>
+    <div class="card">
+      <h4 style="margin-top:0;">🏢 데이터센터 / IDC</h4>
+      <p>2025년 11월 '가산' AI 데이터센터 개장 — 국내 최초 Direct-to-Chip 액체냉각 상용화, IT 용량 26MW. AI 인프라 경쟁의 핵심 자산으로 부상 중입니다.</p>
+    </div>
+    <div class="card">
+      <h4 style="margin-top:0;">🏦 금융 · 콘텐츠 · 부동산</h4>
+      <p>케이뱅크(2025년 신규고객 279만명, 총 1,553만명, 여신 +13%), KT스튜디오지니(콘텐츠), KT에스테이트(부동산 개발 — 2025년 실적 급증의 핵심 요인), BC카드 등 비통신 포트폴리오.</p>
+    </div>
+  </div>
+
+  <div class="chart-box">
+    <div class="chart-title">2025년 부문별 매출 비중 추정 (연결 기준, 28.24조원)</div>
+    <canvas id="segChart"></canvas>
+  </div>
+
+  <!-- 3. 투자 논리 -->
+  <h2><span class="num">03</span> 핵심 투자 논리 및 가치 제안</h2>
+  <div class="grid2">
+    <div class="card">
+      <h4 style="margin-top:0; color:var(--teal);">① 통신업종 최고 수준 주주환원</h4>
+      <p>2020년부터 3개년 단위 최소 배당 정책을 운영하며 3년 연속 배당금 20% 인상. 2025~2028년 총 1조원 규모 자사주 매입·소각 계획. 대신증권 추정 기준 총주주환원율(TSR) 약 6.1%로 통신 3사 중 가장 적극적이라는 평가를 받습니다.</p>
+    </div>
+    <div class="card">
+      <h4 style="margin-top:0; color:var(--teal);">② 구조적 저평가 (Deep Value)</h4>
+      <p>PBR 0.59배는 장부가치 대비 현저한 할인 상태이며, 통신 3사 모두 1배 미만이지만 KT는 매출 규모 대비 특히 저평가되어 있다는 평가가 있습니다. 신한금융·현대차·현대모비스 등 매도가능증권 지분가치가 1.2조원 투자분에서 2.7조원으로 불어난 '숨은 자산'도 존재합니다.</p>
+    </div>
+    <div class="card">
+      <h4 style="margin-top:0; color:var(--teal);">③ AI 인프라 전환 초입 국면</h4>
+      <p>액체냉각 데이터센터 상용화, 6G 비전 발표, 삼성전자와 7GHz 안테나 공동개발 등 차세대 네트워크·AI 인프라 사업자로의 전환이 진행 중이며, 국내 AI 3대 강국 도약이라는 정부 정책 방향과 궤를 같이합니다.</p>
+    </div>
+    <div class="card">
+      <h4 style="margin-top:0; color:var(--teal);">④ 자산 유동화 여력</h4>
+      <p>최대 3조원 가치로 평가되는 보유 호텔 등 부동산 자산 매각 검토, 비주력 상장 계열사 정리 등 재무구조 슬림화와 추가 주주환원 재원 확보 가능성이 열려 있습니다.</p>
+    </div>
+  </div>
+
+  <!-- 4. 재무성과 -->
+  <h2><span class="num">04</span> 재무 성과 및 가치 평가</h2>
+
+  <h3>4.1 주요 재무 동향 분석</h3>
+  <div class="chart-box">
+    <div class="chart-title">연결 기준 매출·영업이익·순이익 추이 (조원)</div>
+    <canvas id="finChart"></canvas>
+  </div>
+  <p class="footnote">※ 2024년 수치는 2025년 성장률 역산 추정치(매출 +6.9%, 영업이익 +205%, 순이익 +340.4% 기준). 2026E는 대신증권 리서치 전망(매출 28조원 -1%, 영업이익 2.1조원 -14%, 2025년 부동산 일회성 이익 기저효과 반영).</p>
+
+  <table>
+    <tr><th>구분</th><th>2025년 실적</th><th>YoY</th><th>비고</th></tr>
+    <tr><td>연결 매출액</td><td>28조 2,442억원</td><td class="pos">+6.9%</td><td>사상 최대 매출</td></tr>
+    <tr><td>별도 매출액</td><td>19조 3,240억원</td><td class="pos">+4.0%</td><td>AX 사업 확대 기여</td></tr>
+    <tr><td>연결 영업이익</td><td>2조 4,691억원</td><td class="pos">+205%</td><td><strong>강북본부 부동산 개발이익 등 일회성 요인 큼</strong></td></tr>
+    <tr><td>별도 영업이익</td><td>1조 3,050억원</td><td class="pos">증가</td><td>AX 사업 확대 견인</td></tr>
+    <tr><td>연결 순이익</td><td>1조 8,368억원</td><td class="pos">+340.4%</td><td></td></tr>
+    <tr><td>영업이익률</td><td>8.7%</td><td class="pos">전년 3.1%</td><td>큰 폭 개선</td></tr>
+    <tr><td>EBITDA</td><td>6조 3,493억원</td><td class="pos">+35.5%</td><td></td></tr>
+    <tr><td>4분기 순이익</td><td>915억원</td><td class="flat">흑자전환</td><td>유심 구입비 등 침해사고 일회성 비용 반영</td></tr>
+  </table>
+
+  <h3>4.2 경쟁사 비교분석</h3>
+  <div class="chart-box">
+    <div class="chart-title">통신 3사 PBR 비교 (2026년 상반기 기준)</div>
+    <canvas id="pbrChart"></canvas>
+  </div>
+  <table>
+    <tr><th>구분</th><th>KT (030200)</th><th>SK텔레콤 (017670)</th><th>LG유플러스 (032640)</th></tr>
+    <tr><td>PBR</td><td>0.59배</td><td>0.97배</td><td>0.55배</td></tr>
+    <tr><td>배당수익률</td><td>약 4.5%</td><td>약 2.0~4.3%(변동)</td><td>약 4.3%</td></tr>
+    <tr><td>2026E 매출 전망</td><td>28조원 (-1%)</td><td>17.9조원대</td><td>성장세(무선 최고 성장률)</td></tr>
+    <tr><td>2026E 영업이익 전망</td><td>2.1조원 (-14%, 기저효과)</td><td>정상화 국면</td><td>4년만에 1조원 복귀 전망</td></tr>
+    <tr><td>2025년 최대 이슈</td><td class="neg">해킹 은폐, CEO 교체</td><td class="neg">역대 최대 과징금(1,348억원)</td><td class="neg">서버 폐기 관련 수사의뢰</td></tr>
+    <tr><td>목표주가(컨센서스)</td><td>73,000~74,000원</td><td>97,700~118,000원</td><td>20,985~21,000원</td></tr>
+  </table>
+  <p class="footnote">주목할 점: 2025년 통신 3사 모두 해킹·침해사고를 겪었습니다. 이는 KT만의 문제가 아니라 산업 전체의 구조적 보안 리스크이지만, <strong>은폐 정황이 확인된 곳은 KT와 LG유플러스이며, 조사 결과 KT의 감염 규모(서버 94대·악성코드 103종)가 SKT(28대·33종)보다 더 광범위했습니다.</strong></p>
+
+  <h3>4.3 가치 평가 요약</h3>
+  <div class="card">
+    <p>애널리스트 컨센서스 목표주가(73,433원)는 현재가(53,700원) 대비 +36.7%의 상승여력을 시사하지만, 이는 (1) 2025년 일회성 부동산 이익을 제외한 본업 펀더멘털 개선, (2) 밸류업 프로그램에 따른 배당·자사주 확대, (3) 과징금 불확실성 해소를 전제로 한 낙관적 시나리오입니다. 대신증권 목표주가(74,000원)는 2026E DPS에 PER 13배(최근 5년 통신업 평균 대비 30% 할증)를 적용한 결과로, <strong>과징금 규모와 신임 경영진의 전략 방향이 확정되기 전까지는 목표가의 신뢰구간이 넓다</strong>고 보는 것이 합리적입니다.</p>
+  </div>
+
+  <!-- 5. 리스크 -->
+  <h2><span class="num">05</span> 주요 리스크 및 기회</h2>
+
+  <h3 style="color:var(--red);">🔴 리스크 — 절대 가볍게 넘기면 안 되는 부분</h3>
+
+  <div class="risk-card">
+    <h4>① 대규모 해킹·개인정보 유출 사고 및 조직적 은폐 정황 (최우선 리스크)</h4>
+    <p>2025년 8월부터 경기 광명·금천구 일대에서 불법 초소형 기지국(펨토셀)을 이용한 무단 소액결제 피해가 발생했습니다. 정부 민관합동조사단의 2025년 12월 29일 최종 조사 결과에 따르면:</p>
+    <ul>
+      <li>KT 서버 <strong>94대</strong>에서 BPFDoor, 루트킷 등 악성코드 <strong>103종</strong> 감염 확인 (같은 시기 SKT는 28대·33종으로, KT의 감염 범위가 더 광범위)</li>
+      <li>22,227명의 가입자식별번호(IMSI)·단말기식별번호(IMEI)·전화번호 유출, 368명(777건) 총 2.43억원 무단 소액결제 피해</li>
+      <li>불법 펨토셀이 단말~코어망 구간 암호화를 해제할 수 있어, 결제 인증정보뿐 아니라 <strong>통화·문자 감청 가능성</strong>까지 확인됨. 특히 일부 구형 단말기는 KT가 암호화 설정 자체를 지원하지 않았던 것으로 드러남</li>
+      <li><strong>더 심각한 것은 은폐 정황</strong>: KT는 2024년 BPFDoor 악성코드에 서버가 대량 감염된 사실을 자체 파악하고도 <strong>1년 6개월간 당국에 신고하지 않았고</strong>, 조사 과정에서 감염 서버를 폐기하고 허위자료를 제출한 정황이 드러나 <strong>공무집행방해 혐의로 경찰 수사의뢰</strong>된 상태입니다</li>
+      <li>정부는 KT에 <strong>전체 이용자 대상 위약금 면제</strong>를 요구했으며, <strong>과징금 규모는 2026년 7월경 결론이 날 것으로 전망</strong>됩니다. SKT가 유사 사고로 역대 최대인 1,348억원의 과징금을 부과받았는데, 업계에서는 KT의 과징금이 SKT보다 클 가능성도 거론됩니다</li>
+    </ul>
+    <div class="impact">💥 재무 영향: 3개년 정보보호 투자 4조원 추가 부담, 과징금·손해배상·집단소송 가능성, 위약금 면제에 따른 가입자 이탈 리스크</div>
+  </div>
+
+  <div class="risk-card">
+    <h4>② 경영 연속성 단절 — CEO 교체와 전략 재검토</h4>
+    <p>해킹 사고에 책임을 지고 김영섭 대표가 2025년 11월 연임을 포기했고, 2026년 3월 30년 경력의 내부 출신 박윤영 대표가 취임했습니다. 취임 직후 <strong>전체 임원 95명 중 51명(53%)이 퇴임</strong>하는 역대 최대 규모의 인적 쇄신이 단행되었으며, 이는 김영섭 체제에서 추진되던 AICT 전략과 MS 파트너십의 <strong>실질적 방향 전환 가능성</strong>을 의미합니다. 기술혁신부문장(CTO)과 최고AI책임자(CAIO)도 연이어 사임했습니다.</p>
+    <div class="impact">💥 M&A 관점 영향: 경영진 교체 시기에 진입하는 투자는 향후 3년(박윤영 대표 임기 2029년까지)의 전략 방향에 대한 불확실성을 그대로 떠안는 것과 같습니다.</div>
+  </div>
+
+  <div class="risk-card">
+    <h4>③ 마이크로소프트 파트너십의 성과 부진과 종속 우려</h4>
+    <p>2024년 9월 체결된 2.4조원 규모 5개년 계약은 2025년 2,700억원 → 2029년 1.4조원의 매출 목표를 제시했으나, 1년 반이 지난 현재 <strong>구체적 매출 실적을 공개하지 못하고 있으며</strong>, 계획했던 'AX 전문기업 설립'은 좌초되었습니다. 한국형 AI 모델('소타-K')도 GPT-5 출시로 경쟁력에서 뒤처졌다는 평가입니다. 계약 조건이 KT에 불리하고 MS 시스템 종속을 심화시킬 수 있다는 지적이 KT 이사회 내부에서도 제기되어 외부감사까지 검토된 바 있습니다.</p>
+    <div class="impact">💥 신임 경영진이 이 계약을 재검토·축소·해지할 경우 상당한 위약 비용이나 매몰비용이 발생할 수 있습니다.</div>
+  </div>
+
+  <div class="risk-card">
+    <h4>④ 지배구조 취약성 ('주인 없는 회사')</h4>
+    <p>현대차그룹(8.07%, 비자발적·단순투자 목적), 국민연금(7.5%대, 최근 웰링턴에 2대주주 자리를 내줌), 웰링턴매니지먼트(7.58%, 배당 확대 압박 가능성) 등 뚜렷한 지배주주 없이 지분이 유동적입니다. 사외이사 겸직 문제(조승아 전 이사, 자격상실 후 1년 9개월간 방치)가 뒤늦게 드러나는 등 이사회의 내부통제·감시 기능에 대한 신뢰도 문제가 지속적으로 제기되고 있습니다.</p>
+  </div>
+
+  <div class="risk-card">
+    <h4>⑤ 통신 본업의 구조적 성장 정체</h4>
+    <p>이동전화 서비스 매출은 2025년 중저가 요금제 확산 등으로 압박을 받았고, 제4이동통신사 진입 이슈와 정치권의 통신비 인하 압박도 상존합니다. 2026년 영업이익이 전년 대비 -14% 전망되는 것도 결국 2025년의 부동산 개발이익이라는 일회성 요인이 빠지기 때문이며, <strong>실질(경상) 영업이익은 오히려 8% 증가</strong>한다는 점은 긍정적이나, 이는 역으로 "2025년 실적 서프라이즈가 본업 경쟁력의 근본적 개선이 아니었다"는 의미이기도 합니다.</p>
+  </div>
+
+  <h3 style="color:var(--green); margin-top:34px;">🟢 기회 요인</h3>
+  <div class="opp-card">
+    <h4>AI 데이터센터·클라우드로의 자산 재편</h4>
+    <p>가산 AI데이터센터(26MW, 국내 최초 액체냉각 상용화), 클라우드 매출 +27.4% 성장 등 AI 인프라 사업자로서의 초기 성과가 가시화되고 있습니다.</p>
+  </div>
+  <div class="opp-card">
+    <h4>밸류업 프로그램과 정부 정책 공조</h4>
+    <p>배당소득 분리과세(2026~2028년 한시), 코스피 밸류업 프로그램 등 정책 순풍이 고배당 저PBR주인 KT에 유리하게 작용할 수 있습니다.</p>
+  </div>
+  <div class="opp-card">
+    <h4>현대차그룹과의 모빌리티 협력 시너지</h4>
+    <p>2022년 지분 맞교환을 계기로 UAM(도심항공교통), 자율주행 통신 등에서 협력 관계를 이어가고 있어, 향후 5G/6G와 미래 모빌리티 결합 사업의 파트너십 확장 여지가 있습니다.</p>
+  </div>
+
+  <!-- 6. Bull/Bear -->
+  <h2><span class="num">06</span> Bull Case · Bear Case</h2>
+  <div class="grid2">
+    <div class="bull">
+      <h3>🐂 Bull Case</h3>
+      <ul>
+        <li>과징금이 시장 예상(수백억~1천억원대) 수준에서 7월 중 확정되며 불확실성이 해소, 주가 재평가</li>
+        <li>박윤영 체제의 조직 슬림화가 실제 비용절감·수익성 개선으로 이어지고, 통신 본업 실질 영업이익 개선세(2026E +8%)가 지속</li>
+        <li>PBR 0.59배의 저평가가 정부 밸류업 정책과 맞물려 통신업종 리레이팅으로 이어짐</li>
+        <li>3년 연속 20% 배당 성장 기조 유지 시 배당수익률 매력이 확대되며 안정적 배당주로 재인식</li>
+        <li>AI 데이터센터·클라우드 사업이 본격적인 매출 기여 구간에 진입, 케이뱅크 고객 기반 확대 지속</li>
+      </ul>
+    </div>
+    <div class="bear">
+      <h3>🐻 Bear Case</h3>
+      <ul>
+        <li>과징금이 SKT(1,348억원)를 상회하는 수준으로 확정되고, 여기에 집단소송·손해배상까지 겹치며 재무 부담이 장기화</li>
+        <li>박윤영 체제의 인적 쇄신이 조직 혼란과 사기 저하로 이어져 오히려 본업 경쟁력이 훼손</li>
+        <li>MS 파트너십 재검토 과정에서 대규모 매몰비용 발생, AICT 전략 자체가 표류하며 3~5년의 '잃어버린 전환기'로 귀결</li>
+        <li>2025년 실적의 부동산 일회성 이익 기저효과로 2026년 이후 이익 체력이 시장 눈높이를 하회</li>
+        <li>정치적 통신비 인하 압박, 제4이동통신사 경쟁 심화로 본업 수익성이 추가로 잠식</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 7. 지배구조와 인수 가능성 -->
+  <h2><span class="num">07</span> 지배구조와 인수 가능성 — KT를 인수한다는 것의 진짜 의미</h2>
+  <div class="card">
+    <p>M&A 관점에서 가장 먼저 짚어야 할 사실은 이것입니다: <strong>KT는 전기통신사업법상 '기간통신사업자'</strong>이며, 이 지위는 일반 상장기업과는 전혀 다른 규제를 부과합니다.</p>
+    <ul>
+      <li><strong>외국인 지분 한도 49% 제한</strong>이 법으로 정해져 있고, 이미 한도가 소진된 상태입니다. 해외 자본이 추가로 지분을 늘리는 것은 원천적으로 불가능하며, 자사주를 소각하면 발행주식 총수가 줄어 기존 외국인 지분율이 자동으로 상승, 법정 한도를 초과할 위험까지 있어 <strong>KT는 자사주 소각보다 배당 위주로 주주환원 방식을 조정해야 하는 구조적 제약</strong>에 놓여 있습니다.</li>
+      <li>특수관계인 합산 지분 15% 이상 취득 또는 <strong>최대주주 지위 확보 시 과학기술정보통신부의 '공익성 심사'와 장관 인가가 필수</strong>입니다. 2024년 현대차그룹이 국민연금의 지분 매각으로 '비자발적으로' 최대주주가 되었을 때도 이 심사를 거쳤고, 승인 근거는 <strong>"경영 참여 의사가 없는 단순투자 목적"</strong>이라는 점이었습니다. 즉 정부는 사실상 "지배권을 행사하지 않는다는 조건"으로만 최대주주 지위를 용인하고 있습니다.</li>
+      <li>이런 구조 때문에 KT는 시가총액 12.75조원의 대형주임에도 <strong>어느 한 주체도 실질적 지배력을 행사하지 못하는 상태</strong>가 20년 넘게 지속되고 있습니다. 이것이 이사회 거버넌스 취약성(사외이사 관리 부실 등)의 근본 원인이기도 하며, 동시에 적대적 인수를 사실상 봉쇄하는 방어막이기도 합니다.</li>
+    </ul>
+    <div class="quote">"현대자동차그룹은 추가 주식 취득 없이 비자발적으로 최대주주가 되었으며, 단순투자 목적의 주식 보유로 경영 참여 의사가 없다" — 과기정통부 공익성심사위원회 판단 근거 (2024.9)</div>
+    <p><strong>결론적으로 John님이 KT에 대해 취할 수 있는 현실적 옵션은 세 가지입니다.</strong></p>
+    <ol>
+      <li><strong>소수 지분 투자(15% 미만):</strong> 공익성 심사 없이 진입 가능한 배당·밸류업 트레이드. 가장 현실적인 접근.</li>
+      <li><strong>15% 이상 또는 최대주주 지위 추구:</strong> 정부 공익성 심사를 통과해야 하며, "경영에 개입하지 않겠다"는 사실상의 서약이 전제조건이 됩니다. 현대차그룹 사례가 유일한 선례입니다.</li>
+      <li><strong>사업 부문 단위의 전략적 제휴/합작:</strong> 데이터센터, 케이뱅크 지분, 콘텐츠 자회사 등 개별 자산·자회사 단위의 접근은 기간통신사업자 규제를 우회할 수 있어 상대적으로 유연합니다.</li>
+    </ol>
+  </div>
+
+  <!-- 8. 본질과 목표 -->
+  <h2><span class="num">08</span> 기업의 본질과 목표: AICT 비전은 시대와 맞는가</h2>
+  <div class="card">
+    <h4 style="margin-top:0;">KT의 본질: 국가 인프라 사업자에서 '변신 강박'을 가진 플랫폼 기업으로</h4>
+    <p>KT의 44년 역사를 관통하는 키워드는 <strong>"정체성 재정의의 반복"</strong>입니다. 국영 통신 인프라 사업자 → 민영화된 통신사업자 → 탈통신을 내건 '디지코' → 지금의 'AICT 컴퍼니'까지, KT는 약 4~5년 주기로 스스로의 존재 이유를 다시 정의해 왔습니다. 이는 두 가지로 해석될 수 있습니다. 하나는 통신 본업만으로는 성장이 정체된 성숙 산업의 숙명을 자각하고 선제적으로 변화를 모색해온 것이고, 다른 하나는 <strong>매번 새 CEO가 취임할 때마다 전임자의 전략을 지우고 새 브랜드를 씌우는 관성이 반복</strong>되어 왔다는 것입니다. 실제로 2025년 상반기 KT의 ICT 매출 비중(58.9%)은 '디지코' 원년이었던 2020년(64.0%)보다 오히려 낮아, <strong>비전 선언과 실질적 사업 전환 사이의 간극</strong>이 존재한다는 비판도 있습니다.</p>
+
+    <h4>AICT 비전이 표방하는 목표</h4>
+    <p>박윤영 대표 체제는 김영섭 시대의 '연구개발 중심 AI 전략'을 'B2B 현장에서 실질적 수익을 내는 에이전틱 AI·AX(AI 전환) 중심'으로 재편하겠다고 밝혔습니다. 구체적으로 2028년까지 연결 ROE 9~10% 달성, AI/IT 수익 비중을 2023년 대비 3배로 확대한다는 목표를 제시한 바 있습니다.</p>
+
+    <h4>시대와의 정합성 평가</h4>
+    <p><strong>방향성 자체는 시대와 부합합니다.</strong> AI 전환, 데이터센터 수요 폭증, 소버린 AI·소버린 클라우드에 대한 국가적 관심(정부의 "AI 3대 강국 도약" 정책과 직접 연결)은 명백한 구조적 순풍이며, KT가 보유한 전국 유무선 인프라·데이터센터 부지·B2B 고객 기반은 이 전환의 실행력을 뒷받침할 실질 자산입니다. 통신사가 AI 인프라 사업자로 진화하는 것은 국내외에서 공통적으로 관찰되는 산업 트렌드이기도 합니다.</p>
+    <p>다만 <strong>실행의 정합성에는 물음표가 남습니다.</strong> ① MS 파트너십의 부진한 초기 성과와 재검토 가능성은 "빅테크와의 협력을 통한 AICT 도약"이라는 핵심 전제 자체를 흔들고 있고, ② 2025년의 보안 사고와 은폐는 "AI·클라우드 시대에 가장 중요한 신뢰 자산"에 정면으로 반하는 사건이었으며, ③ CEO가 3년마다 바뀌며 전략 기조가 재설정되는 패턴이 이번에도 반복될 경우 장기 자본투자가 필요한 AI 인프라 전략은 뿌리내리기 어렵습니다.</p>
+    <p><strong>종합하면,</strong> KT가 지향하는 목표(AICT·AI 인프라 사업자)는 시대적 트렌드와 방향이 맞지만, 그 실현 가능성은 "비전의 정당성"이 아니라 "박윤영 체제가 신뢰 회복과 실행력이라는 두 과제를 동시에 풀어낼 수 있는가"에 달려 있습니다. 이는 정성적 판단의 영역이며, 향후 2~3분기의 보안 후속조치 이행 상황과 AX 사업 매출 성장률을 통해 검증해나가야 할 지점입니다.</p>
+  </div>
+
+  <div class="divider"></div>
+  <p class="footnote">본 리포트는 2026년 7월 13일 기준 공개된 뉴스, 정부 발표, 증권사 리서치, 기업 공시를 종합하여 작성되었으며, 투자 자문이나 매수·매도 추천이 아닙니다. 과징금 확정 결과, MS 파트너십 재검토 결과 등 다수의 미확정 이슈가 존재하므로 최신 공시 및 뉴스를 반드시 재확인하시기 바랍니다.</p>
+
+</div>
+
+<script>
+Chart.defaults.color = '#9aa3b5';
+Chart.defaults.borderColor = '#262b38';
+Chart.defaults.font.family = "'Pretendard','Apple SD Gothic Neo',sans-serif";
+
+// 부문별 매출 비중
+new Chart(document.getElementById('segChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['무선(이동전화)', '유선(인터넷/IPTV)', '기업서비스(AX/클라우드)', '금융(케이뱅크 등)', '부동산/콘텐츠/기타'],
+    datasets: [{
+      data: [24, 9, 34, 18, 15],
+      backgroundColor: ['#d4af6a','#4fc3b0','#6ea8fe','#e8b04f','#8b7fd8'],
+      borderColor: '#161a23',
+      borderWidth: 3
+    }]
+  },
+  options: {
+    plugins: { legend: { position: 'bottom', labels: { boxWidth: 12, padding: 16, font:{size:11} } } }
+  }
+});
+
+// 재무 추이
+new Chart(document.getElementById('finChart'), {
+  type: 'bar',
+  data: {
+    labels: ['2024', '2025', '2026E'],
+    datasets: [
+      { label: '매출액(조원)', data: [26.4, 28.24, 28.0], backgroundColor: '#4fc3b0', order:2 },
+      { label: '영업이익(조원)', data: [0.81, 2.47, 2.1], backgroundColor: '#d4af6a', order:2 },
+      { label: '순이익(조원)', type:'line', data: [0.42, 1.84, 1.6], borderColor:'#e8697a', backgroundColor:'#e8697a', tension:0.3, order:1 }
+    ]
+  },
+  options: {
+    scales: {
+      y: { grid: { color:'#262b38' } },
+      x: { grid: { display:false } }
+    },
+    plugins: { legend: { position:'bottom', labels:{boxWidth:12, font:{size:11}} } }
+  }
+});
+
+// PBR 비교
+new Chart(document.getElementById('pbrChart'), {
+  type: 'bar',
+  data: {
+    labels: ['SK텔레콤 (017670)', 'KT (030200)', 'LG유플러스 (032640)'],
+    datasets: [{
+      label: 'PBR (배)',
+      data: [0.97, 0.59, 0.55],
+      backgroundColor: ['#6ea8fe','#d4af6a','#8b7fd8'],
+      borderRadius: 6
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    scales: { x: { grid:{color:'#262b38'}, title:{display:true, text:'PBR (배, 낮을수록 저평가)'} }, y:{grid:{display:false}} },
+    plugins: { legend: { display:false } }
+  }
+});
+</script>
+</body>
+</html>
