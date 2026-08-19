@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>The Home Depot (NYSE: HD) 심층 투자 브리핑</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.4/chart.umd.min.js"></script>
+<style>
+  :root{
+    --hd-orange:#F96302;
+    --hd-orange-dark:#D14E00;
+    --ink:#1a1a1a;
+    --sub:#4a4a4a;
+    --line:#e5e2dc;
+    --bg-soft:#faf8f5;
+    --green:#1e7d32;
+    --red:#c0392b;
+    --blue:#1f5fa8;
+  }
+  *{box-sizing:border-box;}
+  body{
+    background:#ffffff;
+    color:var(--ink);
+    font-family:"Pretendard","Apple SD Gothic Neo","Malgun Gothic",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    font-size:18px;
+    line-height:1.75;
+    margin:0;
+    padding:0;
+  }
+  .wrap{max-width:920px;margin:0 auto;padding:36px 28px 80px;}
+  .cover{
+    background:linear-gradient(135deg,#F96302 0%,#D14E00 100%);
+    color:#fff;
+    border-radius:16px;
+    padding:40px 36px;
+    margin-bottom:36px;
+  }
+  .cover .tag{
+    display:inline-block;background:rgba(255,255,255,.18);
+    padding:5px 14px;border-radius:20px;font-size:14px;font-weight:600;
+    letter-spacing:.3px;margin-bottom:16px;
+  }
+  .cover h1{font-size:34px;margin:0 0 8px;line-height:1.3;}
+  .cover .sub{font-size:18px;opacity:.95;margin:0 0 20px;}
+  .cover .meta{display:flex;flex-wrap:wrap;gap:10px;font-size:14.5px;}
+  .cover .meta span{background:rgba(255,255,255,.15);padding:6px 12px;border-radius:8px;}
+  h2{
+    font-size:26px;color:var(--hd-orange-dark);
+    border-bottom:3px solid var(--hd-orange);
+    padding-bottom:10px;margin:52px 0 22px;
+  }
+  h3{font-size:21px;color:var(--ink);margin:34px 0 14px;padding-left:12px;border-left:5px solid var(--hd-orange);}
+  h4{font-size:18.5px;color:var(--hd-orange-dark);margin:22px 0 10px;}
+  p{margin:0 0 16px;color:var(--ink);}
+  strong{color:var(--hd-orange-dark);}
+  .callout{
+    background:var(--bg-soft);
+    border:1px solid var(--line);
+    border-left:6px solid var(--hd-orange);
+    border-radius:10px;
+    padding:20px 22px;
+    margin:20px 0;
+  }
+  .callout.verdict{border-left-color:var(--green);background:#f4faf5;}
+  .callout.risk{border-left-color:var(--red);background:#fdf5f4;}
+  .callout.bull{border-left-color:var(--green);background:#f4faf5;}
+  .callout.bear{border-left-color:var(--red);background:#fdf5f4;}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:20px 0;}
+  @media(max-width:640px){.grid2{grid-template-columns:1fr;}}
+  .kpi{
+    background:#fff;border:1px solid var(--line);border-radius:12px;
+    padding:16px 18px;text-align:left;
+  }
+  .kpi .label{font-size:13.5px;color:var(--sub);margin-bottom:6px;}
+  .kpi .value{font-size:22px;font-weight:700;color:var(--ink);}
+  .kpi .value.up{color:var(--green);}
+  .kpi .value.down{color:var(--red);}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:16px;}
+  th{background:var(--hd-orange);color:#fff;text-align:left;padding:11px 14px;font-weight:600;}
+  td{padding:10px 14px;border-bottom:1px solid var(--line);}
+  tr:nth-child(even) td{background:var(--bg-soft);}
+  .chart-box{
+    background:#fff;border:1px solid var(--line);border-radius:12px;
+    padding:20px 18px 8px;margin:22px 0;
+  }
+  .chart-title{font-size:15.5px;font-weight:700;color:var(--sub);margin-bottom:10px;text-align:center;}
+  .source-note{font-size:12.5px;color:#9a9a9a;text-align:right;margin-top:6px;}
+  .timeline{margin:20px 0;border-left:3px solid var(--hd-orange);padding-left:22px;}
+  .timeline .item{margin-bottom:20px;position:relative;}
+  .timeline .item::before{
+    content:"";position:absolute;left:-28px;top:6px;width:12px;height:12px;
+    border-radius:50%;background:var(--hd-orange);
+  }
+  .timeline .yr{font-weight:700;color:var(--hd-orange-dark);}
+  .badge{display:inline-block;padding:3px 10px;border-radius:6px;font-size:13px;font-weight:700;margin-right:6px;}
+  .badge.buy{background:#e3f4e6;color:var(--green);}
+  .badge.hold{background:#fff3e0;color:#b06a00;}
+  .badge.risk{background:#fdeaea;color:var(--red);}
+  .two-col{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:18px 0;}
+  @media(max-width:640px){.two-col{grid-template-columns:1fr;}}
+  .card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:20px;}
+  .card.bull{border-top:5px solid var(--green);}
+  .card.bear{border-top:5px solid var(--red);}
+  .card h4{margin-top:0;}
+  ul{padding-left:22px;margin:0 0 16px;}
+  li{margin-bottom:8px;}
+  .footer{margin-top:60px;padding-top:20px;border-top:1px solid var(--line);font-size:13px;color:#9a9a9a;}
+  .toc{background:var(--bg-soft);border:1px solid var(--line);border-radius:12px;padding:22px 26px;margin:24px 0;}
+  .toc a{color:var(--hd-orange-dark);text-decoration:none;font-weight:600;}
+  .toc ol{padding-left:22px;}
+  .toc li{margin-bottom:6px;}
+  .divider{height:1px;background:var(--line);margin:36px 0;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="cover">
+    <span class="tag">M&A / EQUITY RESEARCH BRIEFING</span>
+    <h1>The Home Depot, Inc. (NYSE: HD)</h1>
+    <p class="sub">세계 최대 홈 인테리어·건축자재 리테일러 — DIY 왕국에서 '프로(Pro) 유통 제국'으로</p>
+    <div class="meta">
+      <span>작성기준일: 2026년 8월 19일</span>
+      <span>현재가: $337.88 (8/17 종가) → 실적발표 후 $340~341권 형성</span>
+      <span>섹터: Specialty Retail / Home Improvement</span>
+      <span>등급: Moderate Buy (컨센서스)</span>
+    </div>
+  </div>
+
+  <div class="toc">
+    <strong>목차</strong>
+    <ol>
+      <li>결론 요약</li>
+      <li>기업 개요 및 현황 (2.1 기본 정보 · 2.2 역사 · 2.3 사업 포트폴리오)</li>
+      <li>핵심 투자 논리 및 가치 제안</li>
+      <li>재무 성과 및 가치 평가 (4.1 재무 동향 · 4.2 경쟁사 비교 · 4.3 밸류에이션 요약)</li>
+      <li>주요 리스크 및 기회</li>
+      <li>Bull Case / Bear Case</li>
+      <li>기업의 본질과 목표 — 그리고 시대와의 정합성</li>
+      <li>최종 의견 및 모니터링 체크리스트</li>
+    </ol>
+  </div>
+
+  <!-- 1. 결론 요약 -->
+  <h2 id="s1">1. 결론 요약</h2>
+  <div class="callout verdict">
+    <p style="margin-bottom:0"><strong>한 줄 결론:</strong> 홈디포는 "미국 주택 시장이 회복될 때 가장 많이 버는 기업"이라는 경기순환주 본질은 그대로 두면서, SRS·GMS 인수를 통해 "프로 계약업체 유통망"이라는 두 번째 성장엔진을 붙이는 데 성공했습니다. 다만 지금 이 순간의 주가(선행 P/E 약 22~23배)는 이미 그 스토리의 상당 부분을 반영하고 있고, CEO의 갑작스러운 의료휴직이라는 예상치 못한 거버넌스 리스크까지 겹쳐 있습니다. <strong>"싸게 사는 자리"는 아니지만 "구조적 우량주를 조정 시 분할 매수하는 자리"</strong>에 가깝다는 것이 제 판단입니다.</p>
+  </div>
+  <div class="grid2">
+    <div class="kpi"><div class="label">현재가 / 52주 범위</div><div class="value">$337.88 <span style="font-size:14px;color:var(--sub);font-weight:400">($289.10–$426.75)</span></div></div>
+    <div class="kpi"><div class="label">시가총액</div><div class="value">약 $337B</div></div>
+    <div class="kpi"><div class="label">TTM P/E · 선행 P/E</div><div class="value">24.0배 · 약 22~23배</div></div>
+    <div class="kpi"><div class="label">배당수익률</div><div class="value up">2.7~2.8%</div></div>
+  </div>
+  <p>2026년 8월 18일 발표된 2분기(회계) 실적은 매출 <strong>$47.86B(+5.7% YoY)</strong>, 조정 EPS <strong>$4.92(컨센서스 $4.73 상회)</strong>로 시장 예상을 웃돌았고, 회사는 연간 가이던스(조정 EPS $14.69~$15.28)를 그대로 유지했습니다. 문제는 이 좋은 실적에도 불구하고 <strong>동일점포 거래건수(Transactions)는 여전히 감소(-1.0%)</strong>하고 있고, 성장은 오로지 <strong>객단가 상승(+2.8%, $92.50)</strong>에 기대고 있다는 점입니다. "손님은 줄어드는데 손님 한 명이 쓰는 돈이 늘어나는" 구조는 지속가능성 관점에서 반드시 짚고 넘어가야 할 대목입니다.</p>
+
+  <!-- 2. 기업 개요 -->
+  <h2 id="s2">2. 기업 개요 및 현황</h2>
+
+  <h3>2.1 기본 정보 및 핵심 지표</h3>
+  <table>
+    <tr><th>항목</th><th>내용</th></tr>
+    <tr><td>거래소 / 티커</td><td>NYSE: HD</td></tr>
+    <tr><td>본사</td><td>미국 조지아주 애틀랜타(코브 카운티)</td></tr>
+    <tr><td>설립</td><td>1978년 (버니 마커스 · 아서 블랭크)</td></tr>
+    <tr><td>CEO</td><td>테드 데커(Ted Decker, 2022년 3월 취임) — <strong>2026년 8월 12일부터 임시 의료휴직 중</strong>, 앤-마리 캠벨(운영 총괄) · 리처드 맥페일(CFO, 재무·Pro자회사 총괄) 대행 체제</td></tr>
+    <tr><td>매장·거점 수</td><td>홈디포 매장 2,364개 + SRS 유통거점 1,340여 개 (美 50개주·DC·PR·괌 + 캐나다 10개주 + 멕시코)</td></tr>
+    <tr><td>임직원 수</td><td>약 47만 명</td></tr>
+    <tr><td>회계연도 매출(FY2025, ~'26.2월 마감)</td><td>$164.68B (+3.2% YoY)</td></tr>
+    <tr><td>TTM 매출 / EBITDA</td><td>$166.6B / $25.5B</td></tr>
+    <tr><td>배당</td><td>분기 $2.33 (연 $9.32), 수익률 약 2.7~2.8%, 연속 증배 중인 배당 성장주</td></tr>
+    <tr><td>베타(변동성)</td><td>0.96 — 대형 우량주 치고는 낮은 편이나 금리·주택시장 민감도는 별개 이슈</td></tr>
+  </table>
+
+  <h3>2.2 혁신에서 시작된 역사</h3>
+  <p>홈디포는 단순한 "큰 철물점"이 아니라, <strong>유통업의 문법 자체를 바꾼 창업 스토리</strong>를 가진 회사입니다. 1978년 버니 마커스와 아서 블랭크는 경쟁사(핸디댄)에서 해고된 뒤, "고객이 원하는 모든 건축자재·공구를 한 지붕 아래, 창고형 매장에, 최저가로, 직원이 직접 사용법까지 알려주며 판매한다"는 당시로선 파격적인 컨셉으로 애틀랜타에 1호점을 열었습니다.</p>
+  <div class="timeline">
+    <div class="item"><span class="yr">1978</span> — 애틀랜타에 1, 2호점 동시 오픈. "창고형 매장 + DIY 교육"이라는 새로운 소매 모델 제시.</div>
+    <div class="item"><span class="yr">1981</span> — 뉴욕증권거래소 상장. 이후 20세기 소매업 최고의 성장 신화 중 하나로 평가.</div>
+    <div class="item"><span class="yr">2000년대</span> — 매장 수 2,000개 돌파, 북미 최대 홈 인테리어 유통망으로 확장.</div>
+    <div class="item"><span class="yr">2017</span> — 인터커넥티드 리테일(Interconnected Retail) 전략 발표: 온라인·모바일·매장을 하나의 경험으로 통합.</div>
+    <div class="item"><span class="yr">2020</span> — HD Supply 인수(약 $8B), MRO(유지보수·수선·운영) 유통 시장 진출.</div>
+    <div class="item"><span class="yr">2022.3</span> — 테드 데커 CEO 취임.</div>
+    <div class="item"><span class="yr">2024.6</span> — <strong>SRS Distribution 인수($18.25B, 회사 역사상 최대 규모)</strong> — 지붕·조경·수영장 자재를 취급하는 전문 유통업체 인수로 '프로' 시장에 본격 진입.</div>
+    <div class="item"><span class="yr">2025.9</span> — SRS를 통해 <strong>GMS Inc. 인수(기업가치 약 $5.5B)</strong> — 석고보드·천장재·철골 프레임 등으로 포트폴리오 확장, SRS+GMS 합산 1,200여 거점·트럭 8,000대 규모의 유통망 완성.</div>
+    <div class="item"><span class="yr">2026.8</span> — 데커 CEO 임시 의료휴직 발표(8/12) 및 2분기 실적 서프라이즈(8/18) — 리더십 공백 속 실적 방어력이 시험대에 오른 시점.</div>
+  </div>
+  <p>이 역사에서 읽어야 할 본질은, 홈디포가 <strong>창업 초기부터 "규모의 경제 + 현장 전문성"을 무기로 삼아온 회사</strong>이며, 2020년대 들어서는 그 무기를 소비자(B2C) 시장을 넘어 전문 계약업체(B2B) 유통 시장으로 확장하는 '두 번째 창업'을 진행 중이라는 점입니다.</p>
+
+  <h3>2.3 핵심 사업 포트폴리오</h3>
+  <div class="two-col">
+    <div class="card">
+      <h4>① 소비자(DIY / DIFM) 리테일</h4>
+      <p style="margin-bottom:0">2,364개 매장 + homedepot.com 기반 인터커넥티드 리테일. 온라인 매출 전년비 +11% 성장. 주택 소유자의 소규모 유지보수 프로젝트(도장, 부품 교체 등) 중심 수요가 현재의 주력 성장원.</p>
+    </div>
+    <div class="card">
+      <h4>② 프로(Pro) 계약업체 채널</h4>
+      <p style="margin-bottom:0">회사 매출의 약 절반을 차지. 대형·복합 프로젝트를 수행하는 리모델러·건설업자·전기·배관·조경업자 대상. SRS·GMS 인수로 TAM(총유효시장)이 기존 대비 약 $50B 확대되어 소비자·프로 합산 <strong>약 $1조 시장</strong>을 타깃.</p>
+    </div>
+    <div class="card">
+      <h4>③ SRS Distribution + GMS (전문 유통)</h4>
+      <p style="margin-bottom:0">지붕재·조경자재·수영장 용품(SRS)과 석고보드·천장재·철골(GMS)을 전문으로 하는 B2B 유통 자회사. 47~48개 주에 걸친 지역 브랜드 네트워크와 자체 배송 트럭단을 보유, "프로젝트 전 과정을 커버하는 복합 프로(Complex Pro)" 고객을 공략.</td></tr>
+    </div>
+    <div class="card">
+      <h4>④ HD Supply / MRO</h4>
+      <p style="margin-bottom:0">2020년 인수한 다세대주택·호스피탈리티 시설 유지보수(MRO) 유통 사업. 반복 구매·구독형 매출 특성이 강해 경기 방어력에 기여.</p>
+    </div>
+  </div>
+  <p>요약하면 홈디포는 더 이상 "주말에 페인트 사러 가는 곳"이 아니라, <strong>소비자 리테일 + B2B 전문 유통이 결합된 하이브리드 플랫폼</strong>으로 재편되고 있습니다. 이는 Bull Case의 핵심 축이자, 동시에 대규모 인수합병 통합 리스크의 근원이기도 합니다.</p>
+
+  <!-- 3. 핵심 투자 논리 -->
+  <h2 id="s3">3. 핵심 투자 논리 및 가치 제안</h2>
+  <div class="callout">
+    <p style="margin-bottom:0"><strong>홈디포에 투자한다는 것은, "미국 주택의 노후화"와 "금리 정상화 시 억눌린 리모델링 수요의 폭발"이라는 두 개의 장기 시나리오에 베팅하는 동시에, 그 시나리오가 오기 전까지는 '프로' 유통망 확장으로 버티겠다는 경영진의 실행력을 신뢰하는 행위</strong>입니다.</p>
+  </div>
+  <ul>
+    <li><strong>압도적 규모의 경제:</strong> 미국 홈 인테리어 시장 점유율 1위(약 17%, 2위 로우스 약 11%). 매입 협상력, 물류망, 데이터 자산에서 경쟁사 대비 구조적 우위.</li>
+    <li><strong>듀얼 엔진 성장 구조:</strong> 경기에 민감한 DIY 리테일 매출과, 상대적으로 예측 가능하고 단가가 큰 Pro/유통 매출이 결합되며 매출 변동성이 과거보다 완화되는 효과.</li>
+    <li><strong>배당 성장주로서의 정체성:</strong> 연속 증배 실적과 견조한 잉여현금흐름(FCF) 창출력을 바탕으로 '홈디포 = 안정적 인컴 + 경기민감 업사이드' 조합을 제공.</li>
+    <li><strong>금리 인하 사이클의 잠재적 레버리지:</strong> 현재 억눌려 있는 기존주택 매매·리모델링 수요가 향후 모기지 금리 하락과 함께 정상화될 경우, 동일점포매출 성장률이 레벨업할 잠재력.</li>
+    <li><strong>관세 환급 등 정책 변수의 단기 우호적 작용:</strong> 2분기 매출총이익률은 $685M 규모의 IEEPA 관세 환급 덕분에 개선 — 다만 이는 지속성이 불확실한 '일회성에 가까운' 요인이라는 점은 함께 인지해야 합니다.</li>
+  </ul>
+
+  <!-- 4. 재무 성과 -->
+  <h2 id="s4">4. 재무 성과 및 가치 평가</h2>
+
+  <h3>4.1 주요 재무 동향 분석</h3>
+  <div class="chart-box">
+    <div class="chart-title">연간 매출 및 순이익 추이 (FY2021~FY2025, 단위: $B)</div>
+    <canvas id="revChart" height="260"></canvas>
+    <div class="source-note">출처: 회사 실적발표 자료 종합 (stockanalysis.com, macrotrends.net)</div>
+  </div>
+  <p>매출은 FY2023(-3%대) 조정기를 거쳐 FY2024~FY2025 다시 성장세로 복귀했지만, <strong>순이익은 FY2022 정점($17.1B) 이후 3년 연속 정체 내지 소폭 감소</strong>하고 있습니다. 이는 관세·물류비·인건비 등 비용 상승이 매출 성장 속도를 앞지르고 있기 때문이며, 2분기 실적에서도 <strong>SG&amp;A(판관비)가 +8.5% 증가해 매출 성장률(+5.7%)을 웃돈</strong> 점에서 같은 패턴이 재확인됩니다.</p>
+
+  <div class="chart-box">
+    <div class="chart-title">최근 분기별 동일점포매출(Comp Sales) 성장률 추이</div>
+    <canvas id="compChart" height="260"></canvas>
+    <div class="source-note">출처: 회사 분기 실적발표 (2025.8 ~ 2026.8, 발표 시점 기준)</div>
+  </div>
+  <p>2025년 3분기 +0.2%까지 둔화됐던 동일점포매출 성장률이 2026년 1분기 +0.6%, 2분기 +1.7%로 4개 분기 연속 우상향하며 회복 흐름을 보이고 있는 점은 긍정적입니다. 다만 이 회복이 <strong>거래건수 증가가 아니라 객단가 상승에 전적으로 의존</strong>하고 있다는 점(2분기 객단가 +2.8% vs 거래건수 -1.0%)은, "손님이 다시 찾아오는 회복"이 아니라 "남아 있는 손님이 더 많이 쓰는 회복"이라는 해석의 여지를 남깁니다.</p>
+
+  <div class="chart-box">
+    <div class="chart-title">부채 구조 (2026년 8월 2일 분기 말 기준, 단위: $M)</div>
+    <canvas id="debtChart" height="220"></canvas>
+    <div class="source-note">출처: 2026년 2분기(회계) 10-Q / 실적발표 자료</div>
+  </div>
+  <p>단기부채가 1년 전 $0에서 <strong>$4.25B로 급증</strong>했고, 장기부채는 $44.0B에 달하는 반면 현금성 자산은 $2.1B에 불과합니다. 자기자본 대비 부채비율(D/E)은 자사주 매입을 오랫동안 지속해 온 결과 회계상 자본총계가 얇아지며 <strong>380%~500%대의 매우 높은 수준</strong>으로 나타나는데(그 결과 ROE도 128%라는 비정상적으로 높은 수치가 산출), 이는 "재무구조가 취약하다"기보다는 "주주환원(자사주 매입)에 극도로 적극적이었던 자본배분 전략의 부산물"로 해석하는 것이 정확합니다. 다만 SRS·GMS 등 대규모 차입 인수가 겹치면서 <strong>금리 상승기 이자비용 부담과 재융자 리스크</strong>는 실질적으로 커진 상태입니다.</p>
+
+  <h3>4.2 경쟁사 비교분석 — vs. Lowe's (NYSE: LOW)</h3>
+  <div class="chart-box">
+    <div class="chart-title">홈디포 vs. 로우스 밸류에이션 비교</div>
+    <canvas id="peChart" height="260"></canvas>
+    <div class="source-note">출처: 각 사 실적발표 및 컨센서스 추정치 (2026.8 기준)</div>
+  </div>
+  <table>
+    <tr><th>구분</th><th>홈디포 (HD)</th><th>로우스 (LOW)</th></tr>
+    <tr><td>시가총액</td><td>약 $337B</td><td>약 $122~128B</td></tr>
+    <tr><td>매장 수</td><td>2,364개 + SRS/GMS 1,300여 거점</td><td>약 1,748개</td></tr>
+    <tr><td>FY2025 매출</td><td>$164.7B (+3.2%)</td><td>$86B (+3%)</td></tr>
+    <tr><td>선행(Forward) P/E</td><td>약 22~24배</td><td>약 16~18배</td></tr>
+    <tr><td>배당수익률</td><td>약 2.7~2.8%</td><td>약 2.2~2.3%</td></tr>
+    <tr><td>고객 믹스</td><td>Pro 약 50%, SRS/GMS로 B2B 유통 강화</td><td>DIY 비중 상대적으로 높음, Pro 확장 중(FBM·Artisan Design Group 인수)</td></tr>
+    <tr><td>시장점유율(美 홈임프루브먼트)</td><td>약 17% (1위)</td><td>약 11% (2위)</td></tr>
+  </table>
+  <p>핵심 논점은 명확합니다. <strong>로우스는 "더 싸게 사는 같은 업종 대안"이고, 홈디포는 "더 비싸지만 규모·Pro 침투력에서 확실히 앞서는 1등주"</strong>입니다. 시장은 홈디포의 SRS/GMS 프로 유통 확장 스토리에 대해 로우스 대비 20~30% 수준의 밸류에이션 프리미엄을 부여하고 있는데, 이 프리미엄이 정당화되려면 SRS/GMS의 시너지가 실제 실적(마진·매출 기여)으로 가시화되어야 합니다.</p>
+
+  <h3>4.3 가치 평가 요약</h3>
+  <ul>
+    <li><strong>TTM P/E 24.0배, 선행 P/E 약 22~23배</strong> — 자체 5년 평균(약 22배 내외)과 유사하거나 소폭 높은 수준으로, "역사적으로 쌀 때 사는" 국면은 아님.</li>
+    <li><strong>EV/EBITDA 약 14~15배</strong>로 로우스(약 13배)보다 소폭 높은 프리미엄 유지.</li>
+    <li>2026년 8월 18일 실적 발표 이후 제프리스는 목표주가를 <strong>$360 → $398</strong>로 상향(Buy), DA데이비슨은 <strong>$377</strong>(Buy) 유지, 번스타인은 <strong>$344</strong>(Hold)를 제시하는 등 <strong>애널리스트 목표주가는 대체로 $344~$398 범위에 분포</strong>하며, 컨센서스는 현재가 대비 한 자릿수 후반~두 자릿수 초반의 상승 여력을 시사합니다.</li>
+    <li>일부 정량 밸류에이션 모델(예: Simply Wall St 내재가치 추정)에서는 홈디포가 추정 적정가치 대비 소폭 저평가~적정가 구간에 위치한다는 분석과, 반대로 소폭 고평가되어 있다는 분석이 공존합니다 — <strong>이는 "확실히 싸다"고 말하기 어려운, 판단이 엇갈리는 밸류에이션 구간</strong>에 있다는 의미로 해석하는 것이 합리적입니다.</li>
+  </ul>
+
+  <!-- 5. 리스크 -->
+  <h2 id="s5">5. 주요 리스크 및 기회</h2>
+
+  <h4>이미 주가에 상당 부분 반영된(가격에 녹아 있는) 리스크</h4>
+  <div class="callout risk">
+    <ul style="margin-bottom:0">
+      <li><strong>고금리·주택거래 냉각:</strong> 30년 모기지 금리가 여전히 높은 수준을 유지하고 있고, 2026년 8월 들어 미 국채 장기금리가 금융위기 이전 수준까지 재상승 — 기존주택 매매 회전율이 구조적으로 낮은 상태가 지속되고 있다는 점은 이미 시장 컨센서스에 널리 알려진 리스크.</li>
+      <li><strong>대형·재량적 리모델링 프로젝트 위축:</strong> 소비자들이 여전히 대형 프로젝트를 미루고 소규모 유지보수 위주로 지갑을 열고 있다는 점 역시 여러 분기째 반복 확인된 익숙한 스토리.</li>
+    </ul>
+  </div>
+
+  <h4>상대적으로 저평가되어 있을 수 있는(과소 반영된) 리스크</h4>
+  <div class="callout risk">
+    <ul style="margin-bottom:0">
+      <li><strong>CEO 공백의 타이밍 리스크:</strong> 데커 CEO의 의료휴직(2026.8.12)은 사전 예고 없이 발표되었고, 회사가 SRS·GMS 통합이라는 역사상 가장 복잡한 M&amp;A 후속 작업을 진행 중인 시점과 겹칩니다. 후임 경영 공백 자체보다, <strong>"복잡한 통합 프로젝트의 조율자가 빠진 상태에서 실행력이 흔들릴 가능성"</strong>이 시장에서 충분히 가격에 반영되지 않았을 수 있습니다. 건강 사유는 공개되지 않았고, 복귀 시점도 "수개월 내"라는 불확실한 표현에 그치고 있습니다.</li>
+      <li><strong>레버리지가 쌓인 시점에 찾아온 비용 압박:</strong> SG&amp;A가 매출 성장률을 웃돌며 증가하는 가운데, 단기부채가 1년 새 $0→$4.25B로 급증한 점은 "마진 압박 + 재융자 부담"이 동시에 커지고 있다는 신호로, 개별 지표로 흩어져 있어 상대적으로 주목받지 못하고 있는 조합입니다.</li>
+      <li><strong>거래건수 감소의 만성화:</strong> 4개 분기 연속 comp sales는 개선되었지만, 그 이면의 거래건수는 지속적으로 감소 중입니다. 객단가 상승이 인플레이션이나 믹스효과(더 비싼 프로젝트 위주 판매)에 기인한 것이라면 지속가능성에 의문이 남습니다.</li>
+      <li><strong>관세 환급의 정책 변동성:</strong> 2분기 실적을 개선시킨 IEEPA 관세 환급은 정책적으로 뒤집힐 수 있는 변수이며, 회사도 연간 가이던스에 이를 '반영'하고 있다고 명시 — 정책 변경 시 가이던스 하향 트리거가 될 수 있습니다.</li>
+    </ul>
+  </div>
+
+  <h4>기회 요인</h4>
+  <div class="callout" style="border-left-color:var(--blue);background:#f3f7fb;">
+    <ul style="margin-bottom:0">
+      <li>미국 평균 주택 연령이 40년을 넘어서는 등 <strong>구조적 노후 주택 재고</strong> — 언젠가는 반드시 소화되어야 할 이연 수요(pent-up demand)의 축적.</li>
+      <li>SRS·GMS 시너지가 본격적으로 숫자로 확인되기 시작하면 <strong>Pro 매출 비중 확대 → 마진 구조 개선</strong>으로 이어질 잠재력.</li>
+      <li>Express Delivery 전국 확대 등 <strong>물류·배송 경쟁력 강화</strong>로 Pro 고객 락인(lock-in) 심화.</li>
+      <li>연준 금리 인하 사이클이 본격화될 경우 <strong>주택 거래량 회복에 따른 밸류에이션 리레이팅</strong> 가능성.</li>
+    </ul>
+  </div>
+
+  <!-- 6. Bull/Bear -->
+  <h2 id="s6">6. Bull Case, Bear Case</h2>
+  <div class="two-col">
+    <div class="card bull">
+      <h4>🐂 Bull Case</h4>
+      <p>미국 주택 재고는 만성적으로 부족하고 노후화되어 있으며, 이는 언젠가 반드시 리모델링 수요로 전환됩니다. 홈디포는 그 사이클이 도래하기 전까지 SRS·GMS를 통해 $1조 규모의 Pro 시장을 선점하며 "기다리는 동안에도 성장하는" 구조를 완성했습니다. 압도적 스케일, 배당 성장 트랙레코드, 그리고 금리 인하 국면에서의 레버리지까지 고려하면, 지금의 프리미엄 밸류에이션은 <strong>"업계 1위 프랜차이즈를 조정 시 사 모으는 대가"</strong>로 정당화될 수 있습니다.</p>
+    </div>
+    <div class="card bear">
+      <h4>🐻 Bear Case</h4>
+      <p>고금리·모기지 록인 효과로 인한 주택 회전율 저하는 일시적 사이클이 아니라 <strong>구조적 뉴노멀</strong>일 수 있습니다. 이 경우 거래건수 감소는 멈추지 않고, 객단가 상승만으로는 한계가 뚜렷합니다. 여기에 SRS·GMS·HD Supply 등 연쇄적 차입 인수로 쌓인 레버리지, 예상치 못한 CEO 공백, 그리고 로우스 대비 20% 이상 벌어진 밸류에이션 갭까지 겹치면, 홈디포는 <strong>"좋은 회사지만 지금 가격에는 안전마진이 거의 없는 주식"</strong>이 될 위험이 있습니다.</p>
+    </div>
+  </div>
+
+  <!-- 7. 본질과 목표 -->
+  <h2 id="s7">7. 이 기업의 본질과 목표 — 그리고 지금 시대와의 정합성</h2>
+  <p><strong>홈디포의 본질은 "규모의 경제를 현장 전문성과 결합해, 세상에서 가장 복잡한 소매 카테고리(건축자재·홈 인테리어)를 가장 효율적으로 유통하는 것"</strong>입니다. 창업자 버니 마커스와 아서 블랭크가 만든 "직원이 제품을 팔 뿐 아니라 사용법까지 가르쳐준다"는 문화(이른바 '거꾸로 된 피라미드' 경영 철학 — 경영진이 아니라 현장 직원과 고객이 조직의 정점에 있다는 사고방식)는 지금도 회사의 정체성 핵심에 남아 있습니다.</p>
+  <p>2020년대 들어 이 본질은 "매장에서 소비자에게 파는 회사"에서 <strong>"매장이든 유통센터든, DIY 고객이든 대형 건설사든, 프로젝트에 필요한 모든 것을 가장 빠르게 공급하는 회사"</strong>로 진화하고 있습니다. 목표는 명확합니다 — 소비자 리테일과 B2B 전문 유통을 아우르는 <strong>"북미 건축자재 공급망의 허브"</strong>가 되는 것입니다.</p>
+  <h4>이 목표는 지금 시대와 맞는가?</h4>
+  <p><strong>맞는 방향:</strong> ① 미국 주택 재고의 구조적 노후화와 신규 주택 공급 부족은 장기적으로 리모델링 수요를 뒷받침합니다. ② 숙련 인력(전기공·배관공 등) 부족 시대에는 계약업체들이 "믿고 맡길 수 있는 대형 유통 파트너"를 더 필요로 하게 되는데, 이는 SRS·GMS 전략과 정확히 부합합니다. ③ 온라인·오프라인 경계가 흐려지는 소매 환경에서 인터커넥티드 리테일과 익스프레스 배송 투자는 시대적 요구에 부응합니다.</p>
+  <p><strong>도전받는 방향:</strong> ① "저금리가 다시 오면 주택 거래가 살아난다"는 전제 자체가 고령화·이민정책·재택근무 구조변화 등으로 인해 과거처럼 강하게 작동하지 않을 수 있습니다. ② 대규모 차입 기반 M&amp;A로 몸집을 키우는 전략은 고금리가 장기화되는 환경에서는 과거보다 훨씬 비싼 대가를 치러야 합니다. ③ 아마존 등 이커머스가 단순 소모품·소형 공구 시장을 계속 잠식할 경우, DIY 채널의 장기 성장 동력은 서서히 약화될 수 있습니다.</p>
+  <p style="margin-bottom:0">결론적으로 홈디포의 비전은 <strong>"방향은 맞지만 타이밍 리스크가 큰" 비전</strong>입니다. 구조적으로는 여전히 옳은 자리에 서 있는 회사이지만, "언제 그 구조적 순풍이 실제 숫자로 나타날 것인가"에 대한 확신은 지금 이 시점에서는 아직 완전하지 않습니다.</p>
+
+  <!-- 8. 최종 -->
+  <h2 id="s8">8. 최종 의견 및 모니터링 체크리스트</h2>
+  <div class="callout verdict">
+    <p style="margin-bottom:0">저는 홈디포를 <strong>"장기 보유 가치는 충분하지만, 지금 이 순간 리스크를 감수하면서까지 서둘러 매수할 만큼 가격 매력이 뚜렷한 자리는 아니다"</strong>로 평가합니다. SRS·GMS 시너지와 데커 CEO의 복귀 여부, 그리고 거래건수 반등 여부라는 세 가지 시그널을 확인하며 <strong>분할 매수 관점으로 접근하는 것</strong>을 개인적인 분석 프레임으로 제안드립니다. 다만 이는 투자 조언이 아니며, 최종 판단은 본인의 리스크 허용도에 따라 이루어져야 합니다.</p>
+  </div>
+  <table>
+    <tr><th>체크포인트</th><th>확인 방법</th></tr>
+    <tr><td>테드 데커 CEO 복귀 시점 및 건강 상태 공개 여부</td><td>차기 8-K 공시, 3분기 실적 컨퍼런스콜</td></tr>
+    <tr><td>동일점포 거래건수(Transactions)의 플러스 전환 여부</td><td>2026년 3분기(11월경) 실적발표</td></tr>
+    <tr><td>SRS·GMS 시너지 수치화(매출·마진 기여도 공개 여부)</td><td>분기 실적발표 및 투자자의 날(Investor Day) 자료</td></tr>
+    <tr><td>SG&amp;A 증가율이 매출 성장률을 다시 하회하는지</td><td>분기 손익계산서 세부 항목</td></tr>
+    <tr><td>단기부채 상환·재융자 계획 및 이자비용 추이</td><td>10-Q 부채 각주</td></tr>
+    <tr><td>30년 모기지 금리 및 기존주택 매매 회전율</td><td>Freddie Mac, NAR 월간 통계</td></tr>
+  </table>
+
+  <div class="footer">
+    본 보고서는 2026년 8월 19일 기준 공개된 뉴스, 회사 공시(8-K, 보도자료), 시장 데이터(stockanalysis.com, macrotrends.net, CNBC, Yahoo Finance, TipRanks 등)를 종합해 작성한 리서치 자료이며, 투자 자문이나 매매 권유가 아닙니다. 일부 수치는 출처에 따라 소폭 상이할 수 있으며, 주가·밸류에이션은 실시간으로 변동됩니다. 투자 결정 전 최신 공시자료 및 전문가 자문을 참고하시기 바랍니다.
+  </div>
+
+</div>
+
+<script>
+const orange = '#F96302';
+const orangeDark = '#D14E00';
+const green = '#1e7d32';
+const blue = '#1f5fa8';
+const grey = '#c9c4ba';
+
+Chart.defaults.font.family = "'Pretendard','Malgun Gothic',sans-serif";
+Chart.defaults.font.size = 13;
+Chart.defaults.color = '#4a4a4a';
+
+new Chart(document.getElementById('revChart'), {
+  type: 'bar',
+  data: {
+    labels: ['FY2021','FY2022','FY2023','FY2024','FY2025'],
+    datasets: [
+      {
+        type:'bar', label:'매출 ($B)', data:[151.2,157.4,152.7,159.5,164.7],
+        backgroundColor: orange, borderRadius:6, order:2, yAxisID:'y'
+      },
+      {
+        type:'line', label:'순이익 ($B)', data:[16.4,17.1,15.1,14.8,14.2],
+        borderColor: orangeDark, backgroundColor: orangeDark, tension:.3,
+        pointRadius:5, pointBackgroundColor: orangeDark, order:1, yAxisID:'y1'
+      }
+    ]
+  },
+  options: {
+    responsive:true,
+    interaction:{mode:'index',intersect:false},
+    plugins:{ legend:{position:'bottom'} },
+    scales:{
+      y:{ position:'left', title:{display:true,text:'매출 ($B)'}, grid:{color:'#f0ede7'} },
+      y1:{ position:'right', title:{display:true,text:'순이익 ($B)'}, grid:{drawOnChartArea:false}, min:0, max:20 }
+    }
+  }
+});
+
+new Chart(document.getElementById('compChart'), {
+  type: 'line',
+  data: {
+    labels: ['2Q FY25\n(2025.8)','3Q FY25\n(2025.11)','1Q FY26\n(2026.5)','2Q FY26\n(2026.8)'],
+    datasets: [{
+      label:'동일점포매출 성장률(%)', data:[1.0,0.2,0.6,1.7],
+      borderColor: orange, backgroundColor:'rgba(249,99,2,0.12)', fill:true,
+      tension:.35, pointRadius:6, pointBackgroundColor: orangeDark, borderWidth:3
+    }]
+  },
+  options:{
+    responsive:true,
+    plugins:{ legend:{display:false} },
+    scales:{ y:{ title:{display:true,text:'YoY %'}, grid:{color:'#f0ede7'} }, x:{grid:{display:false}} }
+  }
+});
+
+new Chart(document.getElementById('debtChart'), {
+  type:'bar',
+  data:{
+    labels:['현금성자산','단기부채','장기부채'],
+    datasets:[{
+      data:[2085,4248,43951],
+      backgroundColor:[green, '#f0a35c', orangeDark],
+      borderRadius:6
+    }]
+  },
+  options:{
+    indexAxis:'y',
+    responsive:true,
+    plugins:{legend:{display:false}},
+    scales:{ x:{ title:{display:true,text:'$ Million'}, grid:{color:'#f0ede7'} }, y:{grid:{display:false}} }
+  }
+});
+
+new Chart(document.getElementById('peChart'), {
+  type:'bar',
+  data:{
+    labels:['선행 P/E (배)','배당수익률 (%)'],
+    datasets:[
+      {label:'홈디포 (HD)', data:[22.5, 2.75], backgroundColor: orange, borderRadius:6},
+      {label:"로우스 (LOW)", data:[17.0, 2.25], backgroundColor: blue, borderRadius:6}
+    ]
+  },
+  options:{
+    responsive:true,
+    plugins:{ legend:{position:'bottom'} },
+    scales:{ y:{ beginAtZero:true, grid:{color:'#f0ede7'} }, x:{grid:{display:false}} }
+  }
+});
+</script>
+</body>
+</html>
