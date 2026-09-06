@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>데이터독(Datadog, DDOG) 투자 브리핑</title>
+<style>
+  :root{
+    --bg:#FFFFFF;
+    --bg-soft:#F7F6F2;
+    --ink:#1C2029;
+    --ink-soft:#545B68;
+    --line:#E4E1D9;
+    --accent:#6B3FA0;
+    --accent-soft:#F1EAF8;
+    --green:#1F7A4D;
+    --green-soft:#EAF6EF;
+    --red:#B0402D;
+    --red-soft:#FBEEEA;
+    --amber:#9A6B0A;
+    --amber-soft:#FBF3E2;
+  }
+  *{box-sizing:border-box;}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Pretendard','Apple SD Gothic Neo','Malgun Gothic',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+    font-size:17px;
+    line-height:1.8;
+    max-width:900px;
+    margin:0 auto;
+    padding:0 24px 100px;
+  }
+  h1,h2,h3,h4{
+    font-family:Georgia,'Noto Serif KR',serif;
+    color:var(--ink);
+    line-height:1.35;
+  }
+  h1{font-size:2.1rem; margin-bottom:.3em;}
+  h2{
+    font-size:1.55rem;
+    margin-top:3em;
+    padding-bottom:.4em;
+    border-bottom:2px solid var(--ink);
+  }
+  h3{font-size:1.2rem; margin-top:2em; color:var(--accent);}
+  h4{font-size:1.05rem; margin-top:1.4em;}
+  p{margin:1em 0;}
+  a{color:var(--accent);}
+  .subtitle{font-size:1.15rem; color:var(--ink-soft); margin-top:0;}
+  .meta-bar{
+    display:flex; flex-wrap:wrap; gap:8px;
+    margin:1.2em 0 2em;
+    font-size:.92rem; color:var(--ink-soft);
+  }
+  .meta-bar span{
+    background:var(--bg-soft);
+    border:1px solid var(--line);
+    border-radius:20px;
+    padding:5px 14px;
+  }
+  .price-cards{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+    gap:12px;
+    margin:1.5em 0 2em;
+  }
+  .price-card{
+    background:var(--bg-soft);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:14px 16px;
+  }
+  .price-card .label{font-size:.82rem; color:var(--ink-soft); margin-bottom:4px;}
+  .price-card .value{font-size:1.3rem; font-weight:700;}
+  .price-card .sub{font-size:.82rem; color:var(--ink-soft); margin-top:2px;}
+  .callout{
+    border-left:4px solid var(--accent);
+    background:var(--accent-soft);
+    border-radius:0 8px 8px 0;
+    padding:16px 20px;
+    margin:1.6em 0;
+  }
+  .callout.risk{border-left-color:var(--red); background:var(--red-soft);}
+  .callout.good{border-left-color:var(--green); background:var(--green-soft);}
+  .callout.warn{border-left-color:var(--amber); background:var(--amber-soft);}
+  .callout p{margin:.4em 0;}
+  .callout .tag{font-weight:700; font-size:.85rem; letter-spacing:.02em; margin-bottom:.3em; display:block;}
+  table{
+    width:100%;
+    border-collapse:collapse;
+    margin:1.4em 0;
+    font-size:.95rem;
+  }
+  th,td{
+    border:1px solid var(--line);
+    padding:10px 12px;
+    text-align:left;
+    vertical-align:top;
+  }
+  th{background:var(--bg-soft); font-weight:700;}
+  tr:nth-child(even) td{background:#FCFCFA;}
+  .chart-box{
+    background:var(--bg-soft);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:20px 18px 10px;
+    margin:1.8em 0;
+  }
+  .chart-box .chart-title{font-weight:700; margin-bottom:10px; font-size:1rem;}
+  .chart-note{font-size:.85rem; color:var(--ink-soft); margin-top:8px;}
+  canvas{max-width:100%;}
+  .toc{
+    background:var(--bg-soft);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:20px 26px;
+    margin:2em 0;
+  }
+  .toc ol{margin:0; padding-left:1.2em;}
+  .toc li{margin:.35em 0;}
+  .verdict-box{
+    background:var(--ink);
+    color:#fff;
+    border-radius:14px;
+    padding:26px 28px;
+    margin:1.6em 0;
+  }
+  .verdict-box h3{color:#fff; margin-top:0;}
+  .verdict-box .grade{
+    display:inline-block;
+    font-family:Georgia,serif;
+    font-size:1.6rem;
+    font-weight:700;
+    color:#fff;
+    background:var(--accent);
+    padding:4px 18px;
+    border-radius:8px;
+    margin-bottom:12px;
+  }
+  .two-col{display:grid; grid-template-columns:1fr 1fr; gap:20px;}
+  @media(max-width:680px){.two-col{grid-template-columns:1fr;}}
+  .bull{border:1px solid var(--green); border-radius:12px; padding:16px 18px; background:var(--green-soft);}
+  .bear{border:1px solid var(--red); border-radius:12px; padding:16px 18px; background:var(--red-soft);}
+  .bull h4, .bear h4{margin-top:0;}
+  ul{padding-left:1.3em;}
+  li{margin:.4em 0;}
+  .source-note{font-size:.82rem; color:var(--ink-soft); border-top:1px solid var(--line); margin-top:4em; padding-top:1.2em;}
+  hr{border:none; border-top:1px solid var(--line); margin:2.5em 0;}
+</style>
+</head>
+<body>
+
+<h1>데이터독 (Datadog, Inc. · NASDAQ: DDOG)</h1>
+<p class="subtitle">"모든 소프트웨어 스택을 보이게 만든다" — AI 시대, 관찰가능성(Observability)의 지배적 플랫폼에 대한 심층 투자 브리핑</p>
+
+<div class="meta-bar">
+  <span>작성 기준일: 2026년 9월 6일</span>
+  <span>섹터: 소프트웨어 / 클라우드 관찰가능성·보안</span>
+  <span>상장: NASDAQ · IPO 2019년 9월</span>
+  <span>본사: 미국 뉴욕</span>
+</div>
+
+<div class="price-cards">
+  <div class="price-card"><div class="label">현재 주가 (9/4 장중 기준)</div><div class="value">$212~215</div><div class="sub">전일 종가 $214.76</div></div>
+  <div class="price-card"><div class="label">시가총액</div><div class="value">약 $770~800억</div><div class="sub">순현금 보유 약 $50억</div></div>
+  <div class="price-card"><div class="label">52주 범위</div><div class="value">$98.0 ~ $292.7</div><div class="sub">사상 최고가 2026.8.5</div></div>
+  <div class="price-card"><div class="label">애널리스트 컨센서스</div><div class="value">Strong/Moderate Buy</div><div class="sub">평균 목표가 약 $285 (+34%)</div></div>
+</div>
+
+<div class="callout warn">
+  <span class="tag">⚠ 데이터 관련 유의사항</span>
+  <p>본 보고서의 주가·밸류에이션 수치는 2026년 9월 3일~4일 사이 여러 금융 데이터 제공처(Robinhood, TradingView, StockAnalysis, Investing.com 등)에서 수집한 값으로, 실시간 시세와는 소폭 차이가 있을 수 있습니다. 실제 매매 전에는 반드시 증권사 앱 등에서 실시간 시세를 재확인하시기 바랍니다. 재무 실적은 2026년 8월 6일 발표된 2026회계연도 2분기(Q2 2026, 4~6월) 실적과 그에 따른 3분기·연간 가이던스를 기준으로 합니다.</p>
+</div>
+
+<div class="toc">
+<strong>목차</strong>
+<ol>
+  <li>결론 요약</li>
+  <li>기업 개요 및 현황
+    <ol type="a"><li>기본 정보 및 핵심 지표</li><li>혁신에서 시작된 역사</li><li>핵심 사업 포트폴리오</li></ol>
+  </li>
+  <li>핵심 투자 논리 및 가치 제안</li>
+  <li>재무 성과 및 가치 평가
+    <ol type="a"><li>주요 재무 동향 분석</li><li>경쟁사 비교분석</li><li>가치 평가 요약</li></ol>
+  </li>
+  <li>주요 리스크 및 기회</li>
+  <li>Bull Case / Bear Case</li>
+  <li>데이터독의 본질과 목표 — 그리고 시대와의 정합성</li>
+  <li>존(John)님을 위한 투자자 체크리스트</li>
+</ol>
+</div>
+
+<h2>1. 결론 요약</h2>
+
+<div class="verdict-box">
+  <span class="grade">판단: 선별적 매수 (High-Conviction, High-Volatility)</span>
+  <h3>한 줄 요약</h3>
+  <p>데이터독은 관찰가능성(observability) 시장에서 가장 빠르게 성장하는 압도적 1위 플랫폼이며, AI 에이전트 시대에 "모든 소프트웨어 시스템을 감시·통제하는 신경계"로 자신을 재정의하고 있습니다. 다만 이 성장의 상당 부분이 소수의 초대형 AI 고객(오픈AI로 추정)에 의존하고 있고, 밸류에이션은 실수를 용납하지 않는 수준까지 올라와 있습니다. 이 주식을 산다는 것은 "AI 인프라 붐이 향후 몇 년간 꺾이지 않는다"는 것과 "데이터독이 하이퍼스케일러·오픈소스의 저가 공세를 뚫고 계속 지갑 점유율을 늘려간다"는 두 가지 명제에 동시에 베팅하는 것입니다.</p>
+</div>
+
+<p>2026년 8월 6일 실적 발표는 이 회사의 성격을 압축적으로 보여준 사건이었습니다. 매출은 전년 대비 36% 성장한 11억 2천만 달러로 컨센서스를 웃돌았고, 연간 가이던스도 상향했음에도 불구하고 주가는 하루 만에 17~21% 폭락했습니다. 이유는 단 한 문장, "최대 고객사의 사용량이 줄고 있다"는 CFO의 고백이었습니다. 애널리스트와 언론은 이 고객을 오픈AI로 추정하고 있습니다. 즉 지금 데이터독의 밸류에이션 논쟁은 "회사가 잘하고 있는가"가 아니라 "이 회사의 눈부신 성장 가속이 몇 개의 거대 AI 랩(lab)에 의해 만들어진 신기루인가, 아니면 진짜 광범위한 기업 수요인가"로 좁혀져 있습니다.</p>
+
+<p>결론적으로, 저는 데이터독을 "리스크를 감수할 가치가 있는 성장주"로 판단합니다. AI 고객을 제외한 나머지 사업(전체의 89%)의 성장률이 오히려 가속(20%대 후반)하고 있다는 점, 자사 플랫폼에 4개 이상 제품을 쓰는 고객이 58%에 달해 록인(lock-in) 효과가 구조적으로 강화되고 있다는 점, 그리고 포춘 500대 기업의 48%가 이미 고객이면서도 평균 계약규모는 아직 50만 달러 미만이라는 점에서 "침투율은 이미 높지만 지갑점유율(wallet share)은 아직 초기 단계"라는 이례적인 조합을 갖고 있기 때문입니다. 그러나 이 결론은 조건부입니다 — 밸류에이션이 EV/매출 16~17배, 비GAAP 선행 PER 85배 수준에서, 앞으로 몇 분기 안에 "AI 고객 리스크"가 재발하면 주가는 다시 한 단계 재조정(de-rating)될 가능성이 높습니다.</p>
+
+<h2>2. 기업 개요 및 현황</h2>
+
+<h3>2.1 기본 정보 및 핵심 지표</h3>
+
+<table>
+<tr><th>항목</th><th>내용</th></tr>
+<tr><td>정식명칭 / 티커</td><td>Datadog, Inc. / NASDAQ: DDOG (Class A)</td></tr>
+<tr><td>설립 / 상장</td><td>2010년 6월 (뉴욕) / 2019년 9월 19일 IPO (공모가 $19~22, 조달액 약 $4.92억)</td></tr>
+<tr><td>CEO / CTO</td><td>Olivier Pomel (공동창업자·CEO) / Alexis Lê-Quôc (공동창업자·CTO)</td></tr>
+<tr><td>본사</td><td>미국 뉴욕 (620 8th Avenue)</td></tr>
+<tr><td>직원 수</td><td>약 8,100명 (2025년 말 기준, 35개국)</td></tr>
+<tr><td>고객 수</td><td>약 33,400개사 (2026 Q2 기준)</td></tr>
+<tr><td>2025 회계연도 매출</td><td>$34.3억 (전년비 성장)</td></tr>
+<tr><td>2025 회계연도 GAAP 순이익</td><td>$1.08억 (흑자 전환)</td></tr>
+<tr><td>2026 Q2 매출</td><td>$11.2억 (+36% YoY)</td></tr>
+<tr><td>2026 FY 매출 가이던스</td><td>$44.5~44.7억 (+약 30% YoY)</td></tr>
+<tr><td>지수 편입</td><td>S&amp;P 500 (2025년 7월), Nasdaq-100</td></tr>
+</table>
+
+<h3>2.2 혁신에서 시작된 역사</h3>
+
+<p>데이터독의 창업 스토리는 흔한 "차고에서 시작한 창업" 신화가 아니라, 조직 내부의 갈등을 관찰한 두 엔지니어의 문제의식에서 출발합니다. Olivier Pomel과 Alexis Lê-Quôc는 파리 중앙공과대학(École Centrale Paris) 재학 시절 만났고, 이후 뉴욕의 교육 스타트업 Wireless Generation에서 9년간 함께 일했습니다. Pomel은 기술 부문을, Lê-Quôc은 운영(Ops) 부문을 이끌었는데, 이 과정에서 "개발자는 운영팀을 미워하고, 운영팀은 개발자를 미워하는" 전형적인 데브(Dev)-옵스(Ops) 갈등을 몸소 겪었습니다. Wireless Generation이 뉴스코프(NewsCorp)에 인수된 뒤, 두 사람은 이 갈등의 근본 원인 — "같은 시스템을 보면서도 서로 다른 데이터, 다른 대시보드로 이야기한다"는 문제 — 를 해결하는 제품을 만들기로 하고 2010년 데이터독을 설립합니다.</p>
+
+<p>초기 데이터독은 단순한 클라우드 인프라 모니터링 대시보드 도구였습니다. 그러나 2010년대 클라우드 전환(AWS, Azure, GCP로의 이전) 물결을 타고 빠르게 확장했습니다. 2015년 데이터·분석 스타트업 Mortar Data를 인수하며 데이터 처리 역량을 강화했고, 같은 해 파리에 R&D 센터를 열며 유럽 엔지니어링 허브를 구축했습니다. 이후 로그 관리, APM(애플리케이션 성능 모니터링), 보안(Sqreen 인수, 2021), 디지털 경험 모니터링, 데이터 옵저버빌리티(Metaplane 인수) 등으로 제품 범위를 계속 넓히며 "단일 관찰가능성 플랫폼(Unified Observability Platform)"이라는 포지셔닝을 완성했습니다. 2019년 9월 나스닥 상장 이후 실적은 거의 매 분기 컨센서스를 상회했고, 2025년 7월에는 S&amp;P 500 지수에 편입되며 명실상부한 대형 기술주 반열에 올랐습니다.</p>
+
+<p>2026년 들어 회사의 서사는 다시 한번 전환점을 맞이합니다. 생성형 AI·에이전틱 AI 붐이 본격화되며 데이터독은 "AI 시대의 관찰가능성 인프라"로 스스로를 재정의하기 시작했습니다. 자체 AI 연구조직 Datadog AI Research를 신설해 관찰가능성 전용 오픈소스 시계열 파운데이션 모델 Toto와 벤치마크 BOOM을 공개했고, 2026년 6월에는 강화학습 기반 에이전트 파인튜닝 스타트업 Adaptive ML을 인수하며 "관찰(observe)에서 행동(act)까지" 자율 운영(autonomous operations) 영역으로 사업을 확장하고 있습니다.</p>
+
+<h3>2.3 핵심 사업 포트폴리오</h3>
+
+<p>데이터독은 더 이상 "모니터링 툴 회사"가 아니라 20여 개 제품을 아우르는 통합 플랫폼입니다. 크게 세 축으로 나눌 수 있습니다.</p>
+
+<table>
+<tr><th>영역</th><th>주요 제품</th><th>역할</th></tr>
+<tr><td>관찰가능성(Observability)</td><td>인프라 모니터링, APM, 로그 관리, 데이터베이스·네트워크 모니터링, 디지털 경험 모니터링(RUM/Synthetics), 연속 프로파일러</td><td>회사의 뿌리이자 여전히 매출의 근간. 사실상 업계 표준 대시보드로 자리잡음</td></tr>
+<tr><td>보안(Security)</td><td>Cloud SIEM, 클라우드 보안 상태 관리(CSPM), 애플리케이션 보안(Sqreen 기반)</td><td>레거시 SIEM(스플렁크·IBM QRadar) 고객을 겨냥한 교차판매(cross-sell) 성장동력</td></tr>
+<tr><td>AI·에이전틱 오퍼레이션</td><td>Bits AI(AI SRE 에이전트), LLM/AI 옵저버빌리티, Toto(오픈소스 파운데이션 모델), Adaptive ML(RLOps)</td><td>"조사·경고"에서 "학습·행동"으로 확장하는 차세대 성장 엔진. 향후 몇 년간 서사의 중심</td></tr>
+</table>
+
+<p>이 세 축을 관통하는 전략은 "랜드 앤 익스팬드(land-and-expand)"입니다. 고객은 대개 인프라 모니터링 하나로 데이터독에 발을 들이지만, 2026년 2분기 기준 고객의 58%가 4개 이상, 37%가 6개 이상, 13%가 10개 이상의 제품을 사용하고 있습니다. 즉 신규 고객 확보(land)보다 기존 고객의 지갑 점유율 확대(expand)가 성장의 주된 엔진이며, 실제로 2분기 매출 성장의 70%가 기존 고객으로부터 나왔습니다.</p>
+
+<div class="chart-box">
+  <div class="chart-title">📊 분기별 매출 추이 및 전년대비 성장률</div>
+  <canvas id="revChart" height="260"></canvas>
+  <div class="chart-note">출처: 데이터독 분기 실적 발표자료(2025 Q2 ~ 2026 Q3 가이던스 중간값) 종합</div>
+</div>
+
+<h2>3. 핵심 투자 논리 및 가치 제안</h2>
+
+<p>데이터독에 대한 투자 논리는 크게 네 가지 기둥으로 요약됩니다.</p>
+
+<h4>① 관찰가능성 시장의 사실상 표준(De facto Standard)</h4>
+<p>가트너 APM 부문에서는 "3위" 사업자로 분류되지만, 매출 성장률은 상위 2개사(2~3배)를 압도합니다. 에이전트 설치가 매우 간단해 별도 컨설팅·서비스 조직 없이 고객이 셀프서비스로 온보딩할 수 있다는 점이 레거시 경쟁사(뉴렐릭, 다이나트레이스의 초기 온프레미스 유산) 대비 구조적 강점입니다.</p>
+
+<h4>② 광범위하지만 얕은 침투 — 압도적인 여백(Whitespace)</h4>
+<p>2025년 12월 기준 포춘 500대 기업의 48%가 데이터독 고객이지만, 이들의 평균 연간 계약금액(ARR)은 여전히 50만 달러 미만입니다. 대형 엔터프라이즈가 전사적으로 데이터독을 채택할 경우 단가는 수백만~수천만 달러 단위로 커질 수 있어, "이미 로고는 확보했지만 지갑은 아직 열리지 않은" 고객군이 압도적으로 많다는 뜻입니다.</p>
+
+<h4>③ AI 네이티브 기업들의 필수 인프라화</h4>
+<p>상위 20개 AI 네이티브 기업 중 14곳이 데이터독 고객이며, 약 750개 이상의 AI 네이티브 기업이 플랫폼을 사용 중입니다. MCP(Model Context Protocol) 서버 호출량이 분기 만에 11배 증가했고, AI 옵저버빌리티 제품 사용 고객은 1,000개사를 넘어섰습니다. AI 에이전트가 늘어날수록 "이 에이전트가 지금 무엇을 하고 있고, 왜 이런 결정을 내렸는지"를 감시할 도구에 대한 수요는 구조적으로 증가합니다.</p>
+
+<h4>④ 견고한 현금창출력과 재무 건전성</h4>
+<p>2026년 2분기 기준 잉여현금흐름(FCF) 마진 25%, 현금 및 유가증권 보유액 약 50억 달러, 부채비율(Debt/Equity) 0.25 수준으로 재무구조가 매우 건전합니다. 이는 향후 경쟁 심화 국면에서도 R&D·M&A에 공격적으로 투자할 실탄이 충분함을 의미합니다.</p>
+
+<div class="callout good">
+<span class="tag">💡 핵심 가치 제안 한 줄 정리</span>
+<p>"AI가 소프트웨어를 더 복잡하고, 더 자율적이고, 더 불투명하게 만들수록, 그것을 들여다보고 통제할 수 있는 계층에 대한 지불 의사는 오히려 커진다" — 데이터독은 그 계층을 선점하려는 베팅입니다.</p>
+</div>
+
+<h2>4. 재무 성과 및 가치 평가</h2>
+
+<h3>4.1 주요 재무 동향 분석</h3>
+
+<p>2026년 2분기(4~6월) 실적은 표면적으로는 나무랄 데 없는 어닝비트였습니다. 매출 11억 2천만 달러(+36% YoY, 컨센서스 10.8억 달러 상회), 비GAAP EPS $0.65(컨센서스 $0.58 상회), 청구액(Billings) 11억 8천만 달러(+38%), 잔여이행의무(RPO) 34.7억 달러(+43%)로 향후 매출 가시성 지표들도 모두 개선되었습니다. 회사는 3분기 매출 가이던스를 11.35~11.45억 달러(+28~29%), 연간 가이던스를 44.5~44.7억 달러(+약 30%)로 상향했고, 연간 비GAAP EPS 가이던스도 기존 $2.36~2.44에서 $2.50~2.54로 올렸습니다.</p>
+
+<p>그러나 이 숫자들 뒤에 숨은 디테일이 주가를 하루 만에 17~21% 끌어내렸습니다. CFO David Obstler는 실적 콜에서 "최대 고객사의 사용량 감소를 3분기 및 연간 가이던스에 반영했다"고 밝혔는데, 이 고객은 최근 9자리(1억 달러 이상) 규모의 계약을 갱신했음에도 불구하고 좌석(사용량)을 줄이기로 했습니다. 애널리스트와 언론은 이 고객을 오픈AI로 추정합니다. AI 네이티브 고객이 전체 매출에서 차지하는 비중은 1년 전 4%에서 이번 분기 11%까지 급등했는데, 이렇게 소수 초대형 고객에게 집중된 매출 구조에서는 단 한 곳의 사용 패턴 변화가 전체 성장률 곡선을 꺾어버릴 수 있음을 시장이 처음으로 체감한 사건이었습니다.</p>
+
+<p>다만 CEO Olivier Pomel이 강조했듯, 이 고객을 제외한 "논-AI 고객" 매출 성장률은 오히려 1년 전 18%에서 이번 분기 20%대 후반으로 가속하고 있습니다. 즉 데이터독의 핵심 엔터프라이즈 기반은 여전히 견조하며, 문제는 어디까지나 "AI 랩 고객이라는 새로운 성장 카테고리의 변동성"에 국한된 것으로 보입니다. GAAP 기준으로는 매출총이익률 79%, 영업이익은 550만 달러로 여전히 손익분기점 부근이며(막대한 주식보상비용 때문), 비GAAP 영업이익률은 23% 수준입니다.</p>
+
+<div class="chart-box">
+  <div class="chart-title">📊 100,000달러 이상 ARR 고객 수 추이 (연매출 확장의 핵심 지표)</div>
+  <canvas id="custChart" height="250"></canvas>
+  <div class="chart-note">해당 고객군이 전체 ARR의 약 91%를 차지 — 데이터독 성장은 사실상 &quot;대형 고객의 지갑을 더 여는 게임&quot;</div>
+</div>
+
+<div class="chart-box">
+  <div class="chart-title">📊 AI 네이티브 고객이 전체 매출에서 차지하는 비중 — 양날의 검</div>
+  <canvas id="aiShareChart" height="230"></canvas>
+  <div class="chart-note">비중 급증은 성장 가속의 원천이자, 2026년 8월 주가 급락을 촉발한 집중 리스크의 근원이기도 함</div>
+</div>
+
+<h3>4.2 경쟁사 비교분석</h3>
+
+<p>관찰가능성 시장은 최근 2~3년 사이 지각변동을 겪었습니다. 뉴렐릭(New Relic)은 2023년 사모펀드(Francisco Partners·TPG)에 인수되어 비상장사가 되었고, 스플렁크(Splunk)는 2024년 시스코(Cisco)에 약 280억 달러에 인수되어 시스코 보안·네트워킹 포트폴리오의 일부로 편입되었습니다. 이는 데이터독에게 양면적 의미를 갖습니다 — 순수 상장 경쟁사는 줄었지만, 대신 시스코라는 거대한 번들링 파워를 가진 경쟁자가 생겼습니다.</p>
+
+<table>
+<tr><th>기업</th><th>포지셔닝</th><th>2026 매출 성장률</th><th>비영업이익률</th><th>선행 EV/매출</th></tr>
+<tr><td><strong>데이터독 (DDOG)</strong></td><td>클라우드 네이티브 통합 플랫폼, 셀프서비스형</td><td>~30% (FY 가이던스)</td><td>~23% (비GAAP)</td><td>~16~17배</td></tr>
+<tr><td>다이나트레이스 (DT)</td><td>레거시 대기업 중심, AI 기반 자동화(Davis AI)</td><td>~15~19%</td><td>~29% (비GAAP)</td><td>~5.5배</td></tr>
+<tr><td>일래스틱 (ESTC)</td><td>오픈소스(ELK 스택) 기반, 검색+관찰가능성</td><td>데이터독 대비 저성장</td><td>상대적 낮음</td><td>데이터독 대비 저평가</td></tr>
+<tr><td>스플렁크 (Cisco 자회사)</td><td>레거시 SIEM/로그 강자, 이제 Cisco 보안·네트워크와 결합</td><td>Cisco 전체 실적에 통합</td><td>비공개</td><td>비공개</td></tr>
+<tr><td>뉴렐릭</td><td>비상장(PE 소유), 초기 SaaS APM 개척자</td><td>비공개</td><td>비공개</td><td>비공개</td></tr>
+<tr><td>그라파나 랩스 (비상장)</td><td>오픈소스 Prometheus/Grafana/Loki 생태계, 저비용 대안</td><td>비공개(급성장 추정)</td><td>비공개</td><td>비공개</td></tr>
+<tr><td>하이퍼스케일러 자체 툴</td><td>AWS CloudWatch, Azure Monitor, GCP Ops Suite</td><td>클라우드 매출에 포함(번들 성격)</td><td>해당없음</td><td>해당없음</td></tr>
+</table>
+
+<div class="chart-box">
+  <div class="chart-title">📊 데이터독 vs 다이나트레이스 — 성장과 밸류에이션의 트레이드오프</div>
+  <canvas id="compChart" height="260"></canvas>
+  <div class="chart-note">데이터독은 3배 가까운 성장률을 대가로 3배 이상의 밸류에이션 프리미엄을 요구받고 있음. 다이나트레이스는 &quot;저성장·고수익·저밸류&quot;의 정반대 조합</div>
+</div>
+
+<p>경쟁 구도를 요약하면, 데이터독은 "성장"이라는 축에서 압도적 우위에 있지만, "수익성"과 "가격"이라는 축에서는 다이나트레이스에 뒤처집니다. 다이나트레이스는 온프레미스에서 SaaS로 뒤늦게 전환하며 데이터독·뉴렐릭에게 초기 시장을 내줬지만, 최근 매출의 37%가 SaaS 플랫폼에서 나오며 반등하고 있고, 액티비스트 펀드 Starboard Value의 지분 참여로 수익성 개선 압박까지 받고 있어 향후 가격 경쟁력이 더 강해질 잠재력이 있습니다. 한편 오픈소스 진영(Prometheus, Grafana, OpenTelemetry)의 표준화는 장기적으로 데이터독을 포함한 모든 상용 관찰가능성 벤더의 "해자(moat)"를 서서히 낮추는 요인입니다 — 계측(instrumentation) 표준이 통일될수록 고객이 벤더를 교체하는 스위칭 비용도 낮아지기 때문입니다.</p>
+
+<h3>4.3 가치 평가 요약</h3>
+
+<p>데이터독은 전형적인 "고성장·고밸류에이션" 소프트웨어 기업입니다. 2026년 9월 초 기준 주가 약 $213, 시가총액 약 770~800억 달러 수준에서, GAAP 기준 PER은 400~700배대로 사실상 무의미한 수준(GAAP 순이익이 막대한 주식보상비용으로 왜곡되어 있기 때문)이며, 실질적인 밸류에이션 지표는 매출 대비 기업가치(EV/Sales)와 비GAAP 기준 선행 PER입니다.</p>
+
+<table>
+<tr><th>지표</th><th>값 (2026.9월 초 기준)</th><th>해석</th></tr>
+<tr><td>EV/매출 (선행, FY26 가이던스 기준)</td><td>약 16~17배</td><td>소프트웨어 업종 평균(5~8배) 대비 2~3배 프리미엄</td></tr>
+<tr><td>비GAAP 선행 PER</td><td>약 84~85배</td><td>연간 EPS 가이던스 $2.50~2.54 기준</td></tr>
+<tr><td>GAAP TTM PER</td><td>~430~750배 (변동성 큼)</td><td>GAAP 순이익이 매우 얇아 지표 왜곡 심함</td></tr>
+<tr><td>애널리스트 목표주가 평균</td><td>약 $285 (+34% 업사이드)</td><td>Citi $305(매수) ~ Goldman Sachs $158(매도)까지 극단적 견해 차이 존재</td></tr>
+<tr><td>52주 변동성 (베타)</td><td>1.5 내외</td><td>시장 대비 고변동성 종목</td></tr>
+</table>
+
+<p>주목할 점은 애널리스트 간 목표주가 스프레드가 이례적으로 큽니다. Citi는 매수 의견에 목표가 $305를 제시한 반면, 골드만삭스는 매도 의견을 유지하며 목표가 $158을 제시하고 있습니다 — 이는 시장 참여자들 사이에서도 "AI 고객 리스크를 일회성 이벤트로 볼 것인가, 구조적 경고 신호로 볼 것인가"에 대한 해석이 극명하게 갈리고 있음을 보여줍니다.</p>
+
+<h2>5. 주요 리스크 및 기회</h2>
+
+<p>말씀하신 대로, 장점보다 리스크를 더 깊이 파고들었습니다. 이 주식을 담으려면 아래 리스크들을 각각 "감내 가능한가"를 스스로 답할 수 있어야 합니다.</p>
+
+<div class="callout risk">
+<span class="tag">🔴 리스크 1 — 고객 집중 및 사용량 기반 과금의 변동성</span>
+<p>2026년 8월 사건의 본질은 "매출 회계 방식"에 있습니다. 데이터독은 좌석(seat)이 아니라 사용량(consumption) 기반으로 과금하기 때문에, 계약을 갱신해도 고객이 실사용을 줄이면 매출은 즉시 감소합니다. AI 네이티브 고객 비중이 1년 만에 4%→11%로 급증했다는 것은 소수 고객에 대한 의존도가 그만큼 빠르게 커졌다는 뜻이고, 이런 대형 AI 랩들은 비용 최적화에 매우 민첩하게 움직입니다(실제로 이번 최대 고객사의 사례). 향후 2~3개 분기 안에 유사한 사례가 한 번 더 발생하면 "일회성"이라는 시장의 현재 해석이 깨질 수 있습니다.</p>
+</div>
+
+<div class="callout risk">
+<span class="tag">🔴 리스크 2 — 실수를 용납하지 않는 밸류에이션</span>
+<p>비GAAP 선행 PER 85배, EV/매출 16~17배라는 수치는 "완벽한 실행"을 이미 주가에 반영하고 있다는 의미입니다. 실제로 이번 분기는 컨센서스를 상회하는 어닝비트+가이던스 상향이었음에도 주가가 하루 만에 17~21% 빠졌습니다. 이는 시장이 얼마나 이 회사에 높은 기대치를 걸고 있는지, 그리고 그 기대치에서 조금이라도 벗어나면 얼마나 가혹하게 반응하는지를 보여주는 사례입니다.</p>
+</div>
+
+<div class="callout risk">
+<span class="tag">🔴 리스크 3 — 하이퍼스케일러·오픈소스의 이중 압박</span>
+<p>AWS CloudWatch, Azure Monitor, GCP Operations Suite는 각 클라우드에 기본 번들되어 있고, 하이퍼스케일러 입장에서 관찰가능성 도구는 "이익을 내는 상품"이 아니라 "고객을 자사 클라우드에 묶어두는 락인 수단"으로 활용될 수 있어, 얼마든지 공격적인 가격 정책을 펼 수 있습니다. 동시에 Prometheus·Grafana·OpenTelemetry 같은 오픈소스 생태계가 계측 표준을 장악해가면서, 비용에 민감한 스타트업·중견기업이 무료 대안으로 이탈할 유인도 커지고 있습니다. 데이터독은 지금까지 "더 나은 사용자 경험"으로 이 압박을 방어해왔지만, 영구적인 해자는 아닙니다.</p>
+</div>
+
+<div class="callout risk">
+<span class="tag">🔴 리스크 4 — 얇은 GAAP 수익성과 지속적인 내부자 매도</span>
+<p>2026년 2분기 GAAP 영업이익은 매출 11억 달러에도 불구하고 단 550만 달러에 불과했습니다. 막대한 주식보상비용(SBC)이 비GAAP 지표를 화려하게 만들어주는 동시에 주주가치를 실질적으로 희석시키고 있습니다. 여기에 CEO Olivier Pomel, CTO Alexis Lê-Quôc를 포함한 경영진과 이사진이 사전예정매매제도(10b5-1 플랜)를 통해 지속적으로 대규모 매도를 이어가고 있습니다 — 2026년 3분기 들어 8월 초까지 내부자 매도 64건, 매수 0건이 기록되었고, 이사 한 명만 6월 중순 이후 4천만 달러 이상을 매도했습니다. 사전예정 매매라 개별 건의 시그널 가치는 제한적이지만, 이 정도로 일방적이고 꾸준한 매도 패턴은 경영진이 현재 주가 수준에서 이익을 실현하는 것을 선호한다는 방증으로 해석될 여지가 있습니다.</p>
+</div>
+
+<div class="callout good">
+<span class="tag">🟢 기회 1 — 여전히 얕은 침투율, 거대한 화이트스페이스</span>
+<p>포춘 500대 기업의 48%가 이미 고객이면서도 평균 ARR이 50만 달러 미만이라는 것은, 로고 확보 경쟁은 이미 승리했고 이제는 "확장(expand)"만 하면 되는 이상적인 국면에 있다는 뜻입니다. 특히 FedRAMP High 인증 획득으로 미국 연방정부라는 새로운 대형 시장이 열렸습니다.</p>
+</div>
+
+<div class="callout good">
+<span class="tag">🟢 기회 2 — 보안(SIEM) 시장으로의 교차판매</span>
+<p>Cloud SIEM·CSPM 제품을 통해 레거시 SIEM(스플렁크-Cisco, IBM QRadar) 고객 기반을 잠식할 여지가 큽니다. 기존 관찰가능성 고객에게 보안 제품을 끼워파는 것은 신규 고객 확보보다 훨씬 저렴하고 빠른 성장 경로입니다.</p>
+</div>
+
+<div class="callout good">
+<span class="tag">🟢 기회 3 — 에이전틱 AI 운영(RLOps) 이라는 새로운 카테고리</span>
+<p>Adaptive ML 인수와 Bits AI의 진화는 데이터독을 단순 "모니터링 툴"에서 "AI 에이전트가 스스로 학습·개선하도록 돕는 운영체제"로 격상시킬 잠재력이 있습니다. 이 시장이 실제로 열리면 데이터독의 TAM(전체 addressable market)은 현재 추정치를 훨씬 뛰어넘을 수 있습니다.</p>
+</div>
+
+<h2>6. Bull Case / Bear Case</h2>
+
+<div class="two-col">
+<div class="bull">
+<h4>🐂 Bull Case</h4>
+<ul>
+<li>AI로 인한 소프트웨어 복잡성 증가는 구조적 추세이며, 관찰가능성 수요는 경기순환이 아니라 장기 성장 산업이다.</li>
+<li>8월의 주가 급락은 "한 명의 큰 손 고객"에 국한된 일회성 디리스킹이며, 논-AI 고객 성장은 오히려 가속 중이다.</li>
+<li>셀프서비스 온보딩 구조 덕분에 영업 효율이 압도적으로 높고, 이는 장기적으로 다른 어떤 경쟁사보다 빠르게 신규 로직·제품을 시장에 뿌릴 수 있게 해준다.</li>
+<li>보안(SIEM)·AI 옵저버빌리티·RLOps 등 신사업이 몇 년 내 두 번째, 세 번째 성장 곡선으로 자리잡을 잠재력이 크다.</li>
+<li>순현금 50억 달러의 견고한 재무구조로 경쟁 심화 국면에서도 공격적 R&D·M&A 지속 가능.</li>
+</ul>
+</div>
+<div class="bear">
+<h4>🐻 Bear Case</h4>
+<ul>
+<li>최근 성장 가속의 상당 부분이 소수의 AI 랩(사실상 오픈AI로 추정되는 단일 고객 포함)에 의존했음이 드러났고, 이런 고객들은 비용 최적화에 극도로 민첩하다 — "이번이 마지막"이라는 보장이 없다.</li>
+<li>비GAAP 선행 PER 85배·EV/매출 16~17배는 "실수 제로"를 가정한 가격이며, 이미 한 차례 이 가정이 깨졌다.</li>
+<li>GAAP 기준으로는 수익성이 사실상 손익분기 수준이며, 이는 막대한 주식보상비용을 통한 주주가치 희석이 계속되고 있다는 뜻이다.</li>
+<li>경영진의 일방적이고 지속적인 내부자 매도는 현재 밸류에이션에 대한 경영진 스스로의 암묵적 견해를 시사할 수 있다.</li>
+<li>하이퍼스케일러의 번들링 전략과 오픈소스 표준화가 장기적으로 가격결정력을 잠식할 가능성이 있다.</li>
+</ul>
+</div>
+</div>
+
+<h2>7. 데이터독의 본질과 목표 — 그리고 시대와의 정합성</h2>
+
+<p>데이터독의 창업 서사로 돌아가 보면, 이 회사의 본질은 처음부터 하나였습니다 — <strong>"같은 시스템을 보면서도 서로 다른 이야기를 하는 사람들에게 하나의 진실을 보여준다"</strong>는 것. 2010년에는 그 "서로 다른 사람들"이 개발자와 운영팀이었습니다. 회사가 던진 질문은 단순했습니다: 서버가 죽었을 때, 왜 개발자와 운영팀은 서로 다른 대시보드를 보며 서로를 탓하는가?</p>
+
+<p>16년이 지난 지금, 그 질문은 형태를 바꿔 훨씬 더 절박해졌습니다. 이제 시스템을 운영하는 주체는 사람만이 아닙니다. AI 에이전트가 코드를 작성하고, 배포하고, 스스로 의사결정을 내리는 시대가 되면서 데이터독이 던지는 질문은 이렇게 진화했습니다: <em>"AI 에이전트가 방금 무엇을 했고, 왜 그런 결정을 내렸는지, 사람이 이해하고 통제할 수 있는가?"</em> Bits AI를 "조사와 경고"에서 "학습과 행동"으로 진화시키겠다는 회사의 공언, Adaptive ML 인수를 통한 RLOps(강화학습 기반 운영) 진출은 정확히 이 질문에 대한 답을 만들려는 시도입니다.</p>
+
+<p>이 본질과 목표는 지금 이 시대와 놀라울 정도로 정합적입니다. AI 에이전트가 늘어날수록 시스템의 복잡성과 자율성은 기하급수적으로 증가하고, "이것을 누가 감시하고 통제할 것인가"라는 문제는 오히려 더 커집니다. 소프트웨어가 스스로 코드를 짜는 시대일수록, 그 소프트웨어를 들여다보는 계층(observability layer)에 대한 수요는 사라지지 않고 형태만 바뀝니다. 이런 의미에서 데이터독의 비전은 유행을 좇는 것이 아니라, 회사의 창업 DNA(가시성의 결여가 만드는 갈등과 비효율을 해소한다)를 AI 시대에 자연스럽게 확장한 것으로 보입니다.</p>
+
+<p>다만 여기에는 구조적 긴장이 하나 존재합니다. 데이터독의 비전은 "모두를 위한, 보이지 않는 인프라"이지만, 현재 매출 성장의 상당 부분은 소수의 거대하고 강력한 AI 기업들과의 관계에 의존하고 있습니다. 이 기업들은 협상력이 매우 크고, 데이터독의 서비스를 "필수재"가 아니라 언제든 최적화 가능한 "비용 항목"으로 취급할 수 있음을 이번 분기에 스스로 증명했습니다. 또한 장기적으로 프론티어 AI 랩이나 하이퍼스케일러가 에이전트 프레임워크 안에 "자가 관찰(self-observing)" 기능을 기본 내장시킨다면, 데이터독 같은 제3자 관찰가능성 계층의 역할 자체가 축소될 잠재적 시나리오도 배제할 수 없습니다. 즉 데이터독의 비전이 "옳은 방향"인 것과, 데이터독이라는 "특정 회사"가 그 방향에서 끝까지 승자로 남는 것은 별개의 문제입니다 — 이것이 이 브리핑 전체를 관통하는 핵심 긴장입니다.</p>
+
+<h2>8. 존(John)님을 위한 투자자 체크리스트</h2>
+
+<p>기업을 보는 눈을 기르고 싶다고 하셨으니, 이번 케이스에서 얻을 수 있는 재사용 가능한 분석 프레임을 정리해 드립니다.</p>
+
+<ul>
+<li><strong>매출의 질을 뜯어보라:</strong> "36% 성장"이라는 헤드라인 숫자보다 "그 성장이 몇 개의 고객에게서 나왔는가"가 훨씬 중요한 질문입니다. 사용량 기반 과금 모델을 쓰는 기업은 특히 고객 집중도를 반드시 확인해야 합니다.</li>
+<li><strong>시장의 반응 크기를 리스크의 신호로 읽어라:</strong> 좋은 실적에도 주가가 17~21% 빠졌다는 것은 밸류에이션이 얼마나 완벽을 요구하고 있는지를 보여주는 살아있는 증거입니다.</li>
+<li><strong>GAAP과 비GAAP의 간극을 항상 확인하라:</strong> 영업이익이 550만 달러(GAAP)와 2억 5,700만 달러(비GAAP) 사이를 오간다면, 그 차이(주식보상비용)가 주주가치에 실질적으로 어떤 영향을 미치는지 스스로 판단해야 합니다.</li>
+<li><strong>내부자 매매 패턴을 추세로 보라:</strong> 개별 10b5-1 매도 1건은 큰 의미가 없지만, 수개월간 매수 0건·매도 수십 건이 이어진다면 그 자체가 하나의 데이터 포인트입니다.</li>
+<li><strong>회사의 "본질적 질문"이 시대와 맞는지 스스로 물어라:</strong> 이 회사가 창업 때부터 풀려던 문제가 지금도 유효한지, 아니면 시대가 바뀌어 그 문제 자체가 사라지고 있는지를 확인하는 것이 밸류에이션보다 우선하는 질문입니다.</li>
+</ul>
+
+<div class="chart-box">
+  <div class="chart-title">📊 데이터독 주가 추이 (최근 1년, 참고용 근사치)</div>
+  <canvas id="priceChart" height="260"></canvas>
+  <div class="chart-note">2026년 8월 5일 사상 최고가($292.72) 기록 후, 8월 6일 실적 발표에서 최대 고객 사용량 감소 공시로 급락. 9월 초 $210~225 박스권에서 등락 중</div>
+</div>
+
+<p class="source-note">
+자료 출처: 데이터독 2026년 2분기 실적 발표 및 컨퍼런스콜(2026.8.6), 데이터독 2025 회계연도 10-K, TIKR·MarketBeat·Benzinga·SiliconANGLE·Reuters(Investing.com)·TradingView·StockAnalysis.com·Robinhood·Wikipedia 등 공개 자료 종합. 모든 수치는 2026년 9월 초 시점에서 확인 가능한 최신 공개 정보를 기반으로 하며, 추정치·가이던스는 실제와 다를 수 있습니다. 본 보고서는 투자 판단을 돕기 위한 정보 제공 목적이며, 투자 조언이나 매수·매도 추천이 아닙니다. 최종 투자 결정과 그 책임은 투자자 본인에게 있습니다.
+</p>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<script>
+const inkSoft = '#545B68';
+const gridColor = '#E4E1D9';
+Chart.defaults.font.family = "'Pretendard','Apple SD Gothic Neo',sans-serif";
+Chart.defaults.font.size = 13;
+Chart.defaults.color = inkSoft;
+
+// 1. Revenue chart
+new Chart(document.getElementById('revChart'), {
+  type: 'bar',
+  data: {
+    labels: ['25 Q2','25 Q3','25 Q4','26 Q1','26 Q2','26 Q3(E)'],
+    datasets: [
+      {
+        type:'bar',
+        label:'분기 매출 ($백만)',
+        data: [826.8, 885.7, 953.2, 1010, 1120, 1140],
+        backgroundColor:'#6B3FA0',
+        borderRadius:6,
+        order:2
+      },
+      {
+        type:'line',
+        label:'전년비 성장률 (%)',
+        data: [null, null, 29.2, 32.1, 36.0, 28.5],
+        borderColor:'#B0402D',
+        backgroundColor:'#B0402D',
+        yAxisID:'y1',
+        tension:.3,
+        order:1
+      }
+    ]
+  },
+  options: {
+    responsive:true,
+    scales:{
+      y:{ title:{display:true,text:'매출 ($백만)'}, grid:{color:gridColor} },
+      y1:{ position:'right', title:{display:true,text:'YoY 성장률(%)'}, grid:{display:false}, min:0, max:45 },
+      x:{ grid:{display:false} }
+    },
+    plugins:{ legend:{position:'bottom'} }
+  }
+});
+
+// 2. Customer count chart
+new Chart(document.getElementById('custChart'), {
+  type: 'line',
+  data: {
+    labels: ['24 Q2','25 Q2','25 Q4','26 Q2'],
+    datasets: [{
+      label:'$100K+ ARR 고객 수',
+      data:[3080, 3850, 4310, 4720],
+      borderColor:'#1F7A4D',
+      backgroundColor:'rgba(31,122,77,0.12)',
+      fill:true,
+      tension:.3,
+      pointRadius:5
+    }]
+  },
+  options:{
+    responsive:true,
+    scales:{ y:{ title:{display:true,text:'고객 수'}, grid:{color:gridColor} }, x:{grid:{display:false}} },
+    plugins:{ legend:{display:false} }
+  }
+});
+
+// 3. AI-native share chart
+new Chart(document.getElementById('aiShareChart'), {
+  type:'bar',
+  data:{
+    labels:['2025 Q2','2026 Q2'],
+    datasets:[
+      {label:'AI 네이티브 고객 매출 비중', data:[4,11], backgroundColor:'#B0402D', borderRadius:6},
+      {label:'그 외 고객 매출 비중', data:[96,89], backgroundColor:'#E4E1D9', borderRadius:6}
+    ]
+  },
+  options:{
+    responsive:true,
+    indexAxis:'y',
+    scales:{ x:{ stacked:true, max:100, title:{display:true,text:'매출 비중(%)'} }, y:{stacked:true, grid:{display:false}} },
+    plugins:{ legend:{position:'bottom'} }
+  }
+});
+
+// 4. Competitor comparison
+new Chart(document.getElementById('compChart'), {
+  type:'bar',
+  data:{
+    labels:['매출 성장률(%)','비GAAP 영업이익률(%)','선행 EV/매출(배)'],
+    datasets:[
+      {label:'데이터독(DDOG)', data:[30,23,16.5], backgroundColor:'#6B3FA0', borderRadius:6},
+      {label:'다이나트레이스(DT)', data:[17,29,5.46], backgroundColor:'#9A6B0A', borderRadius:6}
+    ]
+  },
+  options:{
+    responsive:true,
+    scales:{ y:{ grid:{color:gridColor} }, x:{grid:{display:false}} },
+    plugins:{ legend:{position:'bottom'} }
+  }
+});
+
+// 5. Price chart (approximate reference path)
+new Chart(document.getElementById('priceChart'), {
+  type:'line',
+  data:{
+    labels:['25.09','25.11','26.01','26.03','26.05','26.07','26.08 초','26.08 초순(피크)','26.08.06(실적)','26.09 초'],
+    datasets:[{
+      label:'DDOG 주가($, 근사치)',
+      data:[136, 150, 128, 130, 189, 260, 280, 292.7, 234, 214],
+      borderColor:'#6B3FA0',
+      backgroundColor:'rgba(107,63,160,0.10)',
+      fill:true,
+      tension:.25,
+      pointRadius:3
+    }]
+  },
+  options:{
+    responsive:true,
+    scales:{ y:{ title:{display:true,text:'주가($)'}, grid:{color:gridColor} }, x:{grid:{display:false}} },
+    plugins:{ legend:{display:false} }
+  }
+});
+</script>
+
+</body>
+</html>
